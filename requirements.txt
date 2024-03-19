@@ -20,7 +20,6 @@ hyperlink==21.0.0
 idna==3.6
 incremental==22.10.0
 msgpack==1.0.8
-mysqlclient==2.2.4
 paho-mqtt==1.6.1
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
