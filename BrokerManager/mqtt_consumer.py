@@ -19,8 +19,9 @@ def on_message(client, userdata, message):
     try:
         payload = json.loads(message.payload)
 
-        logging.warning(f"Unknown message type is sent, message:{payload}")
+
         if "messageType" in payload:
+            logging.warning(f" message:{payload}")
             if payload["messageType"] == 'registration' or payload["messageType"] == 'Report':
                 if  "nodeId" in payload:
                     message = {
