@@ -10,13 +10,21 @@
 {#                      <button class="btn btn-label-secondary waves-effect">Discard</button>#}
 {#                      <button class="btn btn-label-primary waves-effect">Save draft</button>#}
                     </div>
-                      <button class="btn btn-primary waves-effect waves-light" type="button" disabled="">
-                      <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
-                      Loading...
-                    </button>
-                    <button type="submit" class="btn btn-primary waves-effect waves-light"> <i class="fa-solid fa-play-circle"></i> &nbsp; Start Production </button>
-                  </div>
+<div id="startProductionBtn" >
+    {% csrf_token %}
+<button type="submit" class="btn btn-primary waves-effect waves-light">
+    <i class="fas fa-play-circle"></i> &nbsp; Start Production
+</button>
+</div>
+<div id="loadingBtn" style="display: none;">
+<button class="btn btn-primary waves-effect waves-light" type="button"  disabled>
+    <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
+    Loading...
+</button>
+           </div>            </div>
                 </div>
+                
+                <div id="showData" style="display: none;">
               <!-- Card Border Shadow -->
               <div class="row">
                   <div class="col-12 col-xl-6 mb-4">
@@ -837,11 +845,72 @@
 
                 <!--/ On route vehicles Table -->
               </div>
+                </div>
             </div>
 {% endblock %}
 {% block JsScriptInner %}
     <script>
+function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Check if this cookie name is the one we're looking for
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 
+  document.getElementById('startProductionBtn').addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent the default form submission
 
+        // Disable the startProductionBtn and show the loadingBtn
+        document.getElementById('startProductionBtn').style.display = 'none';
+        document.getElementById('loadingBtn').style.display = 'inline-block';
+        const csrftoken = getCookie('csrftoken');
+        // Your AJAX request here
+        fetch('{% url 'start_production' %}', {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                // Any data you want to send
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR);
+
+            // Now you can access properties of data
+            if (dataR && typeof dataR === 'object' && 'Code' in dataR) {
+                document.getElementById('showData').style.display = 'inline-block';
+
+            document.getElementById('loadingBtn').style.display = 'none';
+
+            }
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+    });
     </script>
     {% endblock %}

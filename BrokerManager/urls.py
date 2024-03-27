@@ -20,6 +20,6 @@ from django.urls import path
 from BrokerManager import views
 
 urlpatterns = [
-    # path('Member/Removal/Approval', views., name='MemberRemovalApprovalView'),
+    path('start-production/', views.start_production, name='start_production'),
 
-    ]
+]

@@ -98,18 +98,18 @@ MQTT_CENTRAL_TOPIC = env('MQTT_CENTRAL_TOPIC',default='vandalrobot')
 #     }
 # }
 #
-# DB_NAME = 'mongodb+srv://adegbolababs:T2BK19KVT8MRW59O@productionbroker.xvww0uv.mongodb.net/?retryWrites=true&w=majority&appName=ProductionBroker'
-#
-# DATABASES = {
-#         'default': {
-#             'ENGINE': 'djongo',
-#             'NAME': 'Django',
-#             'ENFORCE_SCHEMA': False,
-#             'CLIENT': {
-#                 'host': 'mongodb+srv://adegbolababs:T2BK19KVT8MRW59O@productionbroker.xvww0uv.mongodb.net/?retryWrites=true&w=majority&appName=ProductionBroker'
-#             }
-#         }
-# }
+DB_NAME = 'mongodb+srv://adegbolababs:T2BK19KVT8MRW59O@productionbroker.xvww0uv.mongodb.net/?retryWrites=true&w=majority&appName=ProductionBroker'
+
+DATABASES = {
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': 'Django',
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host': 'mongodb+srv://adegbolababs:T2BK19KVT8MRW59O@productionbroker.xvww0uv.mongodb.net/?retryWrites=true&w=majority&appName=ProductionBroker'
+            }
+        }
+}
 # Channels settings
 
 # Password validation
@@ -136,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Los_Angeles'
 
 USE_I18N = True
 
