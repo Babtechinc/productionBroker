@@ -10,8 +10,10 @@
 {#                      <button class="btn btn-label-secondary waves-effect">Discard</button>#}
 {#                      <button class="btn btn-label-primary waves-effect">Save draft</button>#}
                     </div>
+                      {% if not start %}
 <div id="startProductionBtn" >
     {% csrf_token %}
+
 <button type="submit" class="btn btn-primary waves-effect waves-light">
     <i class="fas fa-play-circle"></i> &nbsp; Start Production
 </button>
@@ -21,10 +23,27 @@
     <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
     Loading...
 </button>
-           </div>            </div>
+           </div>
+                          {% else %}
+                          <div id="startProductionBtn" >
+    {% csrf_token %}
+
+<button type="submit" class="btn btn-primary waves-effect waves-light">
+    <i class="fas fa-play-circle"></i> &nbsp; Ask For New Registration
+</button>
+</div>
+<div id="loadingBtn" style="display: none;">
+<button class="btn btn-primary waves-effect waves-light" type="button"  disabled>
+    <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
+    Loading...
+</button>
+           </div>
+                      {% endif %}
+
+                  </div>
                 </div>
                 
-                <div id="showData" style="display: none;">
+                <div id="showData" style="{% if not start %}display: none;        {% endif %}">
               <!-- Card Border Shadow -->
               <div class="row">
                   <div class="col-12 col-xl-6 mb-4">

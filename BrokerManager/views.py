@@ -14,25 +14,37 @@ import pymongo
 from django.conf import settings
 
 from BrokerManager.mqtt_consumer import client, TOPIC
+from productionBroker.settings import timeToNewProduction
 
 my_client = pymongo.MongoClient(settings.DB_NAME)
 # Create your views here.
 
 
 def dashboard(request):
-    return render(request, 'dashboard.html', context={})
+    start = False
+
+    thirty_minutes_ago = datetime.datetime.now() - timedelta(hours=timeToNewProduction)
+
+    # Filter ProductionLineModel objects created within the last 30 minutes
+
+    # First define the database name
+    dbname = my_client['Django']
+
+    # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection)
+
+    collection = dbname["Brokerlogs"]
+
+    recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
+    if  recent_documents:
+        start = True
+    print(start)
+    return render(request, 'dashboard.html', context={"start":start})
 
 
 def start_production(request):
     # Your production start logic goes here
     # For example, you can return a JSON response
-
-    thirty_minutes_ago = datetime.datetime.now() - timedelta(minutes=30)
-
-    # Filter ProductionLineModel objects created within the last 30 minutes
-    recent_objects = ProductionLineModel.objects.filter(created_at__gte=thirty_minutes_ago)
-
-
+    thirty_minutes_ago = datetime.datetime.now() - timedelta(hours=timeToNewProduction)
 
     # First define the database name
     dbname = my_client['Django']

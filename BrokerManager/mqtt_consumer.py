@@ -11,6 +11,7 @@ from django.utils import timezone
 from BrokerManager.Serializer import RegNodeSerializer, RegNodeSerializermessage, RoombareportSerializer, \
     NodeSerializer, roombadata
 from BrokerManager.models import ProductionLineNodeModel
+from productionBroker.settings import timeToNewProduction
 
 my_client = pymongo.MongoClient(settings.DB_NAME)
 BROKER_URL= settings.MQTT_BROKER_HOST
@@ -37,7 +38,7 @@ def on_message(client, userdata, message):
         collection_node = dbname["NodeModel"]
         collection = dbname["Brokerlogs"]
         collection_report = dbname["BrokerReport"]
-        thirty_minutes_ago =datetime.datetime.now() - timedelta(minutes=30)
+        thirty_minutes_ago =datetime.datetime.now() - timedelta(hours=timeToNewProduction)
 
         if "messageType" in payload:
             print(payload)

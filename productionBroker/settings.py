@@ -36,7 +36,7 @@ ALLOWED_HOSTS = ['*']
 MQTT_BROKER_HOST = "mqtt"
 MQTT_BROKER_PORT = 1883
 MQTT_CENTRAL_TOPIC = "vandalrobot"
-
+timeToNewProduction =60
 # Application definition
 
 INSTALLED_APPS = [
