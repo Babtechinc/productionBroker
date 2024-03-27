@@ -6,6 +6,7 @@ from datetime import timedelta
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 from BrokerManager.Serializer import ProductionLineModelSerializer
 from BrokerManager.models import ProductionLineModel
@@ -40,7 +41,7 @@ def dashboard(request):
     print(start)
     return render(request, 'dashboard.html', context={"start":start})
 
-
+@csrf_exempt
 def start_production(request):
     # Your production start logic goes here
     # For example, you can return a JSON response
