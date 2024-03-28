@@ -1478,10 +1478,11 @@ function getCookie(name) {
     horizontalBarChart.render();
   }
 // Get the host of the current window
-  const host = window.location.host;
+const host = window.location.host;
+const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
 
-  // WebSocket connection
-  const socket = new WebSocket(`ws://${host}/ws/node`);
+// WebSocket connection
+const socket = new WebSocket(`${protocol}//${host}/ws/node`);
 
   // Function to handle incoming messages
   socket.onmessage = function(event) {
