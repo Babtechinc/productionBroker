@@ -31,82 +31,82 @@
     }
   };
 
-  const leadsReportChartEl = document.querySelector('#leadsReportChart'),
-    leadsReportChartConfig = {
-      chart: {
-        height: 157,
-        width: 130,
-        parentHeightOffset: 0,
-        type: 'donut'
-      },
-      labels: ['36h', '56h', '16h', '32h', '56h', '16h'],
-      series: [23, 35, 10, 20, 35, 23],
-      colors: [
-        chartColors.donut.series1,
-        chartColors.donut.series2,
-        chartColors.donut.series3,
-        chartColors.donut.series4,
-        chartColors.donut.series5,
-        chartColors.donut.series6
-      ],
-      stroke: {
-        width: 0
-      },
-      dataLabels: {
-        enabled: false,
-        formatter: function (val, opt) {
-          return parseInt(val) + '%';
-        }
-      },
-      legend: {
-        show: false
-      },
-      tooltip: {
-        theme: false
-      },
-      grid: {
-        padding: {
-          top: 0
-        }
-      },
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '75%',
-            labels: {
-              show: true,
-              value: {
-                fontSize: '1.5rem',
-                fontFamily: 'Public Sans',
-                color: headingColor,
-                fontWeight: 500,
-                offsetY: -15,
-                formatter: function (val) {
-                  return parseInt(val) + '%';
-                }
-              },
-              name: {
-                offsetY: 20,
-                fontFamily: 'Public Sans'
-              },
-              total: {
-                show: true,
-                fontSize: '.7rem',
-                label: 'Total',
-                color: labelColor,
-                formatter: function (w) {
-                  return '231h';
-                }
-              }
-            }
-          }
-        }
-      }
-    };
-  if (typeof leadsReportChartEl !== undefined && leadsReportChartEl !== null) {
-    const leadsReportChart = new ApexCharts(leadsReportChartEl, leadsReportChartConfig);
-    leadsReportChart.render();
-  }
+  // const leadsReportChartEl = document.querySelector('#leadsReportChart'),
+  //   leadsReportChartConfig = {
+  //     chart: {
+  //       height: 157,
+  //       width: 130,
+  //       parentHeightOffset: 0,
+  //       type: 'donut'
+  //     },
+  //     labels: ['36h', '56h', '16h', '32h', '56h', '16h'],
+  //     series: [23, 35, 10, 20, 35, 23],
+  //     colors: [
+  //       chartColors.donut.series1,
+  //       chartColors.donut.series2,
+  //       chartColors.donut.series3,
+  //       chartColors.donut.series4,
+  //       chartColors.donut.series5,
+  //       chartColors.donut.series6
+  //     ],
+  //     stroke: {
+  //       width: 0
+  //     },
+  //     dataLabels: {
+  //       enabled: false,
+  //       formatter: function (val, opt) {
+  //         return parseInt(val) + '%';
+  //       }
+  //     },
+  //     legend: {
+  //       show: false
+  //     },
+  //     tooltip: {
+  //       theme: false
+  //     },
+  //     grid: {
+  //       padding: {
+  //         top: 0
+  //       }
+  //     },
+  //     plotOptions: {
+  //       pie: {
+  //         donut: {
+  //           size: '75%',
+  //           labels: {
+  //             show: true,
+  //             value: {
+  //               fontSize: '1.5rem',
+  //               fontFamily: 'Public Sans',
+  //               color: headingColor,
+  //               fontWeight: 500,
+  //               offsetY: -15,
+  //               formatter: function (val) {
+  //                 return parseInt(val) + '%';
+  //               }
+  //             },
+  //             name: {
+  //               offsetY: 20,
+  //               fontFamily: 'Public Sans'
+  //             },
+  //             total: {
+  //               show: true,
+  //               fontSize: '.7rem',
+  //               label: 'Total',
+  //               color: labelColor,
+  //               formatter: function (w) {
+  //                 return '231h';
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   };
+  // if (typeof leadsReportChartEl !== undefined && leadsReportChartEl !== null) {
+  //   const leadsReportChart = new ApexCharts(leadsReportChartEl, leadsReportChartConfig);
+  //   leadsReportChart.render();
+  // }
 
   // datatbale bar chart
 

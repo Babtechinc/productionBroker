@@ -22,4 +22,6 @@ from BrokerManager import views
 urlpatterns = [
     path('start-production/', views.start_production, name='start_production'),
 
+    path('logistics-dashboard/', views.logistics_dashboard_view, name='logistics_dashboard'),
+
 ]

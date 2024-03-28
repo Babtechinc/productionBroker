@@ -45,81 +45,34 @@
                 
                 <div id="showData" style="{% if not start %}display: none;        {% endif %}">
               <!-- Card Border Shadow -->
-              <div class="row">
-                  <div class="col-12 col-xl-6 mb-4">
-                  <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                      <div class="card-title mb-0">
-                        <h5 class="mb-0">Earning Reports</h5>
-                        <small class="text-muted">Yearly Earnings Overview</small>
-                      </div>
-                      <div class="dropdown">
-                        <button class="btn p-0" type="button" id="earningReportsTabsId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="earningReportsTabsId">
-                          <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                        </div>
-                      </div>
+                    <div class="card bg-transparent shadow-none my-4 border-0">
+                <div class="card-body row p-0 pb-3">
+                  <div class="col-12 col-md-8 card-separator">
+                    <h3>Welcome back, 👋🏻</h3>
+                    <div class="col-12 col-lg-7">
+                      <p>Your progress this week is Awesome. let's keep it up and get a lot of points reward !</p>
                     </div>
-                    <div class="card-body">
-                      <ul class="nav nav-tabs widget-nav-tabs pb-3 gap-4 mx-1 d-flex flex-nowrap" role="tablist">
-                        <li class="nav-item" role="presentation">
-                          <a href="javascript:void(0);" class="nav-link btn active d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-orders-id" aria-controls="navs-orders-id" aria-selected="true">
-                            <div class="badge bg-label-secondary rounded p-2">
-                              <i class="ti ti-shopping-cart ti-sm"></i>
-                            </div>
-                            <h6 class="tab-widget-title mb-0 mt-2">Orders</h6>
-                          </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <a href="javascript:void(0);" class="nav-link btn d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-sales-id" aria-controls="navs-sales-id" aria-selected="false" tabindex="-1">
-                            <div class="badge bg-label-secondary rounded p-2">
-                              <i class="ti ti-chart-bar ti-sm"></i>
-                            </div>
-                            <h6 class="tab-widget-title mb-0 mt-2">Sales</h6>
-                          </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <a href="javascript:void(0);" class="nav-link btn d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-profit-id" aria-controls="navs-profit-id" aria-selected="false" tabindex="-1">
-                            <div class="badge bg-label-secondary rounded p-2">
-                              <i class="ti ti-currency-dollar ti-sm"></i>
-                            </div>
-                            <h6 class="tab-widget-title mb-0 mt-2">Profit</h6>
-                          </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <a href="javascript:void(0);" class="nav-link btn d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-income-id" aria-controls="navs-income-id" aria-selected="false" tabindex="-1">
-                            <div class="badge bg-label-secondary rounded p-2">
-                              <i class="ti ti-chart-pie-2 ti-sm"></i>
-                            </div>
-                            <h6 class="tab-widget-title mb-0 mt-2">Income</h6>
-                          </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <a href="javascript:void(0);" class="nav-link btn d-flex align-items-center justify-content-center disabled" role="tab" data-bs-toggle="tab" aria-selected="false" tabindex="-1">
-                            <div class="badge bg-label-secondary rounded p-2"><i class="ti ti-plus ti-sm"></i></div>
-                          </a>
-                        </li>
-                      </ul>
-                      <div class="tab-content p-0 ms-0 ms-sm-2">
-                        <div class="tab-pane fade show active" id="navs-orders-id" role="tabpanel">
-                          <div id="earningReportsTabsOrders"></div>
+
+                  </div>
+                  <div class="col-12 col-md-4 ps-md-3 ps-lg-4 pt-3 pt-md-0">
+                    <div class="d-flex justify-content-between align-items-center" style="position: relative;">
+                      <div>
+                        <div>
+                          <h5 class="mb-2">Time Spendings</h5>
+                          <p class="mb-5">Day report</p>
                         </div>
-                        <div class="tab-pane fade" id="navs-sales-id" role="tabpanel">
-                          <div id="earningReportsTabsSales"></div>
-                        </div>
-                        <div class="tab-pane fade" id="navs-profit-id" role="tabpanel">
-                          <div id="earningReportsTabsProfit"></div>
-                        </div>
-                        <div class="tab-pane fade" id="navs-income-id" role="tabpanel">
-                          <div id="earningReportsTabsIncome"></div>
+                        <div class="time-spending-chart">
+{#                            <p id="timePassed"></p>#}
+                          <h3 class="mb-2" id="timePassed"></h3>
+{#                          <span class="badge bg-label-success">+18.4%</span>#}
                         </div>
                       </div>
-                    </div>
+                      <div id="leadsReportChart" style="min-height: 139.8px;"><div id="apexchartszojv62syi" class="apexcharts-canvas apexchartszojv62syi apexcharts-theme-light" style="width: 130px; height: 139.8px;"><svg id="SvgjsSvg1800" width="130" height="139.8" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><g id="SvgjsG1802" class="apexcharts-inner apexcharts-graphical" transform="translate(-0.5, 0)"><defs id="SvgjsDefs1801"><clipPath id="gridRectMaskzojv62syi"><rect id="SvgjsRect1804" width="137" height="155" x="-2" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="forecastMaskzojv62syi"></clipPath><clipPath id="nonForecastMaskzojv62syi"></clipPath><clipPath id="gridRectMarkerMaskzojv62syi"><rect id="SvgjsRect1805" width="137" height="159" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath></defs><g id="SvgjsG1806" class="apexcharts-pie"><g id="SvgjsG1807" transform="translate(0, 0) scale(1)"><circle id="SvgjsCircle1808" r="45.658536585365866" cx="66.5" cy="66.5" fill="transparent"></circle><g id="SvgjsG1809" class="apexcharts-slices"><g id="SvgjsG1810" class="apexcharts-series apexcharts-pie-series" seriesName="36h" rel="1" data:realIndex="0"><path id="SvgjsPath1811" d="M 66.5 5.621951219512184 A 60.878048780487816 60.878048780487816 0 0 1 117.38951211290043 33.087511612715616 L 104.66713408467533 41.44063370953671 A 45.658536585365866 45.658536585365866 0 0 0 66.5 20.841463414634134 L 66.5 5.621951219512184 z" fill="rgba(34,169,94,1)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-pie-area apexcharts-donut-slice-0" index="0" j="0" data:angle="56.71232876712329" data:startAngle="0" data:strokeWidth="0" data:value="23" data:pathOrig="M 66.5 5.621951219512184 A 60.878048780487816 60.878048780487816 0 0 1 117.38951211290043 33.087511612715616 L 104.66713408467533 41.44063370953671 A 45.658536585365866 45.658536585365866 0 0 0 66.5 20.841463414634134 L 66.5 5.621951219512184 z"></path></g><g id="SvgjsG1812" class="apexcharts-series apexcharts-pie-series" seriesName="56h" rel="2" data:realIndex="1"><path id="SvgjsPath1813" d="M 117.38951211290043 33.087511612715616 A 60.878048780487816 60.878048780487816 0 0 1 103.12569906852212 115.12812962742359 L 93.9692743013916 102.97109722056769 A 45.658536585365866 45.658536585365866 0 0 0 104.66713408467533 41.44063370953671 L 117.38951211290043 33.087511612715616 z" fill="rgba(36,179,100,1)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-pie-area apexcharts-donut-slice-1" index="0" j="1" data:angle="86.30136986301369" data:startAngle="56.71232876712329" data:strokeWidth="0" data:value="35" data:pathOrig="M 117.38951211290043 33.087511612715616 A 60.878048780487816 60.878048780487816 0 0 1 103.12569906852212 115.12812962742359 L 93.9692743013916 102.97109722056769 A 45.658536585365866 45.658536585365866 0 0 0 104.66713408467533 41.44063370953671 L 117.38951211290043 33.087511612715616 z"></path></g><g id="SvgjsG1814" class="apexcharts-series apexcharts-pie-series" seriesName="16h" rel="3" data:realIndex="2"><path id="SvgjsPath1815" d="M 103.12569906852212 115.12812962742359 A 60.878048780487816 60.878048780487816 0 0 1 79.49873670579831 125.9741092188255 L 76.24905252934873 111.10558191411914 A 45.658536585365866 45.658536585365866 0 0 0 93.9692743013916 102.97109722056769 L 103.12569906852212 115.12812962742359 z" fill="rgba(40,199,111,1)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-pie-area apexcharts-donut-slice-2" index="0" j="2" data:angle="24.657534246575352" data:startAngle="143.013698630137" data:strokeWidth="0" data:value="10" data:pathOrig="M 103.12569906852212 115.12812962742359 A 60.878048780487816 60.878048780487816 0 0 1 79.49873670579831 125.9741092188255 L 76.24905252934873 111.10558191411914 A 45.658536585365866 45.658536585365866 0 0 0 93.9692743013916 102.97109722056769 L 103.12569906852212 115.12812962742359 z"></path></g><g id="SvgjsG1816" class="apexcharts-series apexcharts-pie-series" seriesName="32h" rel="4" data:realIndex="3"><path id="SvgjsPath1817" d="M 79.49873670579831 125.9741092188255 A 60.878048780487816 60.878048780487816 0 0 1 29.87430093147789 115.12812962742359 L 39.03072569860842 102.9710972205677 A 45.658536585365866 45.658536585365866 0 0 0 76.24905252934873 111.10558191411914 L 79.49873670579831 125.9741092188255 z" fill="rgba(83,210,140,1)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-pie-area apexcharts-donut-slice-3" index="0" j="3" data:angle="49.315068493150676" data:startAngle="167.67123287671234" data:strokeWidth="0" data:value="20" data:pathOrig="M 79.49873670579831 125.9741092188255 A 60.878048780487816 60.878048780487816 0 0 1 29.87430093147789 115.12812962742359 L 39.03072569860842 102.9710972205677 A 45.658536585365866 45.658536585365866 0 0 0 76.24905252934873 111.10558191411914 L 79.49873670579831 125.9741092188255 z"></path></g><g id="SvgjsG1818" class="apexcharts-series apexcharts-pie-series" seriesName="56h" rel="5" data:realIndex="4"><path id="SvgjsPath1819" d="M 29.87430093147789 115.12812962742359 A 60.878048780487816 60.878048780487816 0 0 1 15.61048788709956 33.08751161271562 L 28.332865915324668 41.44063370953671 A 45.658536585365866 45.658536585365866 0 0 0 39.03072569860842 102.9710972205677 L 29.87430093147789 115.12812962742359 z" fill="rgba(126,221,169,1)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-pie-area apexcharts-donut-slice-4" index="0" j="4" data:angle="86.30136986301372" data:startAngle="216.986301369863" data:strokeWidth="0" data:value="35" data:pathOrig="M 29.87430093147789 115.12812962742359 A 60.878048780487816 60.878048780487816 0 0 1 15.61048788709956 33.08751161271562 L 28.332865915324668 41.44063370953671 A 45.658536585365866 45.658536585365866 0 0 0 39.03072569860842 102.9710972205677 L 29.87430093147789 115.12812962742359 z"></path></g><g id="SvgjsG1820" class="apexcharts-series apexcharts-pie-series" seriesName="16h" rel="6" data:realIndex="5"><path id="SvgjsPath1821" d="M 15.61048788709956 33.08751161271562 A 60.878048780487816 60.878048780487816 0 0 1 66.48937477611985 5.621952146737883 L 66.49203108208988 20.84146411005341 A 45.658536585365866 45.658536585365866 0 0 0 28.332865915324668 41.44063370953671 L 15.61048788709956 33.08751161271562 z" fill="rgba(169,233,197,1)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-pie-area apexcharts-donut-slice-5" index="0" j="5" data:angle="56.71232876712327" data:startAngle="303.28767123287673" data:strokeWidth="0" data:value="23" data:pathOrig="M 15.61048788709956 33.08751161271562 A 60.878048780487816 60.878048780487816 0 0 1 66.48937477611985 5.621952146737883 L 66.49203108208988 20.84146411005341 A 45.658536585365866 45.658536585365866 0 0 0 28.332865915324668 41.44063370953671 L 15.61048788709956 33.08751161271562 z"></path></g></g></g><g id="SvgjsG1822" class="apexcharts-datalabels-group" transform="translate(0, 0) scale(1)"><text id="SvgjsText1823" font-family="Helvetica, Arial, sans-serif" x="66.5" y="86.5" text-anchor="middle" dominant-baseline="auto" font-size=".7rem" font-weight="400" fill="#a5a3ae" class="apexcharts-text apexcharts-datalabel-label" style="font-family: Helvetica, Arial, sans-serif;">Total</text><text id="SvgjsText1824" font-family="Public Sans" x="66.5" y="67.5" text-anchor="middle" dominant-baseline="auto" font-size="1.5rem" font-weight="500" fill="#5d596c" class="apexcharts-text apexcharts-datalabel-value" style="font-family: &quot;Public Sans&quot;;">231h</text></g></g><line id="SvgjsLine1825" x1="0" y1="0" x2="133" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" stroke-linecap="butt" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1826" x1="0" y1="0" x2="133" y2="0" stroke-dasharray="0" stroke-width="0" stroke-linecap="butt" class="apexcharts-ycrosshairs-hidden"></line></g><g id="SvgjsG1803" class="apexcharts-annotations"></g></svg><div class="apexcharts-legend"></div><div class="apexcharts-tooltip apexcharts-theme-false"><div class="apexcharts-tooltip-series-group" style="order: 1;"><span class="apexcharts-tooltip-marker" style="background-color: rgb(34, 169, 94);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div><div class="apexcharts-tooltip-series-group" style="order: 2;"><span class="apexcharts-tooltip-marker" style="background-color: rgb(36, 179, 100);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div><div class="apexcharts-tooltip-series-group" style="order: 3;"><span class="apexcharts-tooltip-marker" style="background-color: rgb(40, 199, 111);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div><div class="apexcharts-tooltip-series-group" style="order: 4;"><span class="apexcharts-tooltip-marker" style="background-color: rgb(83, 210, 140);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div><div class="apexcharts-tooltip-series-group" style="order: 5;"><span class="apexcharts-tooltip-marker" style="background-color: rgb(126, 221, 169);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div><div class="apexcharts-tooltip-series-group" style="order: 6;"><span class="apexcharts-tooltip-marker" style="background-color: rgb(169, 233, 197);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div></div></div>
+                    <div class="resize-triggers"><div class="expand-trigger"><div style="width: 342px; height: 171px;"></div></div><div class="contract-trigger"></div></div></div>
                   </div>
                 </div>
+              </div>
+              <div class="row">
                 <div class="col-sm-6 col-lg-3 mb-4">
                   <div class="card card-border-shadow-primary">
                     <div class="card-body">
@@ -127,9 +80,9 @@
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-truck ti-md"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">42</h4>
+                        <h4 class="ms-1 mb-0" id="countNode">{{ node|length }}</h4>
                       </div>
-                      <p class="mb-1">On route vehicles</p>
+                      <p class="mb-1">Online Node</p>
                       <p class="mb-0">
                         <span class="fw-medium me-1">+18.2%</span>
                         <small class="text-muted">than last week</small>
@@ -148,7 +101,7 @@
                         </div>
                         <h4 class="ms-1 mb-0">8</h4>
                       </div>
-                      <p class="mb-1">Vehicles with errors</p>
+                      <p class="mb-1">Errors In The Production</p>
                       <p class="mb-0">
                         <span class="fw-medium me-1">-8.7%</span>
                         <small class="text-muted">than last week</small>
@@ -156,55 +109,6 @@
                     </div>
                   </div>
                 </div>
-                  <div class="col-lg-12 col-xl-6">
-                      <div class="card card-action mb-4">
-                        <div class="card-header align-items-center">
-                          <h5 class="card-action-title mb-0">Connections</h5>
-                          <div class="card-action-element">
-                            <div class="dropdown">
-                              <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="ti ti-dots-vertical text-muted"></i>
-                              </button>
-                              <ul class="dropdown-menu dropdown-menu-end">
-
-                                <li><a class="dropdown-item" href="javascript:void(0);">Share connections</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0);">Suggest edits</a></li>
-                                <li>
-                                  <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card-body">
-                          <ul class="list-unstyled mb-0">
-                            <li class="mb-3">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex align-items-start">
-                                  <div class="me-2 ms-1">
-                                    <h6 class="mb-0">Create3</h6>
-                                    <small class="text-muted">ID: #00001</small>
-                                  </div>
-                                </div>
-                                <div class="ms-auto">
-                                  <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
-                                  <i class="fa-solid fa-play"></i>
-                                  </button>
-                                    <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
-                                   <i class="fa-solid fa-stop"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </li>
-
-                            <li class="text-center">
-                              <a href="javascript:;">Start All Node</a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
                 <div class="col-sm-6 col-lg-3 mb-4">
                   <div class="card card-border-shadow-danger">
                     <div class="card-body">
@@ -216,7 +120,7 @@
                         </div>
                         <h4 class="ms-1 mb-0">27</h4>
                       </div>
-                      <p class="mb-1">Deviated from route</p>
+                      <p class="mb-1">Fault In The Production</p>
                       <p class="mb-0">
                         <span class="fw-medium me-1">+4.3%</span>
                         <small class="text-muted">than last week</small>
@@ -233,7 +137,7 @@
                         </div>
                         <h4 class="ms-1 mb-0">13</h4>
                       </div>
-                      <p class="mb-1">Late vehicles</p>
+                      <p class="mb-1">Number Report To Broker</p>
                       <p class="mb-0">
                         <span class="fw-medium me-1">-2.5%</span>
                         <small class="text-muted">than last week</small>
@@ -241,9 +145,201 @@
                     </div>
                   </div>
                 </div>
+
+                  <div class="col-12 col-xl-12 mb-4">
+                  <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                      <div class="card-title mb-0">
+                        <h5 class="mb-0">Select Node To View Data </h5>
+                        <small class="text-muted">Node Overview</small>
+                      </div>
+                      <div class="dropdown">
+                        <button class="btn p-0" type="button" id="earningReportsTabsId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="ti ti-dots-vertical ti-sm text-muted"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="earningReportsTabsId">
+                          <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                          <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <ul id="nodeList2" class="nav nav-tabs widget-nav-tabs pb-3 gap-4 mx-1 d-flex flex-nowrap" role="tablist">
+                     {% for foo in node %}
+
+                        <li class="nav-item" role="presentation">
+                          <a href="javascript:void(0);" class="nav-link btn active d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-orders-id" aria-controls="navs-orders-id" aria-selected="true">
+                            <div class="badge bg-label-secondary rounded p-2">
+                              <i class="ti ti-shopping-cart ti-sm"></i>
+                            </div>
+                            <h6 class="tab-widget-title mb-0 mt-2" style="font-size: 12px">{{ foo.NodeID.upper }}</h6>
+                          </a>
+                        </li>
+
+                     {% endfor %}
+                      </ul>
+                      <div class="tab-content p-0 ms-0 ms-sm-2">
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-xl-6">
+      <div id="connectionsList" class="card card-action mb-4">
+        <div class="card-header align-items-center">
+          <h5 class="card-action-title mb-0">Connections</h5>
+          <div class="card-action-element">
+            <div class="dropdown">
+              <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ti ti-dots-vertical text-muted"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="javascript:void(0);">Share connections</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0);">Suggest edits</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul id="nodeList" class="list-unstyled mb-0">
+
+                {% for foo in node %}
+<li class="mb-3">
+        <div class="d-flex align-items-start">
+          <div class="d-flex align-items-start">
+            <div class="me-2 ms-1">
+              <h6 class="mb-0">{{ foo.NodeType.upper }} at {{ foo.ProductLine.upper }}</h6>
+              <small class="text-muted">ID: #{{ foo.NodeID.upper }} | Date: {{ foo.updated_at |date:'Y-m-d H:i:s' }}</small>
+            </div>
+          </div>
+          <div class="ms-auto">
+            <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
+              <i class="fa-solid fa-stop"></i>
+            </button>
+          </div>
+        </div>
+      </li>
+
+                     {% endfor %}
+
+            <!-- WebSocket data will be dynamically added here -->
+          </ul>
+        </div>
+      </div>
+    </div>
+                <div class="col-12 col-xl-6">
+                  <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <h5 class="card-title m-0 me-2">Topic you are interested in</h5>
+                      <div class="dropdown">
+                        <button
+                          class="btn p-0"
+                          type="button"
+                          id="topic"
+                          data-bs-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false">
+                          <i class="ti ti-dots-vertical"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="topic">
+                          <a class="dropdown-item" href="javascript:void(0);">Highest Views</a>
+                          <a class="dropdown-item" href="javascript:void(0);">See All</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body row g-3">
+                      <div class="col-md-6">
+                        <div id="horizontalBarChart"></div>
+                      </div>
+                      <div class="col-md-6 d-flex justify-content-around align-items-center">
+                        <div>
+                          <div class="d-flex align-items-baseline">
+                            <span class="text-primary me-2"><i class="ti ti-circle-filled fs-6"></i></span>
+                            <div>
+                              <p class="mb-2">UI Design</p>
+                              <h5>35%</h5>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-baseline my-3">
+                            <span class="text-success me-2"><i class="ti ti-circle-filled fs-6"></i></span>
+                            <div>
+                              <p class="mb-2">Music</p>
+                              <h5>14%</h5>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-baseline">
+                            <span class="text-danger me-2"><i class="ti ti-circle-filled fs-6"></i></span>
+                            <div>
+                              <p class="mb-2">React</p>
+                              <h5>10%</h5>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div class="d-flex align-items-baseline">
+                            <span class="text-info me-2"><i class="ti ti-circle-filled fs-6"></i></span>
+                            <div>
+                              <p class="mb-2">UX Design</p>
+                              <h5>20%</h5>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-baseline my-3">
+                            <span class="text-secondary me-2"><i class="ti ti-circle-filled fs-6"></i></span>
+                            <div>
+                              <p class="mb-2">Animation</p>
+                              <h5>12%</h5>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-baseline">
+                            <span class="text-warning me-2"><i class="ti ti-circle-filled fs-6"></i></span>
+                            <div>
+                              <p class="mb-2">SEO</p>
+                              <h5>9%</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+{#                     <div class="col-lg-12 col-xl-6">#}
+{#                  <div class="card h-100">#}
+{#                    <div class="card-header d-flex align-items-center justify-content-between">#}
+{#                      <div class="card-title mb-0">#}
+{#                        <h5 class="m-0 me-2">Reasons for delivery exceptions</h5>#}
+{#                      </div>#}
+{#                      <div class="dropdown">#}
+{#                        <button#}
+{#                          class="btn p-0"#}
+{#                          type="button"#}
+{#                          id="deliveryExceptions"#}
+{#                          data-bs-toggle="dropdown"#}
+{#                          aria-haspopup="true"#}
+{#                          aria-expanded="false">#}
+{#                          <i class="ti ti-dots-vertical"></i>#}
+{#                        </button>#}
+{#                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="deliveryExceptions">#}
+{#                          <a class="dropdown-item" href="javascript:void(0);">Select All</a>#}
+{#                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>#}
+{#                          <a class="dropdown-item" href="javascript:void(0);">Share</a>#}
+{#                        </div>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                    <div class="card-body">#}
+{#                      <div id="deliveryExceptionsChart" class="pt-md-4"></div>#}
+{#                    </div>#}
+{#                  </div>#}
+{#                </div>#}
+
               </div>
 
-
+                    <br>
               <!--/ Card Border Shadow -->
               <div class="row">
                 <!-- Vehicles overview -->
@@ -315,7 +411,12 @@
                                 <h6 class="mb-0">2hr 10min</h6>
                               </td>
                               <td class="text-end pe-0">
-                                <span class="fw-medium">39.7%</span>
+                                <span class="fw-medium">  <button
+                            data-bs-target="#addRoleModal"
+                            data-bs-toggle="modal"
+                            class="btn btn-primary mb-2 text-nowrap add-new-role">
+                            Add New Role
+                          </button></span>
                               </td>
                             </tr>
                             <tr>
@@ -370,6 +471,245 @@
                         </table>
                       </div>
                     </div>
+                       <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-add-new-role">
+                  <div class="modal-content p-3 p-md-5">
+                    <button
+                      type="button"
+                      class="btn-close btn-pinned"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+                    <div class="modal-body">
+                      <div class="text-center mb-4">
+                        <h3 class="role-title mb-2">Add New Role</h3>
+                        <p class="text-muted">Set role permissions</p>
+                      </div>
+                      <!-- Add role form -->
+                      <form id="addRoleForm" class="row g-3" onsubmit="return false">
+                        <div class="col-12 mb-4">
+                          <label class="form-label" for="modalRoleName">Role Name</label>
+                          <input
+                            type="text"
+                            id="modalRoleName"
+                            name="modalRoleName"
+                            class="form-control"
+                            placeholder="Enter a role name"
+                            tabindex="-1" />
+                        </div>
+                        <div class="col-12">
+                          <h5>Role Permissions</h5>
+                          <!-- Permission table -->
+                          <div class="table-responsive">
+                            <table class="table table-flush-spacing">
+                              <tbody>
+                                <tr>
+                                  <td class="text-nowrap fw-medium">
+                                    Administrator Access
+                                    <i
+                                      class="ti ti-info-circle"
+                                      data-bs-toggle="tooltip"
+                                      data-bs-placement="top"
+                                      title="Allows a full access to the system"></i>
+                                  </td>
+                                  <td>
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" id="selectAll" />
+                                      <label class="form-check-label" for="selectAll"> Select All </label>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="text-nowrap fw-medium">User Management</td>
+                                  <td>
+                                    <div class="d-flex">
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="userManagementRead" />
+                                        <label class="form-check-label" for="userManagementRead"> Read </label>
+                                      </div>
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="userManagementWrite" />
+                                        <label class="form-check-label" for="userManagementWrite"> Write </label>
+                                      </div>
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="userManagementCreate" />
+                                        <label class="form-check-label" for="userManagementCreate"> Create </label>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="text-nowrap fw-medium">Content Management</td>
+                                  <td>
+                                    <div class="d-flex">
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="contentManagementRead" />
+                                        <label class="form-check-label" for="contentManagementRead"> Read </label>
+                                      </div>
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="contentManagementWrite" />
+                                        <label class="form-check-label" for="contentManagementWrite"> Write </label>
+                                      </div>
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="contentManagementCreate" />
+                                        <label class="form-check-label" for="contentManagementCreate"> Create </label>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="text-nowrap fw-medium">Disputes Management</td>
+                                  <td>
+                                    <div class="d-flex">
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="dispManagementRead" />
+                                        <label class="form-check-label" for="dispManagementRead"> Read </label>
+                                      </div>
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="dispManagementWrite" />
+                                        <label class="form-check-label" for="dispManagementWrite"> Write </label>
+                                      </div>
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="dispManagementCreate" />
+                                        <label class="form-check-label" for="dispManagementCreate"> Create </label>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="text-nowrap fw-medium">Database Management</td>
+                                  <td>
+                                    <div class="d-flex">
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="dbManagementRead" />
+                                        <label class="form-check-label" for="dbManagementRead"> Read </label>
+                                      </div>
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="dbManagementWrite" />
+                                        <label class="form-check-label" for="dbManagementWrite"> Write </label>
+                                      </div>
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="dbManagementCreate" />
+                                        <label class="form-check-label" for="dbManagementCreate"> Create </label>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="text-nowrap fw-medium">Financial Management</td>
+                                  <td>
+                                    <div class="d-flex">
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="finManagementRead" />
+                                        <label class="form-check-label" for="finManagementRead"> Read </label>
+                                      </div>
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="finManagementWrite" />
+                                        <label class="form-check-label" for="finManagementWrite"> Write </label>
+                                      </div>
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="finManagementCreate" />
+                                        <label class="form-check-label" for="finManagementCreate"> Create </label>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="text-nowrap fw-medium">Reporting</td>
+                                  <td>
+                                    <div class="d-flex">
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="reportingRead" />
+                                        <label class="form-check-label" for="reportingRead"> Read </label>
+                                      </div>
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="reportingWrite" />
+                                        <label class="form-check-label" for="reportingWrite"> Write </label>
+                                      </div>
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="reportingCreate" />
+                                        <label class="form-check-label" for="reportingCreate"> Create </label>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="text-nowrap fw-medium">API Control</td>
+                                  <td>
+                                    <div class="d-flex">
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="apiRead" />
+                                        <label class="form-check-label" for="apiRead"> Read </label>
+                                      </div>
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="apiWrite" />
+                                        <label class="form-check-label" for="apiWrite"> Write </label>
+                                      </div>
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="apiCreate" />
+                                        <label class="form-check-label" for="apiCreate"> Create </label>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="text-nowrap fw-medium">Repository Management</td>
+                                  <td>
+                                    <div class="d-flex">
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="repoRead" />
+                                        <label class="form-check-label" for="repoRead"> Read </label>
+                                      </div>
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="repoWrite" />
+                                        <label class="form-check-label" for="repoWrite"> Write </label>
+                                      </div>
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="repoCreate" />
+                                        <label class="form-check-label" for="repoCreate"> Create </label>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="text-nowrap fw-medium">Payroll</td>
+                                  <td>
+                                    <div class="d-flex">
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="payrollRead" />
+                                        <label class="form-check-label" for="payrollRead"> Read </label>
+                                      </div>
+                                      <div class="form-check me-3 me-lg-5">
+                                        <input class="form-check-input" type="checkbox" id="payrollWrite" />
+                                        <label class="form-check-label" for="payrollWrite"> Write </label>
+                                      </div>
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="payrollCreate" />
+                                        <label class="form-check-label" for="payrollCreate"> Create </label>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <!-- Permission table -->
+                        </div>
+                        <div class="col-12 text-center mt-4">
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+                          <button
+                            type="reset"
+                            class="btn btn-label-secondary"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                      <!--/ Add role form -->
+                    </div>
+                  </div>
+                </div>
+              </div>
                   </div>
                 </div>
 
@@ -413,462 +753,541 @@
                 </div>
                 <!--/ Shipment statistics -->
                 <!-- Delivery Performance -->
-                <div class="col-lg-6 col-xxl-4 mb-4 order-2 order-xxl-2">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between mb-2">
-                      <div class="card-title mb-0">
-                        <h5 class="m-0 me-2">Delivery Performance</h5>
-                        <small class="text-muted">12% increase in this month</small>
-                      </div>
-                      <div class="dropdown">
-                        <button
-                          class="btn p-0"
-                          type="button"
-                          id="deliveryPerformance"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false">
-                          <i class="ti ti-dots-vertical"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="deliveryPerformance">
-                          <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Share</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <ul class="p-0 m-0">
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-package"></i></span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0 fw-normal">Packages in transit</h6>
-                              <small class="text-success fw-normal d-block">
-                                <i class="ti ti-chevron-up mb-1"></i>
-                                25.8%
-                              </small>
-                            </div>
-                            <div class="user-progress">
-                              <h6 class="mb-0">10k</h6>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-info"><i class="ti ti-truck"></i></span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0 fw-normal">Packages out for delivery</h6>
-                              <small class="text-success fw-normal d-block">
-                                <i class="ti ti-chevron-up mb-1"></i>
-                                4.3%
-                              </small>
-                            </div>
-                            <div class="user-progress">
-                              <h6 class="mb-0">5k</h6>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-success"
-                              ><i class="ti ti-circle-check"></i
-                            ></span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0 fw-normal">Packages delivered</h6>
-                              <small class="text-danger fw-normal d-block">
-                                <i class="ti ti-chevron-down mb-1"></i>
-                                12.5%
-                              </small>
-                            </div>
-                            <div class="user-progress">
-                              <h6 class="mb-0">15k</h6>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-warning"
-                              ><i class="ti ti-percentage"></i
-                            ></span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0 fw-normal">Delivery success rate</h6>
-                              <small class="text-success fw-normal d-block">
-                                <i class="ti ti-chevron-up mb-1"></i>
-                                35.6%
-                              </small>
-                            </div>
-                            <div class="user-progress">
-                              <h6 class="mb-0">95%</h6>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-secondary"><i class="ti ti-clock"></i></span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0 fw-normal">Average delivery time</h6>
-                              <small class="text-danger fw-normal d-block">
-                                <i class="ti ti-chevron-down mb-1"></i>
-                                2.15%
-                              </small>
-                            </div>
-                            <div class="user-progress">
-                              <h6 class="mb-0">2.5 Days</h6>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-danger"><i class="ti ti-users"></i></span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0 fw-normal">Customer satisfaction</h6>
-                              <small class="text-success fw-normal d-block">
-                                <i class="ti ti-chevron-up mb-1"></i>
-                                5.7%
-                              </small>
-                            </div>
-                            <div class="user-progress">
-                              <h6 class="mb-0">4.5/5</h6>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+{#                <div class="col-lg-6 col-xxl-4 mb-4 order-2 order-xxl-2">#}
+{#                  <div class="card h-100">#}
+{#                    <div class="card-header d-flex align-items-center justify-content-between mb-2">#}
+{#                      <div class="card-title mb-0">#}
+{#                        <h5 class="m-0 me-2">Delivery Performance</h5>#}
+{#                        <small class="text-muted">12% increase in this month</small>#}
+{#                      </div>#}
+{#                      <div class="dropdown">#}
+{#                        <button#}
+{#                          class="btn p-0"#}
+{#                          type="button"#}
+{#                          id="deliveryPerformance"#}
+{#                          data-bs-toggle="dropdown"#}
+{#                          aria-haspopup="true"#}
+{#                          aria-expanded="false">#}
+{#                          <i class="ti ti-dots-vertical"></i>#}
+{#                        </button>#}
+{#                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="deliveryPerformance">#}
+{#                          <a class="dropdown-item" href="javascript:void(0);">Select All</a>#}
+{#                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>#}
+{#                          <a class="dropdown-item" href="javascript:void(0);">Share</a>#}
+{#                        </div>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                    <div class="card-body">#}
+{#                      <ul class="p-0 m-0">#}
+{#                        <li class="d-flex mb-4 pb-1">#}
+{#                          <div class="avatar flex-shrink-0 me-3">#}
+{#                            <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-package"></i></span>#}
+{#                          </div>#}
+{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
+{#                            <div class="me-2">#}
+{#                              <h6 class="mb-0 fw-normal">Packages in transit</h6>#}
+{#                              <small class="text-success fw-normal d-block">#}
+{#                                <i class="ti ti-chevron-up mb-1"></i>#}
+{#                                25.8%#}
+{#                              </small>#}
+{#                            </div>#}
+{#                            <div class="user-progress">#}
+{#                              <h6 class="mb-0">10k</h6>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                        </li>#}
+{#                        <li class="d-flex mb-4 pb-1">#}
+{#                          <div class="avatar flex-shrink-0 me-3">#}
+{#                            <span class="avatar-initial rounded bg-label-info"><i class="ti ti-truck"></i></span>#}
+{#                          </div>#}
+{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
+{#                            <div class="me-2">#}
+{#                              <h6 class="mb-0 fw-normal">Packages out for delivery</h6>#}
+{#                              <small class="text-success fw-normal d-block">#}
+{#                                <i class="ti ti-chevron-up mb-1"></i>#}
+{#                                4.3%#}
+{#                              </small>#}
+{#                            </div>#}
+{#                            <div class="user-progress">#}
+{#                              <h6 class="mb-0">5k</h6>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                        </li>#}
+{#                        <li class="d-flex mb-4 pb-1">#}
+{#                          <div class="avatar flex-shrink-0 me-3">#}
+{#                            <span class="avatar-initial rounded bg-label-success"#}
+{#                              ><i class="ti ti-circle-check"></i#}
+{#                            ></span>#}
+{#                          </div>#}
+{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
+{#                            <div class="me-2">#}
+{#                              <h6 class="mb-0 fw-normal">Packages delivered</h6>#}
+{#                              <small class="text-danger fw-normal d-block">#}
+{#                                <i class="ti ti-chevron-down mb-1"></i>#}
+{#                                12.5%#}
+{#                              </small>#}
+{#                            </div>#}
+{#                            <div class="user-progress">#}
+{#                              <h6 class="mb-0">15k</h6>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                        </li>#}
+{#                        <li class="d-flex mb-4 pb-1">#}
+{#                          <div class="avatar flex-shrink-0 me-3">#}
+{#                            <span class="avatar-initial rounded bg-label-warning"#}
+{#                              ><i class="ti ti-percentage"></i#}
+{#                            ></span>#}
+{#                          </div>#}
+{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
+{#                            <div class="me-2">#}
+{#                              <h6 class="mb-0 fw-normal">Delivery success rate</h6>#}
+{#                              <small class="text-success fw-normal d-block">#}
+{#                                <i class="ti ti-chevron-up mb-1"></i>#}
+{#                                35.6%#}
+{#                              </small>#}
+{#                            </div>#}
+{#                            <div class="user-progress">#}
+{#                              <h6 class="mb-0">95%</h6>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                        </li>#}
+{#                        <li class="d-flex mb-4 pb-1">#}
+{#                          <div class="avatar flex-shrink-0 me-3">#}
+{#                            <span class="avatar-initial rounded bg-label-secondary"><i class="ti ti-clock"></i></span>#}
+{#                          </div>#}
+{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
+{#                            <div class="me-2">#}
+{#                              <h6 class="mb-0 fw-normal">Average delivery time</h6>#}
+{#                              <small class="text-danger fw-normal d-block">#}
+{#                                <i class="ti ti-chevron-down mb-1"></i>#}
+{#                                2.15%#}
+{#                              </small>#}
+{#                            </div>#}
+{#                            <div class="user-progress">#}
+{#                              <h6 class="mb-0">2.5 Days</h6>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                        </li>#}
+{#                        <li class="d-flex">#}
+{#                          <div class="avatar flex-shrink-0 me-3">#}
+{#                            <span class="avatar-initial rounded bg-label-danger"><i class="ti ti-users"></i></span>#}
+{#                          </div>#}
+{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
+{#                            <div class="me-2">#}
+{#                              <h6 class="mb-0 fw-normal">Customer satisfaction</h6>#}
+{#                              <small class="text-success fw-normal d-block">#}
+{#                                <i class="ti ti-chevron-up mb-1"></i>#}
+{#                                5.7%#}
+{#                              </small>#}
+{#                            </div>#}
+{#                            <div class="user-progress">#}
+{#                              <h6 class="mb-0">4.5/5</h6>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                        </li>#}
+{#                      </ul>#}
+{#                    </div>#}
+{#                  </div>#}
+{#                </div>#}
                 <!--/ Delivery Performance -->
                 <!-- Reasons for delivery exceptions -->
-                <div class="col-md-6 col-xxl-4 mb-4 order-1 order-xxl-3">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <div class="card-title mb-0">
-                        <h5 class="m-0 me-2">Reasons for delivery exceptions</h5>
-                      </div>
-                      <div class="dropdown">
-                        <button
-                          class="btn p-0"
-                          type="button"
-                          id="deliveryExceptions"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false">
-                          <i class="ti ti-dots-vertical"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="deliveryExceptions">
-                          <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Share</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div id="deliveryExceptionsChart" class="pt-md-4"></div>
-                    </div>
-                  </div>
-                </div>
+
                 <!--/ Reasons for delivery exceptions -->
                 <!-- Orders by Countries -->
-                <div class="col-md-6 col-xxl-4 mb-4 order-0 order-xxl-4">
-                  <div class="card h-100">
-                    <div class="card-header d-flex justify-content-between pb-2">
-                      <div class="card-title mb-1">
-                        <h5 class="m-0 me-2">Orders</h5>
-                        <small class="text-muted">62 Deliveries in Progress</small>
-                      </div>
-                      <div class="dropdown">
-                        <button
-                          class="btn p-0"
-                          type="button"
-                          id="salesByCountryTabs"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false">
-                          <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesByCountryTabs">
-                          <a class="dropdown-item" href="javascript:void(0);">Download</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Share</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="nav-align-top">
-                        <ul class="nav nav-tabs nav-fill" role="tablist">
-                          <li class="nav-item">
-                            <button
-                              type="button"
-                              class="nav-link active"
-                              role="tab"
-                              data-bs-toggle="tab"
-                              data-bs-target="#navs-justified-new"
-                              aria-controls="navs-justified-new"
-                              aria-selected="true">
-                              New
-                            </button>
-                          </li>
-                          <li class="nav-item">
-                            <button
-                              type="button"
-                              class="nav-link"
-                              role="tab"
-                              data-bs-toggle="tab"
-                              data-bs-target="#navs-justified-link-preparing"
-                              aria-controls="navs-justified-link-preparing"
-                              aria-selected="false">
-                              Preparing
-                            </button>
-                          </li>
-                          <li class="nav-item">
-                            <button
-                              type="button"
-                              class="nav-link"
-                              role="tab"
-                              data-bs-toggle="tab"
-                              data-bs-target="#navs-justified-link-shipping"
-                              aria-controls="navs-justified-link-shipping"
-                              aria-selected="false">
-                              Shipping
-                            </button>
-                          </li>
-                        </ul>
-                        <div class="tab-content px-2 mx-1 pb-0">
-                          <div class="tab-pane fade show active" id="navs-justified-new" role="tabpanel">
-                            <ul class="timeline mb-0 pb-1">
-                              <li class="timeline-item ps-4 border-left-dashed pb-1">
-                                <span class="timeline-indicator-advanced timeline-indicator-success">
-                                  <i class="ti ti-circle-check"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-success text-uppercase fw-medium">sender</small>
-                                  </div>
-                                  <h6 class="mb-1">Myrtle Ullrich</h6>
-                                  <p class="text-muted mb-0">101 Boulder, California(CA), 95959</p>
-                                </div>
-                              </li>
-                              <li class="timeline-item ps-4 border-transparent">
-                                <span class="timeline-indicator-advanced timeline-indicator-primary">
-                                  <i class="ti ti-map-pin"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>
-                                  </div>
-                                  <h6 class="mb-1">Barry Schowalter</h6>
-                                  <p class="text-muted mb-0">939 Orange, California(CA), 92118</p>
-                                </div>
-                              </li>
-                            </ul>
-                            <div class="border-bottom border-bottom-dashed mt-0 mb-4"></div>
-                            <ul class="timeline mb-0">
-                              <li class="timeline-item ps-4 border-left-dashed pb-1">
-                                <span class="timeline-indicator-advanced timeline-indicator-success">
-                                  <i class="ti ti-circle-check"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-success text-uppercase fw-medium">sender</small>
-                                  </div>
-                                  <h6 class="mb-1">Veronica Herman</h6>
-                                  <p class="text-muted mb-0">162 Windsor, California(CA), 95492</p>
-                                </div>
-                              </li>
-                              <li class="timeline-item ps-4 border-transparent">
-                                <span class="timeline-indicator-advanced timeline-indicator-primary">
-                                  <i class="ti ti-map-pin"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>
-                                  </div>
-                                  <h6 class="mb-1">Helen Jacobs</h6>
-                                  <p class="text-muted mb-0">487 Sunset, California(CA), 94043</p>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-
-                          <div class="tab-pane fade" id="navs-justified-link-preparing" role="tabpanel">
-                            <ul class="timeline mb-0 pb-1">
-                              <li class="timeline-item ps-4 border-left-dashed pb-1">
-                                <span class="timeline-indicator-advanced timeline-indicator-success">
-                                  <i class="ti ti-circle-check"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-success text-uppercase fw-medium">sender</small>
-                                  </div>
-                                  <h6 class="mb-1">Barry Schowalter</h6>
-                                  <p class="text-muted mb-0">939 Orange, California(CA), 92118</p>
-                                </div>
-                              </li>
-                              <li class="timeline-item ps-4 border-transparent">
-                                <span class="timeline-indicator-advanced timeline-indicator-primary">
-                                  <i class="ti ti-map-pin"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>
-                                  </div>
-                                  <h6 class="mb-1">Myrtle Ullrich</h6>
-                                  <p class="text-muted mb-0">101 Boulder, California(CA), 95959</p>
-                                </div>
-                              </li>
-                            </ul>
-                            <div class="border-bottom border-bottom-dashed mt-0 mb-4"></div>
-                            <ul class="timeline mb-0">
-                              <li class="timeline-item ps-4 border-left-dashed pb-1">
-                                <span class="timeline-indicator-advanced timeline-indicator-success">
-                                  <i class="ti ti-circle-check"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-success text-uppercase fw-medium">sender</small>
-                                  </div>
-                                  <h6 class="mb-1">Veronica Herman</h6>
-                                  <p class="text-muted mb-0">162 Windsor, California(CA), 95492</p>
-                                </div>
-                              </li>
-                              <li class="timeline-item ps-4 border-transparent">
-                                <span class="timeline-indicator-advanced timeline-indicator-primary">
-                                  <i class="ti ti-map-pin"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>
-                                  </div>
-                                  <h6 class="mb-1">Helen Jacobs</h6>
-                                  <p class="text-muted mb-0">487 Sunset, California(CA), 94043</p>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                          <div class="tab-pane fade" id="navs-justified-link-shipping" role="tabpanel">
-                            <ul class="timeline mb-0 pb-1">
-                              <li class="timeline-item ps-4 border-left-dashed pb-1">
-                                <span class="timeline-indicator-advanced timeline-indicator-success">
-                                  <i class="ti ti-circle-check"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-success text-uppercase fw-medium">sender</small>
-                                  </div>
-                                  <h6 class="mb-1">Veronica Herman</h6>
-                                  <p class="text-muted mb-0">101 Boulder, California(CA), 95959</p>
-                                </div>
-                              </li>
-                              <li class="timeline-item ps-4 border-transparent">
-                                <span class="timeline-indicator-advanced timeline-indicator-primary">
-                                  <i class="ti ti-map-pin"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>
-                                  </div>
-                                  <h6 class="mb-1">Barry Schowalter</h6>
-                                  <p class="text-muted mb-0">939 Orange, California(CA), 92118</p>
-                                </div>
-                              </li>
-                            </ul>
-                            <div class="border-bottom border-bottom-dashed mt-0 mb-4"></div>
-                            <ul class="timeline mb-0">
-                              <li class="timeline-item ps-4 border-left-dashed pb-1">
-                                <span class="timeline-indicator-advanced timeline-indicator-success">
-                                  <i class="ti ti-circle-check"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-success text-uppercase fw-medium">sender</small>
-                                  </div>
-                                  <h6 class="mb-1">Myrtle Ullrich</h6>
-                                  <p class="text-muted mb-0">162 Windsor, California(CA), 95492</p>
-                                </div>
-                              </li>
-                              <li class="timeline-item ps-4 border-transparent">
-                                <span class="timeline-indicator-advanced timeline-indicator-primary">
-                                  <i class="ti ti-map-pin"></i>
-                                </span>
-                                <div class="timeline-event px-0 pb-0">
-                                  <div class="timeline-header">
-                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>
-                                  </div>
-                                  <h6 class="mb-1">Helen Jacobs</h6>
-                                  <p class="text-muted mb-0">487 Sunset, California(CA), 94043</p>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+{#                <div class="col-md-6 col-xxl-4 mb-4 order-0 order-xxl-4">#}
+{#                  <div class="card h-100">#}
+{#                    <div class="card-header d-flex justify-content-between pb-2">#}
+{#                      <div class="card-title mb-1">#}
+{#                        <h5 class="m-0 me-2">Orders</h5>#}
+{#                        <small class="text-muted">62 Deliveries in Progress</small>#}
+{#                      </div>#}
+{#                      <div class="dropdown">#}
+{#                        <button#}
+{#                          class="btn p-0"#}
+{#                          type="button"#}
+{#                          id="salesByCountryTabs"#}
+{#                          data-bs-toggle="dropdown"#}
+{#                          aria-haspopup="true"#}
+{#                          aria-expanded="false">#}
+{#                          <i class="ti ti-dots-vertical ti-sm text-muted"></i>#}
+{#                        </button>#}
+{#                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesByCountryTabs">#}
+{#                          <a class="dropdown-item" href="javascript:void(0);">Download</a>#}
+{#                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>#}
+{#                          <a class="dropdown-item" href="javascript:void(0);">Share</a>#}
+{#                        </div>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                    <div class="card-body">#}
+{#                      <div class="nav-align-top">#}
+{#                        <ul class="nav nav-tabs nav-fill" role="tablist">#}
+{#                          <li class="nav-item">#}
+{#                            <button#}
+{#                              type="button"#}
+{#                              class="nav-link active"#}
+{#                              role="tab"#}
+{#                              data-bs-toggle="tab"#}
+{#                              data-bs-target="#navs-justified-new"#}
+{#                              aria-controls="navs-justified-new"#}
+{#                              aria-selected="true">#}
+{#                              New#}
+{#                            </button>#}
+{#                          </li>#}
+{#                          <li class="nav-item">#}
+{#                            <button#}
+{#                              type="button"#}
+{#                              class="nav-link"#}
+{#                              role="tab"#}
+{#                              data-bs-toggle="tab"#}
+{#                              data-bs-target="#navs-justified-link-preparing"#}
+{#                              aria-controls="navs-justified-link-preparing"#}
+{#                              aria-selected="false">#}
+{#                              Preparing#}
+{#                            </button>#}
+{#                          </li>#}
+{#                          <li class="nav-item">#}
+{#                            <button#}
+{#                              type="button"#}
+{#                              class="nav-link"#}
+{#                              role="tab"#}
+{#                              data-bs-toggle="tab"#}
+{#                              data-bs-target="#navs-justified-link-shipping"#}
+{#                              aria-controls="navs-justified-link-shipping"#}
+{#                              aria-selected="false">#}
+{#                              Shipping#}
+{#                            </button>#}
+{#                          </li>#}
+{#                        </ul>#}
+{#                        <div class="tab-content px-2 mx-1 pb-0">#}
+{#                          <div class="tab-pane fade show active" id="navs-justified-new" role="tabpanel">#}
+{#                            <ul class="timeline mb-0 pb-1">#}
+{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
+{#                                  <i class="ti ti-circle-check"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Myrtle Ullrich</h6>#}
+{#                                  <p class="text-muted mb-0">101 Boulder, California(CA), 95959</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                              <li class="timeline-item ps-4 border-transparent">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
+{#                                  <i class="ti ti-map-pin"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Barry Schowalter</h6>#}
+{#                                  <p class="text-muted mb-0">939 Orange, California(CA), 92118</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                            </ul>#}
+{#                            <div class="border-bottom border-bottom-dashed mt-0 mb-4"></div>#}
+{#                            <ul class="timeline mb-0">#}
+{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
+{#                                  <i class="ti ti-circle-check"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Veronica Herman</h6>#}
+{#                                  <p class="text-muted mb-0">162 Windsor, California(CA), 95492</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                              <li class="timeline-item ps-4 border-transparent">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
+{#                                  <i class="ti ti-map-pin"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Helen Jacobs</h6>#}
+{#                                  <p class="text-muted mb-0">487 Sunset, California(CA), 94043</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                            </ul>#}
+{#                          </div>#}
+{##}
+{#                          <div class="tab-pane fade" id="navs-justified-link-preparing" role="tabpanel">#}
+{#                            <ul class="timeline mb-0 pb-1">#}
+{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
+{#                                  <i class="ti ti-circle-check"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Barry Schowalter</h6>#}
+{#                                  <p class="text-muted mb-0">939 Orange, California(CA), 92118</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                              <li class="timeline-item ps-4 border-transparent">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
+{#                                  <i class="ti ti-map-pin"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Myrtle Ullrich</h6>#}
+{#                                  <p class="text-muted mb-0">101 Boulder, California(CA), 95959</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                            </ul>#}
+{#                            <div class="border-bottom border-bottom-dashed mt-0 mb-4"></div>#}
+{#                            <ul class="timeline mb-0">#}
+{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
+{#                                  <i class="ti ti-circle-check"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Veronica Herman</h6>#}
+{#                                  <p class="text-muted mb-0">162 Windsor, California(CA), 95492</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                              <li class="timeline-item ps-4 border-transparent">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
+{#                                  <i class="ti ti-map-pin"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Helen Jacobs</h6>#}
+{#                                  <p class="text-muted mb-0">487 Sunset, California(CA), 94043</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                            </ul>#}
+{#                          </div>#}
+{#                          <div class="tab-pane fade" id="navs-justified-link-shipping" role="tabpanel">#}
+{#                            <ul class="timeline mb-0 pb-1">#}
+{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
+{#                                  <i class="ti ti-circle-check"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Veronica Herman</h6>#}
+{#                                  <p class="text-muted mb-0">101 Boulder, California(CA), 95959</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                              <li class="timeline-item ps-4 border-transparent">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
+{#                                  <i class="ti ti-map-pin"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Barry Schowalter</h6>#}
+{#                                  <p class="text-muted mb-0">939 Orange, California(CA), 92118</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                            </ul>#}
+{#                            <div class="border-bottom border-bottom-dashed mt-0 mb-4"></div>#}
+{#                            <ul class="timeline mb-0">#}
+{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
+{#                                  <i class="ti ti-circle-check"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Myrtle Ullrich</h6>#}
+{#                                  <p class="text-muted mb-0">162 Windsor, California(CA), 95492</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                              <li class="timeline-item ps-4 border-transparent">#}
+{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
+{#                                  <i class="ti ti-map-pin"></i>#}
+{#                                </span>#}
+{#                                <div class="timeline-event px-0 pb-0">#}
+{#                                  <div class="timeline-header">#}
+{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-1">Helen Jacobs</h6>#}
+{#                                  <p class="text-muted mb-0">487 Sunset, California(CA), 94043</p>#}
+{#                                </div>#}
+{#                              </li>#}
+{#                            </ul>#}
+{#                          </div>#}
+{#                        </div>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                  </div>#}
+{#                </div>#}
                 <!--/ Orders by Countries -->
 
                 <!-- On route vehicles Table -->
 
                 <div class="col-12 order-5">
-                  <div class="card">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <div class="card-title mb-0">
-                        <h5 class="m-0 me-2">On route vehicles</h5>
-                      </div>
-                      <div class="dropdown">
-                        <button
-                          class="btn p-0"
-                          type="button"
-                          id="routeVehicles"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false">
-                          <i class="ti ti-dots-vertical"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="routeVehicles">
-                          <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Share</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-datatable table-responsive">
-                      <table class="dt-route-vehicles table">
-                        <thead class="border-top">
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th>location</th>
-                            <th>starting route</th>
-                            <th>ending route</th>
-                            <th>warnings</th>
-                            <th class="w-20">progress</th>
-                          </tr>
-                        </thead>
-                      </table>
-                    </div>
-                  </div>
+
+                    <div class="card">
+                <h5 class="card-header">Ajax Sourced Server-side</h5>
+                <div class="card-datatable text-nowrap">
+                  <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_0_length"><label>Show <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"><div id="DataTables_Table_0_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control" placeholder="" aria-controls="DataTables_Table_0"></label></div></div></div><div class="table-responsive"><table class="datatables-ajax table dataTable no-footer" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                    <thead>
+                      <tr>
+                          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Full name: activate to sort column ascending" style="width: 227.188px;">Full name</th>
+                          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending" style="width: 145.938px;">Email</th>
+                          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 196.797px;">Position</th>
+                          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 160.141px;">Office</th>
+                          <th class="sorting sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Start date: activate to sort column descending" style="width: 233.281px;" aria-sort="ascending">Start date</th>
+                          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 160.656px;">Salary</th></tr>
+                    </thead><tbody>
+                  <tr >
+                      <td >No data available in table</td>
+                      <td >No data available in table</td>
+                      <td >No data available in table</td>
+                      <td >No data available in table</td>
+                      <td >No data available in table</td>
+                      <td ><button class="btn btn-secondary add-new btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser"><span><i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Add New User</span></span></button></td>
+
+
+                  </tr>
+
+                  </tbody>
+                  </table></div><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 0 to 0 of 0 entries</div></div><div class="col-sm-12 col-md-6"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous"><a aria-controls="DataTables_Table_0" aria-disabled="true" role="link" data-dt-idx="previous" tabindex="-1" class="page-link">Previous</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_0_next"><a aria-controls="DataTables_Table_0" aria-disabled="true" role="link" data-dt-idx="next" tabindex="-1" class="page-link">Next</a></li></ul></div></div></div></div>
+                </div>
+              </div>
                 </div>
 
                 <!--/ On route vehicles Table -->
               </div>
                 </div>
             </div>
+      <div
+                  class="offcanvas offcanvas-end"
+                  tabindex="-1"
+                  id="offcanvasAddUser"
+                  aria-labelledby="offcanvasAddUserLabel">
+                  <div class="offcanvas-header">
+                    <h5 id="offcanvasAddUserLabel" class="offcanvas-title">Add User</h5>
+                    <button
+                      type="button"
+                      class="btn-close text-reset"
+                      data-bs-dismiss="offcanvas"
+                      aria-label="Close"></button>
+                  </div>
+                  <div class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
+                    <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false">
+                      <div class="mb-3">
+                        <label class="form-label" for="add-user-fullname">Full Name</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="add-user-fullname"
+                          placeholder="John Doe"
+                          name="userFullname"
+                          aria-label="John Doe" />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label" for="add-user-email">Email</label>
+                        <input
+                          type="text"
+                          id="add-user-email"
+                          class="form-control"
+                          placeholder="john.doe@example.com"
+                          aria-label="john.doe@example.com"
+                          name="userEmail" />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label" for="add-user-contact">Contact</label>
+                        <input
+                          type="text"
+                          id="add-user-contact"
+                          class="form-control phone-mask"
+                          placeholder="+1 (609) 988-44-11"
+                          aria-label="john.doe@example.com"
+                          name="userContact" />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label" for="add-user-company">Company</label>
+                        <input
+                          type="text"
+                          id="add-user-company"
+                          class="form-control"
+                          placeholder="Web Developer"
+                          aria-label="jdoe1"
+                          name="companyName" />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label" for="country">Country</label>
+                        <select id="country" class="select2 form-select">
+                          <option value="">Select</option>
+                          <option value="Australia">Australia</option>
+                          <option value="Bangladesh">Bangladesh</option>
+                          <option value="Belarus">Belarus</option>
+                          <option value="Brazil">Brazil</option>
+                          <option value="Canada">Canada</option>
+                          <option value="China">China</option>
+                          <option value="France">France</option>
+                          <option value="Germany">Germany</option>
+                          <option value="India">India</option>
+                          <option value="Indonesia">Indonesia</option>
+                          <option value="Israel">Israel</option>
+                          <option value="Italy">Italy</option>
+                          <option value="Japan">Japan</option>
+                          <option value="Korea">Korea, Republic of</option>
+                          <option value="Mexico">Mexico</option>
+                          <option value="Philippines">Philippines</option>
+                          <option value="Russia">Russian Federation</option>
+                          <option value="South Africa">South Africa</option>
+                          <option value="Thailand">Thailand</option>
+                          <option value="Turkey">Turkey</option>
+                          <option value="Ukraine">Ukraine</option>
+                          <option value="United Arab Emirates">United Arab Emirates</option>
+                          <option value="United Kingdom">United Kingdom</option>
+                          <option value="United States">United States</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label" for="user-role">User Role</label>
+                        <select id="user-role" class="form-select">
+                          <option value="subscriber">Subscriber</option>
+                          <option value="editor">Editor</option>
+                          <option value="maintainer">Maintainer</option>
+                          <option value="author">Author</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      </div>
+                      <div class="mb-4">
+                        <label class="form-label" for="user-plan">Select Plan</label>
+                        <select id="user-plan" class="form-select">
+                          <option value="basic">Basic</option>
+                          <option value="enterprise">Enterprise</option>
+                          <option value="company">Company</option>
+                          <option value="team">Team</option>
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
+                      <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+                    </form>
+                  </div>
+                </div>
 {% endblock %}
 {% block JsScriptInner %}
     <script>
+     // Function to convert text to title case
+  function toTitleCase(text) {
+    return text.replace(/\w\S*/g, function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
 function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -884,6 +1303,17 @@ function getCookie(name) {
         }
         return cookieValue;
     }
+  let labelColor, headingColor, borderColor;
+
+  if (isDarkStyle) {
+    labelColor = config.colors_dark.textMuted;
+    headingColor = config.colors_dark.headingColor;
+    borderColor = config.colors_dark.borderColor;
+  } else {
+    labelColor = config.colors.textMuted;
+    headingColor = config.colors.headingColor;
+    borderColor = config.colors.borderColor;
+  }
 
   document.getElementById('startProductionBtn').addEventListener('click', function(e) {
         e.preventDefault(); // Prevent the default form submission
@@ -931,5 +1361,211 @@ function getCookie(name) {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
     });
+  const horizontalBarChartEl = document.querySelector('#horizontalBarChart'),
+    horizontalBarChartConfig = {
+      chart: {
+        height: 270,
+        type: 'bar',
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          barHeight: '70%',
+          distributed: true,
+          startingShape: 'rounded',
+          borderRadius: 7
+        }
+      },
+      grid: {
+        strokeDashArray: 10,
+        borderColor: borderColor,
+        xaxis: {
+          lines: {
+            show: true
+          }
+        },
+        yaxis: {
+          lines: {
+            show: false
+          }
+        },
+        padding: {
+          top: -35,
+          bottom: -12
+        }
+      },
+
+      colors: [
+        config.colors.primary,
+        config.colors.info,
+        config.colors.success,
+        config.colors.secondary,
+        config.colors.danger,
+        config.colors.warning
+      ],
+      dataLabels: {
+        enabled: true,
+        style: {
+          colors: ['#fff'],
+          fontWeight: 200,
+          fontSize: '13px',
+          fontFamily: 'Public Sans'
+        },
+        formatter: function (val, opts) {
+          return horizontalBarChartConfig.labels[opts.dataPointIndex];
+        },
+        offsetX: 0,
+        dropShadow: {
+          enabled: false
+        }
+      },
+      labels: ['UI Design', 'UX Design', 'Music', 'Animation', 'React', 'SEO'],
+      series: [
+        {
+          data: [35, 20, 14, 12, 10, 9]
+        }
+      ],
+
+      xaxis: {
+        categories: ['6', '5', '4', '3', '2', '1'],
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        labels: {
+          style: {
+            colors: labelColor,
+            fontSize: '13px'
+          },
+          formatter: function (val) {
+            return `${val}%`;
+          }
+        }
+      },
+      yaxis: {
+        max: 35,
+        labels: {
+          style: {
+            colors: [labelColor],
+            fontFamily: 'Public Sans',
+            fontSize: '13px'
+          }
+        }
+      },
+      tooltip: {
+        enabled: true,
+        style: {
+          fontSize: '12px'
+        },
+        onDatasetHover: {
+          highlightDataSeries: false
+        },
+        custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+          return '<div class="px-3 py-2">' + '<span>' + series[seriesIndex][dataPointIndex] + '%</span>' + '</div>';
+        }
+      },
+      legend: {
+        show: false
+      }
+    };
+  if (typeof horizontalBarChartEl !== undefined && horizontalBarChartEl !== null) {
+    const horizontalBarChart = new ApexCharts(horizontalBarChartEl, horizontalBarChartConfig);
+    horizontalBarChart.render();
+  }
+// Get the host of the current window
+  const host = window.location.host;
+
+  // WebSocket connection
+  const socket = new WebSocket(`ws://${host}/ws/node`);
+
+  // Function to handle incoming messages
+  socket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    console.log(data['data']);
+    const nodeList = document.getElementById('nodeList');
+    const nodeList2 = document.getElementById('nodeList2');
+
+    // Clear previous list items
+    nodeList.innerHTML = '';
+    nodeList2.innerHTML = '';
+     document.getElementById('countNode').innerHTML = data['count']
+
+    // Loop through data and create list items
+    data['data'].forEach(node => {
+
+      const li = document.createElement('li');
+      const li2 = document.createElement('li');
+
+      li.classList.add('mb-3');
+      li2.classList.add('mb-3');
+      li.innerHTML = `
+        <div class="d-flex align-items-start">
+          <div class="d-flex align-items-start">
+            <div class="me-2 ms-1">
+              <h6 class="mb-0">${node.NodeType.toUpperCase()} at ${node.ProductLine.toUpperCase()}</h6>
+              <small class="text-muted">ID: #${node.NodeID.toUpperCase()} | Date: ${node.updated_at}</small>
+            </div>
+          </div>
+          <div class="ms-auto">
+            <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
+              <i class="fa-solid fa-stop"></i>
+            </button>
+          </div>
+        </div>
+      `;
+      nodeList.appendChild(li);
+
+     li2.innerHTML = ` <li class="nav-item" role="presentation">
+                          <a href="javascript:void(0);" class="nav-link btn active d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-orders-id" aria-controls="navs-orders-id" aria-selected="true">
+                            <div class="badge bg-label-secondary rounded p-2">
+                              <i class="fas fa-robot ti-sm"></i>
+                            </div>
+                            <h6 class="tab-widget-title mb-0 mt-2" style="font-size: 12px">${node.NodeID.toUpperCase()}</h6>
+                          </a>
+                        </li>   `;
+      nodeList2.appendChild(li2);
+    });
+
+  };
+
+  function updateTimePassed() {
+    // Date and time of the past event
+     var pastDate = new Date("{{ log.created_at|date:'Y-m-d H:i:s' }}")
+    // Current date and time
+    var currentDate = new Date();
+
+    // Calculate the time difference in milliseconds
+    var timeDifference = currentDate - pastDate;
+
+    // Convert time difference to seconds, minutes, hours, and days
+    var seconds = Math.floor(timeDifference / 1000);
+    var minutes = Math.floor(seconds / 60);
+    var hours = Math.floor(minutes / 60);
+    var days = Math.floor(hours / 24);
+
+    // Display the time passed
+    var timePassedString = days + " days, " + hours % 24 + " hours, " + minutes % 60 + " minutes, " + seconds % 60 + " seconds";
+    document.getElementById("timePassed").innerHTML =hours % 24+'<span class="text-muted">h</span> '+minutes % 60+'<span class="text-muted">m</span> '+seconds % 60+'<span class="text-muted">s</span>';
+
+    document.getElementById("SvgjsText1824").innerHTML =hours % 24+'h';
+
+
+}
+
+// Call updateTimePassed function initially
+updateTimePassed();
+
+// Update time passed every second
+setInterval(updateTimePassed, 1000);
+
+
     </script>
     {% endblock %}

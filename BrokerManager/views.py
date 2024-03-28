@@ -1,15 +1,12 @@
 import datetime
 import json
+import os
 import uuid
 from datetime import timedelta
 
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-
-from BrokerManager.Serializer import ProductionLineModelSerializer
-from BrokerManager.models import ProductionLineModel
 
 import pymongo
 from django.conf import settings
@@ -34,12 +31,19 @@ def dashboard(request):
     # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection)
 
     collection = dbname["Brokerlogs"]
+    collection_node = dbname["NodeModel"]
+    collection_report = dbname["BrokerReport"]
 
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
     if  recent_documents:
         start = True
-    print(start)
-    return render(request, 'dashboard.html', context={"start":start})
+
+    recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
+
+    recent_node = collection_node.find({"Code": recent_documents['Code']},
+                                       {"_id": 0})  # Projection to exclude _id field
+
+    return render(request, 'dashboard.html', context={"start":start,"log":recent_documents,"node":list(recent_node)})
 
 @csrf_exempt
 def start_production(request):
@@ -54,10 +58,11 @@ def start_production(request):
 
     collection = dbname["Brokerlogs"]
 
+
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
 
     if not recent_documents:
-        response_data ={"Code":"a5962c1cb9984597a5aa6303b6fc4872",
+        response_data ={"Code": str(uuid.uuid4()).replace("-", ""),
                         "created_at":datetime.datetime.now(),
                         "updated_at":datetime.datetime.now(),}
         collection.insert_one(response_data)
@@ -79,4 +84,11 @@ def start_production(request):
         client.publish(TOPIC, json.dumps(message))
         response_data = recent_documents
 
+
     return JsonResponse(json.dumps(response_data, default=str),safe=False)
+
+
+def logistics_dashboard_view(request):
+
+
+    return render(request, 'logistics-dashboard.json', context={})

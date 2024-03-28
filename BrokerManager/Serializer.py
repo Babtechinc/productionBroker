@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from rest_framework import serializers
 from .models import ProductionLineModel
@@ -89,3 +90,9 @@ roombadata = {
 # reportSender("undock",isReady=False)
 # reportSender("drive")
 # reportSender("drive_done")
+
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        return json.JSONEncoder.default(self, obj)

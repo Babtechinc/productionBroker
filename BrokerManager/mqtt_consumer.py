@@ -11,6 +11,7 @@ from django.utils import timezone
 from BrokerManager.Serializer import RegNodeSerializer, RegNodeSerializermessage, RoombareportSerializer, \
     NodeSerializer, roombadata
 from BrokerManager.models import ProductionLineNodeModel
+from BrokerManager.signals import getAllOnlineNode
 from productionBroker.settings import timeToNewProduction
 
 my_client = pymongo.MongoClient(settings.DB_NAME)
@@ -67,6 +68,7 @@ def on_message(client, userdata, message):
                 if payload["messageType"] == 'registration' :
                     print('registration>><MQQT')
                     registrationOfNode(payload, collection_node, recent_documents)
+                    getAllOnlineNode()
                     print('created registration>><MQQT')
                     return
                 if payload["messageType"] == 'Report':

@@ -222,7 +222,7 @@
         type: 'donut'
       },
       labels: ['Incorrect address', 'Weather conditions', 'Federal Holidays', 'Damage during transit'],
-      series: [13, 5, 22, 60],
+      series: [13, 5, 22, 40],
       colors: [
         chartColors.donut.series1,
         chartColors.donut.series2,
@@ -326,177 +326,177 @@
 
 // DataTable (jquery)
 // --------------------------------------------------------------------
-$(function () {
-  // Variable declaration for table
-  var dt_dashboard_table = $('.dt-route-vehicles');
-
-  // On route vehicles DataTable
-  if (dt_dashboard_table.length) {
-    var dt_dashboard = dt_dashboard_table.DataTable({
-      ajax: assetsPath + 'json/logistics-dashboard.json',
-      columns: [
-        { data: 'id' },
-        { data: 'id' },
-        { data: 'location' },
-        { data: 'start_city' },
-        { data: 'end_city' },
-        { data: 'warnings' },
-        { data: 'progress' }
-      ],
-      columnDefs: [
-        {
-          // For Responsive
-          className: 'control',
-          orderable: false,
-          searchable: false,
-          responsivePriority: 2,
-          targets: 0,
-          render: function (data, type, full, meta) {
-            return '';
-          }
-        },
-        {
-          // For Checkboxes
-          targets: 1,
-          orderable: false,
-          searchable: false,
-          checkboxes: true,
-          responsivePriority: 3,
-          render: function () {
-            return '<input type="checkbox" class="dt-checkboxes form-check-input">';
-          },
-          checkboxes: {
-            selectAllRender: '<input type="checkbox" class="form-check-input">'
-          }
-        },
-        {
-          // Icon and location
-          targets: 2,
-          responsivePriority: 1,
-          render: function (data, type, full, meta) {
-            var $location = full['location'];
-            // Creates full output for row
-            var $row_output =
-              '<div class="d-flex justify-content-start align-items-center user-name">' +
-              '<div class="avatar-wrapper">' +
-              '<div class="avatar me-2">' +
-              '<span class="avatar-initial rounded-circle bg-label-secondary text-body"><i class="ti ti-truck"></i></span>' +
-              '</div>' +
-              '</div>' +
-              '<div class="d-flex flex-column">' +
-              '<a class="text-body fw-medium" href="app-logistics-fleet.html">VOL-' +
-              $location +
-              '</a>' +
-              '</div>' +
-              '</div>';
-            return $row_output;
-          }
-        },
-        {
-          // starting route
-          targets: 3,
-          render: function (data, type, full, meta) {
-            var $start_city = full['start_city'],
-              $start_country = full['start_country'];
-            var $row_output = '<div class="text-body">' + $start_city + ', ' + $start_country + '</div >';
-            return $row_output;
-          }
-        },
-        {
-          // ending route
-          targets: 4,
-          render: function (data, type, full, meta) {
-            var $end_city = full['end_city'],
-              $end_country = full['end_country'];
-            var $row_output = '<div class="text-body">' + $end_city + ', ' + $end_country + '</div >';
-            return $row_output;
-          }
-        },
-        {
-          // warnings
-          targets: -2,
-          render: function (data, type, full, meta) {
-            var $status_number = full['warnings'];
-            var $status = {
-              1: { title: 'No Warnings', class: 'bg-label-success' },
-              2: {
-                title: 'Temperature Not Optimal',
-                class: 'bg-label-warning'
-              },
-              3: { title: 'Ecu Not Responding', class: 'bg-label-danger' },
-              4: { title: 'Oil Leakage', class: 'bg-label-info' },
-              5: { title: 'fuel problems', class: 'bg-label-primary' }
-            };
-            if (typeof $status[$status_number] === 'undefined') {
-              return data;
-            }
-            return (
-              '<span class="badge rounded ' +
-              $status[$status_number].class +
-              '">' +
-              $status[$status_number].title +
-              '</span>'
-            );
-          }
-        },
-        {
-          // progress
-          targets: -1,
-          render: function (data, type, full, meta) {
-            var $progress = full['progress'];
-            var $progress_output =
-              '<div class="d-flex align-items-center">' +
-              '<div div class="progress w-100" style="height: 8px;">' +
-              '<div class="progress-bar" role="progressbar" style="width:' +
-              $progress +
-              '%;" aria-valuenow="' +
-              $progress +
-              '" aria-valuemin="0" aria-valuemax="100"></div>' +
-              '</div>' +
-              '<div class="text-body ms-3">' +
-              $progress +
-              '%</div>' +
-              '</div>';
-            return $progress_output;
-          }
-        }
-      ],
-      order: [2, 'asc'],
-      dom: '<"table-responsive"t><"row d-flex align-items-center"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-      displayLength: 5,
-      responsive: {
-        details: {
-          display: $.fn.dataTable.Responsive.display.modal({
-            header: function (row) {
-              var data = row.data();
-              return 'Details of ' + data['location'];
-            }
-          }),
-          type: 'column',
-          renderer: function (api, rowIdx, columns) {
-            var data = $.map(columns, function (col, i) {
-              return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
-                ? '<tr data-dt-row="' +
-                    col.rowIndex +
-                    '" data-dt-column="' +
-                    col.columnIndex +
-                    '">' +
-                    '<td>' +
-                    col.title +
-                    ':' +
-                    '</td> ' +
-                    '<td>' +
-                    col.data +
-                    '</td>' +
-                    '</tr>'
-                : '';
-            }).join('');
-
-            return data ? $('<table class="table"/><tbody />').append(data) : false;
-          }
-        }
-      }
-    });
-    $('.dataTables_info').addClass('pt-0');
-  }
-});
+// $(function () {
+//   // Variable declaration for table
+//   var dt_dashboard_table = $('.dt-route-vehicles');
+//
+//   // On route vehicles DataTable
+//   if (dt_dashboard_table.length) {
+//     var dt_dashboard = dt_dashboard_table.DataTable({
+//       ajax: assetsPath + 'json/logistics-dashboard.json',
+//       columns: [
+//         { data: 'id' },
+//         { data: 'id' },
+//         { data: 'location' },
+//         { data: 'start_city' },
+//         { data: 'end_city' },
+//         { data: 'warnings' },
+//         { data: 'progress' }
+//       ],
+//       columnDefs: [
+//         {
+//           // For Responsive
+//           className: 'control',
+//           orderable: false,
+//           searchable: false,
+//           responsivePriority: 2,
+//           targets: 0,
+//           render: function (data, type, full, meta) {
+//             return '';
+//           }
+//         },
+//         {
+//           // For Checkboxes
+//           targets: 1,
+//           orderable: false,
+//           searchable: false,
+//           checkboxes: true,
+//           responsivePriority: 3,
+//           render: function () {
+//             return '<input type="checkbox" class="dt-checkboxes form-check-input">';
+//           },
+//           checkboxes: {
+//             selectAllRender: '<input type="checkbox" class="form-check-input">'
+//           }
+//         },
+//         {
+//           // Icon and location
+//           targets: 2,
+//           responsivePriority: 1,
+//           render: function (data, type, full, meta) {
+//             var $location = full['location'];
+//             // Creates full output for row
+//             var $row_output =
+//               '<div class="d-flex justify-content-start align-items-center user-name">' +
+//               '<div class="avatar-wrapper">' +
+//               '<div class="avatar me-2">' +
+//               '<span class="avatar-initial rounded-circle bg-label-secondary text-body"><i class="ti ti-truck"></i></span>' +
+//               '</div>' +
+//               '</div>' +
+//               '<div class="d-flex flex-column">' +
+//               '<a class="text-body fw-medium" href="app-logistics-fleet.html">VOL-' +
+//               $location +
+//               '</a>' +
+//               '</div>' +
+//               '</div>';
+//             return $row_output;
+//           }
+//         },
+//         {
+//           // starting route
+//           targets: 3,
+//           render: function (data, type, full, meta) {
+//             var $start_city = full['start_city'],
+//               $start_country = full['start_country'];
+//             var $row_output = '<div class="text-body">' + $start_city + ', ' + $start_country + '</div >';
+//             return $row_output;
+//           }
+//         },
+//         {
+//           // ending route
+//           targets: 4,
+//           render: function (data, type, full, meta) {
+//             var $end_city = full['end_city'],
+//               $end_country = full['end_country'];
+//             var $row_output = '<div class="text-body">' + $end_city + ', ' + $end_country + '</div >';
+//             return $row_output;
+//           }
+//         },
+//         {
+//           // warnings
+//           targets: -2,
+//           render: function (data, type, full, meta) {
+//             var $status_number = full['warnings'];
+//             var $status = {
+//               1: { title: 'No Warnings', class: 'bg-label-success' },
+//               2: {
+//                 title: 'Temperature Not Optimal',
+//                 class: 'bg-label-warning'
+//               },
+//               3: { title: 'Ecu Not Responding', class: 'bg-label-danger' },
+//               4: { title: 'Oil Leakage', class: 'bg-label-info' },
+//               5: { title: 'fuel problems', class: 'bg-label-primary' }
+//             };
+//             if (typeof $status[$status_number] === 'undefined') {
+//               return data;
+//             }
+//             return (
+//               '<span class="badge rounded ' +
+//               $status[$status_number].class +
+//               '">' +
+//               $status[$status_number].title +
+//               '</span>'
+//             );
+//           }
+//         },
+//         {
+//           // progress
+//           targets: -1,
+//           render: function (data, type, full, meta) {
+//             var $progress = full['progress'];
+//             var $progress_output =
+//               '<div class="d-flex align-items-center">' +
+//               '<div div class="progress w-100" style="height: 8px;">' +
+//               '<div class="progress-bar" role="progressbar" style="width:' +
+//               $progress +
+//               '%;" aria-valuenow="' +
+//               $progress +
+//               '" aria-valuemin="0" aria-valuemax="100"></div>' +
+//               '</div>' +
+//               '<div class="text-body ms-3">' +
+//               $progress +
+//               '%</div>' +
+//               '</div>';
+//             return $progress_output;
+//           }
+//         }
+//       ],
+//       order: [2, 'asc'],
+//       dom: '<"table-responsive"t><"row d-flex align-items-center"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+//       displayLength: 5,
+//       responsive: {
+//         details: {
+//           display: $.fn.dataTable.Responsive.display.modal({
+//             header: function (row) {
+//               var data = row.data();
+//               return 'Details of ' + data['location'];
+//             }
+//           }),
+//           type: 'column',
+//           renderer: function (api, rowIdx, columns) {
+//             var data = $.map(columns, function (col, i) {
+//               return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
+//                 ? '<tr data-dt-row="' +
+//                     col.rowIndex +
+//                     '" data-dt-column="' +
+//                     col.columnIndex +
+//                     '">' +
+//                     '<td>' +
+//                     col.title +
+//                     ':' +
+//                     '</td> ' +
+//                     '<td>' +
+//                     col.data +
+//                     '</td>' +
+//                     '</tr>'
+//                 : '';
+//             }).join('');
+//
+//             return data ? $('<table class="table"/><tbody />').append(data) : false;
+//           }
+//         }
+//       }
+//     });
+//     $('.dataTables_info').addClass('pt-0');
+//   }
+// });

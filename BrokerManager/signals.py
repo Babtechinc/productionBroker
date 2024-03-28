@@ -1,48 +1,36 @@
-# from django.db.models.signals import post_save, pre_delete
-# from django.dispatch import receiver
-# from asgiref.sync import async_to_sync
-# import json
-# from channels.layers import get_channel_layer
-#
-# from .models import Device, Measurement
-#
-# @receiver(post_save, sender=Device)
-# def device_created(sender, instance, created, **kwargs):
-#     if created:
-#         print("Device is created receiver")
-#         # Device created signal
-#         channel_layer = get_channel_layer()
-#         async_to_sync(channel_layer.group_send)(
-#             f"{instance.device_id}",
-#             {
-#                 "type": "device.created",
-#                 "device_id": instance.device_id,
-#             }
-#         )
-#
-# @receiver(post_save, sender=Measurement)
-# def measurement_created(sender, instance, created, **kwargs):
-#     if created:
-#         # print("created Device data update", instance.device.device_id)
-#         # Measurement created signal
-#         channel_layer = get_channel_layer()
-#         async_to_sync(channel_layer.group_send)(
-#             f"{instance.device.device_id}",
-#             {
-#                 "type": "measurement.created",
-#                 "device_id": instance.device.device_id,
-#                 "value": instance.value,
-#             }
-#         )
-#
-# @receiver(pre_delete, sender=Device)
-# def device_deleted(sender, instance, **kwargs):
-#     # Device deleted signal
-#     channel_layer = get_channel_layer()
-#     async_to_sync(channel_layer.group_send)(
-#         f"{instance.device_id}",
-#         {
-#             "type": "device.deleted",
-#             "device_id": instance.device_id,
-#         }
-#     )
+import datetime
+import json
+
+import pymongo
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+
+from productionBroker import settings
+from productionBroker.settings import timeToNewProduction
+
+my_client = pymongo.MongoClient(settings.DB_NAME)
+def getAllOnlineNode():
+    dbname = my_client['Django']
+
+    # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection)
+    collection_node = dbname["NodeModel"]
+    collection = dbname["Brokerlogs"]
+    collection_report = dbname["BrokerReport"]
+    thirty_minutes_ago = datetime.datetime.now() - datetime.timedelta(hours=timeToNewProduction)
+
+    recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
+
+    recent_node = collection_node.find({"Code":recent_documents['Code']}, {"_id": 0})  # Projection to exclude _id field
+
+    message = {
+        "type": "node.updated",
+        "data": list(recent_node)
+
+    }
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f"node",
+      message
+    )
+
+
