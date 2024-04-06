@@ -9,7 +9,7 @@ from django.conf import settings
 from django.utils import timezone
 
 from BrokerManager.Serializer import RegNodeSerializer, RegNodeSerializermessage, RoombareportSerializer, \
-    NodeSerializer, roombadata
+    NodeSerializer, roombadata, CRXreportSerializer, CRX10report
 from BrokerManager.models import ProductionLineNodeModel
 from BrokerManager.signals import getAllOnlineNode
 from productionBroker.settings import timeToNewProduction
@@ -69,12 +69,11 @@ def on_message(client, userdata, message):
                     print('registration>><MQQT')
                     registrationOfNode(payload, collection_node, recent_documents)
                     getAllOnlineNode()
-                    print('created registration>><MQQT')
                     return
                 if payload["messageType"] == 'Report':
                     print('creat Report>><MQQT')
                     reportingOfNode(payload, collection_node, recent_documents, collection_report)
-                    print('created Report>><MQQT')
+
                     return
 
 
@@ -93,6 +92,7 @@ def registrationOfNode(payload,collection_node,recent_documents):
     serializer = RegNodeSerializer(data=payload)
     if not serializer.is_valid():
         message = {
+            "isBroker":True,
             "msg": "Enter valid Payload",
             "msg.code": "in.valid.Payload",
             "format":RegNodeSerializermessage,
@@ -116,6 +116,7 @@ def registrationOfNode(payload,collection_node,recent_documents):
     print('created registration>><MQQT')
     message = {
             "status": "Ok",
+            "isBroker":True,
            "message":"Welcome "+ str(payload['nodeId']).lower(),
            "nodeId":str(payload['nodeId']).lower()
             }
@@ -127,6 +128,7 @@ def reportingOfNode(payload,collection_node,recent_documents,collection_report):
     if not nodeIDDB:
         message = {
             "msg": "Enter valid nodeId",
+            "isBroker":True,
             "msg.code": "in.valid.nodeId",
             "format": RegNodeSerializermessage,
             "status": "error",
@@ -139,6 +141,7 @@ def reportingOfNode(payload,collection_node,recent_documents,collection_report):
         message = {
             "msg": "Enter valid Payload",
             "msg.code": "in.valid.Payload",
+            "isBroker": True,
             "format": RegNodeSerializermessage,
             "nodeId": str(payload['nodeId']).lower(),
             "status": "error"
@@ -151,6 +154,8 @@ def reportingOfNode(payload,collection_node,recent_documents,collection_report):
             message = {
                 "msg": "Enter valid Payload",
                 "msg.code": "in.valid.Payload",
+
+                "isBroker":True,
                 "format": roombadata,
                 "nodeId": str(payload['nodeId']).lower(),
                 "status": "error"
@@ -158,21 +163,38 @@ def reportingOfNode(payload,collection_node,recent_documents,collection_report):
 
             client.publish(TOPIC, json.dumps(message))
             return
-        dataToDbreport = {
-            "Code": nodeIDDB["Code"],
-            "NodeID": nodeIDDB['NodeID'],
-            "ProductLine": nodeIDDB['ProductLine'],
-            "NodeType": nodeIDDB['NodeType'],
-            "Report": payload["roombareport"],
-            "ReportDate":payload["date"],
-            "created_at": datetime.datetime.now(),
+    if str(payload['node']).lower() == 'crx10':
+        serializer = CRXreportSerializer(data=payload)
+        if not serializer.is_valid():
+            message = {
+                "msg": "Enter valid Payload",
+                "msg.code": "in.valid.Payload",
+                "format": CRX10report,
 
-        }
-        collection_report.insert_one(dataToDbreport)
-        message = {
-            "status": "Ok",
-            "message": "report saved",
-            "nodeId": str(payload['nodeId']).lower()
-        }
+                "isBroker":True,
+                "nodeId": str(payload['nodeId']).lower(),
+                "status": "error"
+            }
 
-        client.publish(TOPIC, json.dumps(message))
+            client.publish(TOPIC, json.dumps(message))
+            return
+    dataToDbreport = {
+        "Code": nodeIDDB["Code"],
+        "NodeID": nodeIDDB['NodeID'],
+        "ProductLine": nodeIDDB['ProductLine'],
+        "NodeType": nodeIDDB['NodeType'],
+        "Report": payload["roombareport"],
+        "ReportDate":payload["date"],
+        "created_at": datetime.datetime.now(),
+
+    }
+    collection_report.insert_one(dataToDbreport)
+    message = {
+        "status": "Ok",
+        "message": "report saved",
+
+        "isBroker": True,
+        "nodeId": str(payload['nodeId']).lower()
+    }
+    print('created Report>><MQQT')
+    client.publish(TOPIC, json.dumps(message))

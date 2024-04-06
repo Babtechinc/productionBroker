@@ -14,7 +14,7 @@
 <div id="startProductionBtn" >
     {% csrf_token %}
 
-<button type="submit" class="btn btn-primary waves-effect waves-light">
+<button onclick="startProduction()" class="btn btn-primary waves-effect waves-light">
     <i class="fas fa-play-circle"></i> &nbsp; Start Production
 </button>
 </div>
@@ -28,7 +28,7 @@
                           <div id="startProductionBtn" >
 
 
-<button type="submit" class="btn btn-primary waves-effect waves-light">
+<button onclick="startProduction()" class="btn btn-primary waves-effect waves-light">
     <i class="fas fa-play-circle"></i> &nbsp; Ask For New Registration
 </button>
 </div>
@@ -135,7 +135,7 @@
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-info"><i class="ti ti-clock ti-md"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">13</h4>
+                        <h4 class="ms-1 mb-0">{{ horizontalBarlength }}</h4>
                       </div>
                       <p class="mb-1">Number Report To Broker</p>
                       <p class="mb-0">
@@ -146,44 +146,46 @@
                   </div>
                 </div>
 
-                  <div class="col-12 col-xl-12 mb-4">
-                  <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                      <div class="card-title mb-0">
-                        <h5 class="mb-0">Select Node To View Data </h5>
-                        <small class="text-muted">Node Overview</small>
-                      </div>
+                <div class="col-12 col-xl-12">
+                  <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <h5 class="card-title m-0 me-2">Topic you are interested in</h5>
                       <div class="dropdown">
-                        <button class="btn p-0" type="button" id="earningReportsTabsId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="ti ti-dots-vertical ti-sm text-muted"></i>
+                        <button
+                          class="btn p-0"
+                          type="button"
+                          id="topic"
+                          data-bs-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false">
+                          <i class="ti ti-dots-vertical"></i>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="earningReportsTabsId">
-                          <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="topic">
+                          <a class="dropdown-item" href="javascript:void(0);">Highest Views</a>
+                          <a class="dropdown-item" href="javascript:void(0);">See All</a>
                         </div>
                       </div>
                     </div>
-                    <div class="card-body">
-                      <ul id="nodeList2" class="nav nav-tabs widget-nav-tabs pb-3 gap-4 mx-1 d-flex flex-nowrap" role="tablist">
-                     {% for foo in node %}
-
-                        <li class="nav-item" role="presentation">
-                          <a href="javascript:void(0);" class="nav-link btn active d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-orders-id" aria-controls="navs-orders-id" aria-selected="true">
-                            <div class="badge bg-label-secondary rounded p-2">
-                              <i class="ti ti-shopping-cart ti-sm"></i>
-                            </div>
-                            <h6 class="tab-widget-title mb-0 mt-2" style="font-size: 12px">{{ foo.NodeID.upper }}</h6>
-                          </a>
-                        </li>
-
-                     {% endfor %}
-                      </ul>
-                      <div class="tab-content p-0 ms-0 ms-sm-2">
+                    <div class="card-body row g-3">
+                      <div class="col-md-6">
+                        <div id="horizontalBarChart"></div>
+                      </div>
+                      <div class="col-md-6 d-flex justify-content-around align-items-center">
+                        <div class="row" id="NodehorizontalBarChart" >
+{#                          <div class="d-flex col-6 align-items-baseline">#}
+{#                            <span class="text-primary me-2"><i class="ti ti-circle-filled fs-6"></i></span>#}
+{#                            <div>#}
+{#                              <p class="mb-2">UI Design</p>#}
+{#                              <h5>35%</h5>#}
+{#                            </div>#}
+{#                          </div>#}
+                        </div>
 
                       </div>
                     </div>
                   </div>
                 </div>
+<div><br></div>
                 <div class="col-lg-12 col-xl-6">
       <div id="connectionsList" class="card card-action mb-4">
         <div class="card-header align-items-center">
@@ -215,12 +217,15 @@
             </div>
           </div>
           <div class="ms-auto">
-            <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
+              {% if startallNode %}
+               <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
               <i class="fa-solid fa-play"></i>
             </button>
             <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
               <i class="fa-solid fa-stop"></i>
             </button>
+              {% endif %}
+
           </div>
         </div>
       </li>
@@ -228,82 +233,58 @@
                      {% endfor %}
 
             <!-- WebSocket data will be dynamically added here -->
-          </ul>
+          </ul>  <div id="startAllNode">
+              {% if startallNode %}
+            <button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
+                                          Start Over
+                                        </button>
+            <button type="button" onclick="startProductionAllNode('create')" class="btn btn-sm btn-label-warning mt-md-3 waves-effect">
+                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span> </div> &nbsp;Running   </button>
+            {% else %}
+            <button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
+                                          Start All Node
+                                        </button>
+            {% endif %}
+                            </div>
+
         </div>
       </div>
     </div>
-                <div class="col-12 col-xl-6">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">Topic you are interested in</h5>
+                  <div class="col-12 col-xl-6 mb-4">
+                  <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                      <div class="card-title mb-0">
+                        <h5 class="mb-0">Select Node To View Data </h5>
+                        <small class="text-muted">Node Overview</small>
+                      </div>
                       <div class="dropdown">
-                        <button
-                          class="btn p-0"
-                          type="button"
-                          id="topic"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false">
-                          <i class="ti ti-dots-vertical"></i>
+                        <button class="btn p-0" type="button" id="earningReportsTabsId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="ti ti-dots-vertical ti-sm text-muted"></i>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="topic">
-                          <a class="dropdown-item" href="javascript:void(0);">Highest Views</a>
-                          <a class="dropdown-item" href="javascript:void(0);">See All</a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="earningReportsTabsId">
+                          <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                          <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                         </div>
                       </div>
                     </div>
-                    <div class="card-body row g-3">
-                      <div class="col-md-6">
-                        <div id="horizontalBarChart"></div>
-                      </div>
-                      <div class="col-md-6 d-flex justify-content-around align-items-center">
-                        <div>
-                          <div class="d-flex align-items-baseline">
-                            <span class="text-primary me-2"><i class="ti ti-circle-filled fs-6"></i></span>
-                            <div>
-                              <p class="mb-2">UI Design</p>
-                              <h5>35%</h5>
-                            </div>
-                          </div>
-                          <div class="d-flex align-items-baseline my-3">
-                            <span class="text-success me-2"><i class="ti ti-circle-filled fs-6"></i></span>
-                            <div>
-                              <p class="mb-2">Music</p>
-                              <h5>14%</h5>
-                            </div>
-                          </div>
-                          <div class="d-flex align-items-baseline">
-                            <span class="text-danger me-2"><i class="ti ti-circle-filled fs-6"></i></span>
-                            <div>
-                              <p class="mb-2">React</p>
-                              <h5>10%</h5>
-                            </div>
-                          </div>
-                        </div>
+                    <div class="card-body">
+                      <ul id="nodeList2" class="nav nav-tabs widget-nav-tabs pb-3 gap-4 mx-1 d-flex flex-nowrap" role="tablist">
+                     {% for foo in node %}
 
-                        <div>
-                          <div class="d-flex align-items-baseline">
-                            <span class="text-info me-2"><i class="ti ti-circle-filled fs-6"></i></span>
-                            <div>
-                              <p class="mb-2">UX Design</p>
-                              <h5>20%</h5>
+                        <li class="nav-item" role="presentation">
+                          <a href="javascript:void(0);" onclick="getNodeView('{{ foo.NodeID }}')" class="nav-link btn  d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-orders-id" aria-controls="navs-orders-id" aria-selected="true">
+                            <div class="badge bg-label-secondary rounded p-2">
+                              <i class="fas fa-robot ti-sm"></i>
                             </div>
-                          </div>
-                          <div class="d-flex align-items-baseline my-3">
-                            <span class="text-secondary me-2"><i class="ti ti-circle-filled fs-6"></i></span>
-                            <div>
-                              <p class="mb-2">Animation</p>
-                              <h5>12%</h5>
-                            </div>
-                          </div>
-                          <div class="d-flex align-items-baseline">
-                            <span class="text-warning me-2"><i class="ti ti-circle-filled fs-6"></i></span>
-                            <div>
-                              <p class="mb-2">SEO</p>
-                              <h5>9%</h5>
-                            </div>
-                          </div>
-                        </div>
+                            <h6 class="tab-widget-title mb-0 mt-2" style="font-size: 12px">{{ foo.NodeID.upper }}</h6>
+                          </a>
+                        </li>
+
+                     {% endfor %}
+                      </ul>
+                      <div class="tab-content p-0 ms-0 ms-sm-2">
+
                       </div>
                     </div>
                   </div>
@@ -343,7 +324,7 @@
               <!--/ Card Border Shadow -->
               <div class="row">
                 <!-- Vehicles overview -->
-                <div class="col-xxl-6 mb-4 order-5 order-xxl-0">
+                <div class="col-xxl-6 mb-4 order-5 order-xxl-0" >
                   <div class="card">
                     <div class="card-header">
                       <div class="card-title mb-0">
@@ -351,122 +332,57 @@
                       </div>
                     </div>
                     <div class="card-body">
-                      <div class="d-none d-lg-flex vehicles-progress-labels mb-4">
-                        <div class="vehicles-progress-label on-the-way-text" style="width: 39.7%">On the way</div>
-                        <div class="vehicles-progress-label unloading-text" style="width: 28.3%">Unloading</div>
-                        <div class="vehicles-progress-label loading-text" style="width: 17.4%">Loading</div>
-                        <div class="vehicles-progress-label waiting-text text-nowrap" style="width: 14.6%">Waiting</div>
+                      <div class="d-none d-lg-flex vehicles-progress-labels mb-4"  id="collectionStartlabels">
+
+     {% for foo in dataaction %}
+
+                        <div class="vehicles-progress-label on-the-way-text" style="width:{{foo.total}}%">{{ foo.action.title}}</div>
+
+                          {% endfor %}
+
                       </div>
-                      <div class="vehicles-overview-progress progress rounded-2 my-4" style="height: 46px">
-                        <div
-                          class="progress-bar fw-medium text-start bg-body text-dark px-3 rounded-0"
+                      <div class="vehicles-overview-progress progress rounded-2 my-4" style="height: 46px" id="collectionStartprogress">
+                            {% for foo in dataaction %}
+                                <div
+                          class="progress-bar fw-medium text-start bg-body text-dark px-3 rounded-0 bg-gray-900"
                           role="progressbar"
-                          style="width: 39.7%"
-                          aria-valuenow="39.7"
+                          style="width: {{foo.total}}% "
+                          aria-valuenow="{{foo.total}}"
                           aria-valuemin="0"
                           aria-valuemax="100">
-                          39.7%
+                         {{foo.total}} %
                         </div>
-                        <div
-                          class="progress-bar fw-medium text-start bg-primary px-3"
-                          role="progressbar"
-                          style="width: 28.3%"
-                          aria-valuenow="28.3"
-                          aria-valuemin="0"
-                          aria-valuemax="100">
-                          28.3%
-                        </div>
-                        <div
-                          class="progress-bar fw-medium text-start text-bg-info px-3"
-                          role="progressbar"
-                          style="width: 17.4%"
-                          aria-valuenow="17.4"
-                          aria-valuemin="0"
-                          aria-valuemax="100">
-                          17.4%
-                        </div>
-                        <div
-                          class="progress-bar fw-medium text-start bg-gray-900 px-2 rounded-0 px-lg-2 px-xxl-3"
-                          role="progressbar"
-                          style="width: 14.6%"
-                          aria-valuenow="14.6"
-                          aria-valuemin="0"
-                          aria-valuemax="100">
-                          14.6%
-                        </div>
+                            {% endfor %}
+
                       </div>
-                      <div class="table-responsive">
+                      <div class="table-responsive" style="height: 365px; overflow-y: auto;">
                         <table class="table card-table">
-                          <tbody class="table-border-bottom-0">
-                            <tr>
-                              <td class="w-50 ps-0">
-                                <div class="d-flex justify-content-start align-items-center">
-                                  <div class="me-2">
-                                    <i class="ti ti-truck mt-n1"></i>
-                                  </div>
-                                  <h6 class="mb-0 fw-normal">On the way</h6>
-                                </div>
-                              </td>
-                              <td class="text-end pe-0 text-nowrap">
-                                <h6 class="mb-0">2hr 10min</h6>
-                              </td>
-                              <td class="text-end pe-0">
-                                <span class="fw-medium">  <button
-                            data-bs-target="#addRoleModal"
-                            data-bs-toggle="modal"
-                            class="btn btn-primary mb-2 text-nowrap add-new-role">
-                            Add New Role
-                          </button></span>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="w-50 ps-0">
-                                <div class="d-flex justify-content-start align-items-center">
-                                  <div class="me-2">
-                                    <i class="ti ti-circle-arrow-down mt-n1"></i>
-                                  </div>
-                                  <h6 class="mb-0 fw-normal">Unloading</h6>
-                                </div>
-                              </td>
-                              <td class="text-end pe-0 text-nowrap">
-                                <h6 class="mb-0">3hr 15min</h6>
-                              </td>
-                              <td class="text-end pe-0">
-                                <span class="fw-medium">28.3%</span>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="w-50 ps-0">
-                                <div class="d-flex justify-content-start align-items-center">
-                                  <div class="me-2">
-                                    <i class="ti ti-circle-arrow-up mt-n1"></i>
-                                  </div>
-                                  <h6 class="mb-0 fw-normal">Loading</h6>
-                                </div>
-                              </td>
-                              <td class="text-end pe-0 text-nowrap">
-                                <h6 class="mb-0">1hr 24min</h6>
-                              </td>
-                              <td class="text-end pe-0">
-                                <span class="fw-medium">17.4%</span>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="w-50 ps-0">
-                                <div class="d-flex justify-content-start align-items-center">
-                                  <div class="me-2">
-                                    <i class="ti ti-clock mt-n1"></i>
-                                  </div>
-                                  <h6 class="mb-0 fw-normal">Waiting</h6>
-                                </div>
-                              </td>
-                              <td class="text-end pe-0 text-nowrap">
-                                <h6 class="mb-0">5hr 19min</h6>
-                              </td>
-                              <td class="text-end pe-0">
-                                <span class="fw-medium">14.6%</span>
-                              </td>
-                            </tr>
+                          <tbody class="table-border-bottom-0 "  id="tablecollectionStart">
+{#                          {% for foo in collectionStart.collectionStart %}#}
+{##}
+{#                            <tr>#}
+{#                              <td class="w-50 ps-0">#}
+{#                                <div class="d-flex justify-content-start align-items-center">#}
+{#                                  <div class="me-2">#}
+{#                                    <i class="ti ti-truck mt-n1"></i>#}
+{#                                  </div>#}
+{#                                  <h6 class="mb-0 fw-normal">{{ foo.id_str}} </h6>#}
+{#                                </div>#}
+{#                              </td>#}
+{#                              <td class="text-end pe-0 text-nowrap">#}
+{#                                <h6 class="mb-0">{{ foo.duration_str }}</h6>#}
+{#                              </td>#}
+{#                              <td class="text-end pe-0">#}
+{#                                <span class="fw-medium">  <button#}
+{#                            data-bs-target="#addRoleModal"#}
+{#                            data-bs-toggle="modal" onclick="singleNodeDatalabelCall('{{ foo.id_str}}')"#}
+{#                            class="btn btn-primary mb-2 text-nowrap add-new-role">#}
+{#                           Open Logs#}
+{#                          </button></span>#}
+{#                              </td>#}
+{#                            </tr>#}
+{#                          {% endfor %}#}
+
                           </tbody>
                         </table>
                       </div>
@@ -480,232 +396,21 @@
                       data-bs-dismiss="modal"
                       aria-label="Close"></button>
                     <div class="modal-body">
-                      <div class="text-center mb-4">
-                        <h3 class="role-title mb-2">Add New Role</h3>
-                        <p class="text-muted">Set role permissions</p>
+
+                    <div class="card-body">
+                      <div class="d-none d-lg-flex vehicles-progress-labels mb-4" id="singleNodeDatalabelheader">
                       </div>
-                      <!-- Add role form -->
-                      <form id="addRoleForm" class="row g-3" onsubmit="return false">
-                        <div class="col-12 mb-4">
-                          <label class="form-label" for="modalRoleName">Role Name</label>
-                          <input
-                            type="text"
-                            id="modalRoleName"
-                            name="modalRoleName"
-                            class="form-control"
-                            placeholder="Enter a role name"
-                            tabindex="-1" />
-                        </div>
-                        <div class="col-12">
-                          <h5>Role Permissions</h5>
-                          <!-- Permission table -->
-                          <div class="table-responsive">
-                            <table class="table table-flush-spacing">
-                              <tbody>
-                                <tr>
-                                  <td class="text-nowrap fw-medium">
-                                    Administrator Access
-                                    <i
-                                      class="ti ti-info-circle"
-                                      data-bs-toggle="tooltip"
-                                      data-bs-placement="top"
-                                      title="Allows a full access to the system"></i>
-                                  </td>
-                                  <td>
-                                    <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" id="selectAll" />
-                                      <label class="form-check-label" for="selectAll"> Select All </label>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-nowrap fw-medium">User Management</td>
-                                  <td>
-                                    <div class="d-flex">
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="userManagementRead" />
-                                        <label class="form-check-label" for="userManagementRead"> Read </label>
-                                      </div>
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="userManagementWrite" />
-                                        <label class="form-check-label" for="userManagementWrite"> Write </label>
-                                      </div>
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="userManagementCreate" />
-                                        <label class="form-check-label" for="userManagementCreate"> Create </label>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-nowrap fw-medium">Content Management</td>
-                                  <td>
-                                    <div class="d-flex">
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="contentManagementRead" />
-                                        <label class="form-check-label" for="contentManagementRead"> Read </label>
-                                      </div>
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="contentManagementWrite" />
-                                        <label class="form-check-label" for="contentManagementWrite"> Write </label>
-                                      </div>
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="contentManagementCreate" />
-                                        <label class="form-check-label" for="contentManagementCreate"> Create </label>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-nowrap fw-medium">Disputes Management</td>
-                                  <td>
-                                    <div class="d-flex">
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="dispManagementRead" />
-                                        <label class="form-check-label" for="dispManagementRead"> Read </label>
-                                      </div>
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="dispManagementWrite" />
-                                        <label class="form-check-label" for="dispManagementWrite"> Write </label>
-                                      </div>
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="dispManagementCreate" />
-                                        <label class="form-check-label" for="dispManagementCreate"> Create </label>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-nowrap fw-medium">Database Management</td>
-                                  <td>
-                                    <div class="d-flex">
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="dbManagementRead" />
-                                        <label class="form-check-label" for="dbManagementRead"> Read </label>
-                                      </div>
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="dbManagementWrite" />
-                                        <label class="form-check-label" for="dbManagementWrite"> Write </label>
-                                      </div>
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="dbManagementCreate" />
-                                        <label class="form-check-label" for="dbManagementCreate"> Create </label>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-nowrap fw-medium">Financial Management</td>
-                                  <td>
-                                    <div class="d-flex">
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="finManagementRead" />
-                                        <label class="form-check-label" for="finManagementRead"> Read </label>
-                                      </div>
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="finManagementWrite" />
-                                        <label class="form-check-label" for="finManagementWrite"> Write </label>
-                                      </div>
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="finManagementCreate" />
-                                        <label class="form-check-label" for="finManagementCreate"> Create </label>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-nowrap fw-medium">Reporting</td>
-                                  <td>
-                                    <div class="d-flex">
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="reportingRead" />
-                                        <label class="form-check-label" for="reportingRead"> Read </label>
-                                      </div>
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="reportingWrite" />
-                                        <label class="form-check-label" for="reportingWrite"> Write </label>
-                                      </div>
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="reportingCreate" />
-                                        <label class="form-check-label" for="reportingCreate"> Create </label>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-nowrap fw-medium">API Control</td>
-                                  <td>
-                                    <div class="d-flex">
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="apiRead" />
-                                        <label class="form-check-label" for="apiRead"> Read </label>
-                                      </div>
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="apiWrite" />
-                                        <label class="form-check-label" for="apiWrite"> Write </label>
-                                      </div>
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="apiCreate" />
-                                        <label class="form-check-label" for="apiCreate"> Create </label>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-nowrap fw-medium">Repository Management</td>
-                                  <td>
-                                    <div class="d-flex">
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="repoRead" />
-                                        <label class="form-check-label" for="repoRead"> Read </label>
-                                      </div>
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="repoWrite" />
-                                        <label class="form-check-label" for="repoWrite"> Write </label>
-                                      </div>
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="repoCreate" />
-                                        <label class="form-check-label" for="repoCreate"> Create </label>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-nowrap fw-medium">Payroll</td>
-                                  <td>
-                                    <div class="d-flex">
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="payrollRead" />
-                                        <label class="form-check-label" for="payrollRead"> Read </label>
-                                      </div>
-                                      <div class="form-check me-3 me-lg-5">
-                                        <input class="form-check-input" type="checkbox" id="payrollWrite" />
-                                        <label class="form-check-label" for="payrollWrite"> Write </label>
-                                      </div>
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="payrollCreate" />
-                                        <label class="form-check-label" for="payrollCreate"> Create </label>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <!-- Permission table -->
-                        </div>
-                        <div class="col-12 text-center mt-4">
-                          <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
-                          <button
-                            type="reset"
-                            class="btn btn-label-secondary"
-                            data-bs-dismiss="modal"
-                            aria-label="Close">
-                            Cancel
-                          </button>
-                        </div>
-                      </form>
-                      <!--/ Add role form -->
+                      <div class="vehicles-overview-progress progress rounded-2 my-4"  id="singleNodeDatalabelbody" style="height: 46px">
+
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table card-table">
+                          <tbody class="table-border-bottom-0" id="singleNodeDatalabelsub" >
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -722,29 +427,7 @@
                         <h5 class="m-0 me-2">Shipment statistics</h5>
                         <small class="text-muted">Total number of deliveries 23.8k</small>
                       </div>
-                      <div class="dropdown">
-                        <button
-                          type="button"
-                          class="btn btn-label-primary dropdown-toggle"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false">
-                          January
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="javascript:void(0);">January</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">February</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">March</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">April</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">May</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">June</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">July</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">August</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">September</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">October</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">November</a></li>
-                          <li><a class="dropdown-item" href="javascript:void(0);">December</a></li>
-                        </ul>
-                      </div>
+
                     </div>
                     <div class="card-body">
                       <div id="shipmentStatisticsChart"></div>
@@ -753,419 +436,6 @@
                 </div>
                 <!--/ Shipment statistics -->
                 <!-- Delivery Performance -->
-{#                <div class="col-lg-6 col-xxl-4 mb-4 order-2 order-xxl-2">#}
-{#                  <div class="card h-100">#}
-{#                    <div class="card-header d-flex align-items-center justify-content-between mb-2">#}
-{#                      <div class="card-title mb-0">#}
-{#                        <h5 class="m-0 me-2">Delivery Performance</h5>#}
-{#                        <small class="text-muted">12% increase in this month</small>#}
-{#                      </div>#}
-{#                      <div class="dropdown">#}
-{#                        <button#}
-{#                          class="btn p-0"#}
-{#                          type="button"#}
-{#                          id="deliveryPerformance"#}
-{#                          data-bs-toggle="dropdown"#}
-{#                          aria-haspopup="true"#}
-{#                          aria-expanded="false">#}
-{#                          <i class="ti ti-dots-vertical"></i>#}
-{#                        </button>#}
-{#                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="deliveryPerformance">#}
-{#                          <a class="dropdown-item" href="javascript:void(0);">Select All</a>#}
-{#                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>#}
-{#                          <a class="dropdown-item" href="javascript:void(0);">Share</a>#}
-{#                        </div>#}
-{#                      </div>#}
-{#                    </div>#}
-{#                    <div class="card-body">#}
-{#                      <ul class="p-0 m-0">#}
-{#                        <li class="d-flex mb-4 pb-1">#}
-{#                          <div class="avatar flex-shrink-0 me-3">#}
-{#                            <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-package"></i></span>#}
-{#                          </div>#}
-{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
-{#                            <div class="me-2">#}
-{#                              <h6 class="mb-0 fw-normal">Packages in transit</h6>#}
-{#                              <small class="text-success fw-normal d-block">#}
-{#                                <i class="ti ti-chevron-up mb-1"></i>#}
-{#                                25.8%#}
-{#                              </small>#}
-{#                            </div>#}
-{#                            <div class="user-progress">#}
-{#                              <h6 class="mb-0">10k</h6>#}
-{#                            </div>#}
-{#                          </div>#}
-{#                        </li>#}
-{#                        <li class="d-flex mb-4 pb-1">#}
-{#                          <div class="avatar flex-shrink-0 me-3">#}
-{#                            <span class="avatar-initial rounded bg-label-info"><i class="ti ti-truck"></i></span>#}
-{#                          </div>#}
-{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
-{#                            <div class="me-2">#}
-{#                              <h6 class="mb-0 fw-normal">Packages out for delivery</h6>#}
-{#                              <small class="text-success fw-normal d-block">#}
-{#                                <i class="ti ti-chevron-up mb-1"></i>#}
-{#                                4.3%#}
-{#                              </small>#}
-{#                            </div>#}
-{#                            <div class="user-progress">#}
-{#                              <h6 class="mb-0">5k</h6>#}
-{#                            </div>#}
-{#                          </div>#}
-{#                        </li>#}
-{#                        <li class="d-flex mb-4 pb-1">#}
-{#                          <div class="avatar flex-shrink-0 me-3">#}
-{#                            <span class="avatar-initial rounded bg-label-success"#}
-{#                              ><i class="ti ti-circle-check"></i#}
-{#                            ></span>#}
-{#                          </div>#}
-{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
-{#                            <div class="me-2">#}
-{#                              <h6 class="mb-0 fw-normal">Packages delivered</h6>#}
-{#                              <small class="text-danger fw-normal d-block">#}
-{#                                <i class="ti ti-chevron-down mb-1"></i>#}
-{#                                12.5%#}
-{#                              </small>#}
-{#                            </div>#}
-{#                            <div class="user-progress">#}
-{#                              <h6 class="mb-0">15k</h6>#}
-{#                            </div>#}
-{#                          </div>#}
-{#                        </li>#}
-{#                        <li class="d-flex mb-4 pb-1">#}
-{#                          <div class="avatar flex-shrink-0 me-3">#}
-{#                            <span class="avatar-initial rounded bg-label-warning"#}
-{#                              ><i class="ti ti-percentage"></i#}
-{#                            ></span>#}
-{#                          </div>#}
-{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
-{#                            <div class="me-2">#}
-{#                              <h6 class="mb-0 fw-normal">Delivery success rate</h6>#}
-{#                              <small class="text-success fw-normal d-block">#}
-{#                                <i class="ti ti-chevron-up mb-1"></i>#}
-{#                                35.6%#}
-{#                              </small>#}
-{#                            </div>#}
-{#                            <div class="user-progress">#}
-{#                              <h6 class="mb-0">95%</h6>#}
-{#                            </div>#}
-{#                          </div>#}
-{#                        </li>#}
-{#                        <li class="d-flex mb-4 pb-1">#}
-{#                          <div class="avatar flex-shrink-0 me-3">#}
-{#                            <span class="avatar-initial rounded bg-label-secondary"><i class="ti ti-clock"></i></span>#}
-{#                          </div>#}
-{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
-{#                            <div class="me-2">#}
-{#                              <h6 class="mb-0 fw-normal">Average delivery time</h6>#}
-{#                              <small class="text-danger fw-normal d-block">#}
-{#                                <i class="ti ti-chevron-down mb-1"></i>#}
-{#                                2.15%#}
-{#                              </small>#}
-{#                            </div>#}
-{#                            <div class="user-progress">#}
-{#                              <h6 class="mb-0">2.5 Days</h6>#}
-{#                            </div>#}
-{#                          </div>#}
-{#                        </li>#}
-{#                        <li class="d-flex">#}
-{#                          <div class="avatar flex-shrink-0 me-3">#}
-{#                            <span class="avatar-initial rounded bg-label-danger"><i class="ti ti-users"></i></span>#}
-{#                          </div>#}
-{#                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">#}
-{#                            <div class="me-2">#}
-{#                              <h6 class="mb-0 fw-normal">Customer satisfaction</h6>#}
-{#                              <small class="text-success fw-normal d-block">#}
-{#                                <i class="ti ti-chevron-up mb-1"></i>#}
-{#                                5.7%#}
-{#                              </small>#}
-{#                            </div>#}
-{#                            <div class="user-progress">#}
-{#                              <h6 class="mb-0">4.5/5</h6>#}
-{#                            </div>#}
-{#                          </div>#}
-{#                        </li>#}
-{#                      </ul>#}
-{#                    </div>#}
-{#                  </div>#}
-{#                </div>#}
-                <!--/ Delivery Performance -->
-                <!-- Reasons for delivery exceptions -->
-
-                <!--/ Reasons for delivery exceptions -->
-                <!-- Orders by Countries -->
-{#                <div class="col-md-6 col-xxl-4 mb-4 order-0 order-xxl-4">#}
-{#                  <div class="card h-100">#}
-{#                    <div class="card-header d-flex justify-content-between pb-2">#}
-{#                      <div class="card-title mb-1">#}
-{#                        <h5 class="m-0 me-2">Orders</h5>#}
-{#                        <small class="text-muted">62 Deliveries in Progress</small>#}
-{#                      </div>#}
-{#                      <div class="dropdown">#}
-{#                        <button#}
-{#                          class="btn p-0"#}
-{#                          type="button"#}
-{#                          id="salesByCountryTabs"#}
-{#                          data-bs-toggle="dropdown"#}
-{#                          aria-haspopup="true"#}
-{#                          aria-expanded="false">#}
-{#                          <i class="ti ti-dots-vertical ti-sm text-muted"></i>#}
-{#                        </button>#}
-{#                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesByCountryTabs">#}
-{#                          <a class="dropdown-item" href="javascript:void(0);">Download</a>#}
-{#                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>#}
-{#                          <a class="dropdown-item" href="javascript:void(0);">Share</a>#}
-{#                        </div>#}
-{#                      </div>#}
-{#                    </div>#}
-{#                    <div class="card-body">#}
-{#                      <div class="nav-align-top">#}
-{#                        <ul class="nav nav-tabs nav-fill" role="tablist">#}
-{#                          <li class="nav-item">#}
-{#                            <button#}
-{#                              type="button"#}
-{#                              class="nav-link active"#}
-{#                              role="tab"#}
-{#                              data-bs-toggle="tab"#}
-{#                              data-bs-target="#navs-justified-new"#}
-{#                              aria-controls="navs-justified-new"#}
-{#                              aria-selected="true">#}
-{#                              New#}
-{#                            </button>#}
-{#                          </li>#}
-{#                          <li class="nav-item">#}
-{#                            <button#}
-{#                              type="button"#}
-{#                              class="nav-link"#}
-{#                              role="tab"#}
-{#                              data-bs-toggle="tab"#}
-{#                              data-bs-target="#navs-justified-link-preparing"#}
-{#                              aria-controls="navs-justified-link-preparing"#}
-{#                              aria-selected="false">#}
-{#                              Preparing#}
-{#                            </button>#}
-{#                          </li>#}
-{#                          <li class="nav-item">#}
-{#                            <button#}
-{#                              type="button"#}
-{#                              class="nav-link"#}
-{#                              role="tab"#}
-{#                              data-bs-toggle="tab"#}
-{#                              data-bs-target="#navs-justified-link-shipping"#}
-{#                              aria-controls="navs-justified-link-shipping"#}
-{#                              aria-selected="false">#}
-{#                              Shipping#}
-{#                            </button>#}
-{#                          </li>#}
-{#                        </ul>#}
-{#                        <div class="tab-content px-2 mx-1 pb-0">#}
-{#                          <div class="tab-pane fade show active" id="navs-justified-new" role="tabpanel">#}
-{#                            <ul class="timeline mb-0 pb-1">#}
-{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
-{#                                  <i class="ti ti-circle-check"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Myrtle Ullrich</h6>#}
-{#                                  <p class="text-muted mb-0">101 Boulder, California(CA), 95959</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                              <li class="timeline-item ps-4 border-transparent">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
-{#                                  <i class="ti ti-map-pin"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Barry Schowalter</h6>#}
-{#                                  <p class="text-muted mb-0">939 Orange, California(CA), 92118</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                            </ul>#}
-{#                            <div class="border-bottom border-bottom-dashed mt-0 mb-4"></div>#}
-{#                            <ul class="timeline mb-0">#}
-{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
-{#                                  <i class="ti ti-circle-check"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Veronica Herman</h6>#}
-{#                                  <p class="text-muted mb-0">162 Windsor, California(CA), 95492</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                              <li class="timeline-item ps-4 border-transparent">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
-{#                                  <i class="ti ti-map-pin"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Helen Jacobs</h6>#}
-{#                                  <p class="text-muted mb-0">487 Sunset, California(CA), 94043</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                            </ul>#}
-{#                          </div>#}
-{##}
-{#                          <div class="tab-pane fade" id="navs-justified-link-preparing" role="tabpanel">#}
-{#                            <ul class="timeline mb-0 pb-1">#}
-{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
-{#                                  <i class="ti ti-circle-check"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Barry Schowalter</h6>#}
-{#                                  <p class="text-muted mb-0">939 Orange, California(CA), 92118</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                              <li class="timeline-item ps-4 border-transparent">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
-{#                                  <i class="ti ti-map-pin"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Myrtle Ullrich</h6>#}
-{#                                  <p class="text-muted mb-0">101 Boulder, California(CA), 95959</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                            </ul>#}
-{#                            <div class="border-bottom border-bottom-dashed mt-0 mb-4"></div>#}
-{#                            <ul class="timeline mb-0">#}
-{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
-{#                                  <i class="ti ti-circle-check"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Veronica Herman</h6>#}
-{#                                  <p class="text-muted mb-0">162 Windsor, California(CA), 95492</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                              <li class="timeline-item ps-4 border-transparent">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
-{#                                  <i class="ti ti-map-pin"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Helen Jacobs</h6>#}
-{#                                  <p class="text-muted mb-0">487 Sunset, California(CA), 94043</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                            </ul>#}
-{#                          </div>#}
-{#                          <div class="tab-pane fade" id="navs-justified-link-shipping" role="tabpanel">#}
-{#                            <ul class="timeline mb-0 pb-1">#}
-{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
-{#                                  <i class="ti ti-circle-check"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Veronica Herman</h6>#}
-{#                                  <p class="text-muted mb-0">101 Boulder, California(CA), 95959</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                              <li class="timeline-item ps-4 border-transparent">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
-{#                                  <i class="ti ti-map-pin"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Barry Schowalter</h6>#}
-{#                                  <p class="text-muted mb-0">939 Orange, California(CA), 92118</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                            </ul>#}
-{#                            <div class="border-bottom border-bottom-dashed mt-0 mb-4"></div>#}
-{#                            <ul class="timeline mb-0">#}
-{#                              <li class="timeline-item ps-4 border-left-dashed pb-1">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-success">#}
-{#                                  <i class="ti ti-circle-check"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-success text-uppercase fw-medium">sender</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Myrtle Ullrich</h6>#}
-{#                                  <p class="text-muted mb-0">162 Windsor, California(CA), 95492</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                              <li class="timeline-item ps-4 border-transparent">#}
-{#                                <span class="timeline-indicator-advanced timeline-indicator-primary">#}
-{#                                  <i class="ti ti-map-pin"></i>#}
-{#                                </span>#}
-{#                                <div class="timeline-event px-0 pb-0">#}
-{#                                  <div class="timeline-header">#}
-{#                                    <small class="text-primary text-uppercase fw-medium">Receiver</small>#}
-{#                                  </div>#}
-{#                                  <h6 class="mb-1">Helen Jacobs</h6>#}
-{#                                  <p class="text-muted mb-0">487 Sunset, California(CA), 94043</p>#}
-{#                                </div>#}
-{#                              </li>#}
-{#                            </ul>#}
-{#                          </div>#}
-{#                        </div>#}
-{#                      </div>#}
-{#                    </div>#}
-{#                  </div>#}
-{#                </div>#}
-                <!--/ Orders by Countries -->
-
-                <!-- On route vehicles Table -->
-
-                <div class="col-12 order-5">
-
-                    <div class="card">
-                <h5 class="card-header">Ajax Sourced Server-side</h5>
-                <div class="card-datatable text-nowrap">
-                  <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_0_length"><label>Show <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"><div id="DataTables_Table_0_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control" placeholder="" aria-controls="DataTables_Table_0"></label></div></div></div><div class="table-responsive"><table class="datatables-ajax table dataTable no-footer" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
-                    <thead>
-                      <tr>
-                          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Full name: activate to sort column ascending" style="width: 227.188px;">Full name</th>
-                          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending" style="width: 145.938px;">Email</th>
-                          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 196.797px;">Position</th>
-                          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 160.141px;">Office</th>
-                          <th class="sorting sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Start date: activate to sort column descending" style="width: 233.281px;" aria-sort="ascending">Start date</th>
-                          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 160.656px;">Salary</th></tr>
-                    </thead><tbody>
-                  <tr >
-                      <td >No data available in table</td>
-                      <td >No data available in table</td>
-                      <td >No data available in table</td>
-                      <td >No data available in table</td>
-                      <td >No data available in table</td>
-                      <td ><button class="btn btn-secondary add-new btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser"><span><i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Add New User</span></span></button></td>
-
-
-                  </tr>
-
-                  </tbody>
-                  </table></div><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 0 to 0 of 0 entries</div></div><div class="col-sm-12 col-md-6"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous"><a aria-controls="DataTables_Table_0" aria-disabled="true" role="link" data-dt-idx="previous" tabindex="-1" class="page-link">Previous</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_0_next"><a aria-controls="DataTables_Table_0" aria-disabled="true" role="link" data-dt-idx="next" tabindex="-1" class="page-link">Next</a></li></ul></div></div></div></div>
-                </div>
-              </div>
-                </div>
-
                 <!--/ On route vehicles Table -->
               </div>
                 </div>
@@ -1176,112 +446,49 @@
                   id="offcanvasAddUser"
                   aria-labelledby="offcanvasAddUserLabel">
                   <div class="offcanvas-header">
-                    <h5 id="offcanvasAddUserLabel" class="offcanvas-title">Add User</h5>
+                    <h5 id="offcanvasAddUserLabel" class="offcanvas-title">Report Detail</h5>
                     <button
                       type="button"
                       class="btn-close text-reset"
                       data-bs-dismiss="offcanvas"
                       aria-label="Close"></button>
                   </div>
-                  <div class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
-                    <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false">
-                      <div class="mb-3">
-                        <label class="form-label" for="add-user-fullname">Full Name</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="add-user-fullname"
-                          placeholder="John Doe"
-                          name="userFullname"
-                          aria-label="John Doe" />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label" for="add-user-email">Email</label>
-                        <input
-                          type="text"
-                          id="add-user-email"
-                          class="form-control"
-                          placeholder="john.doe@example.com"
-                          aria-label="john.doe@example.com"
-                          name="userEmail" />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label" for="add-user-contact">Contact</label>
-                        <input
-                          type="text"
-                          id="add-user-contact"
-                          class="form-control phone-mask"
-                          placeholder="+1 (609) 988-44-11"
-                          aria-label="john.doe@example.com"
-                          name="userContact" />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label" for="add-user-company">Company</label>
-                        <input
-                          type="text"
-                          id="add-user-company"
-                          class="form-control"
-                          placeholder="Web Developer"
-                          aria-label="jdoe1"
-                          name="companyName" />
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label" for="country">Country</label>
-                        <select id="country" class="select2 form-select">
-                          <option value="">Select</option>
-                          <option value="Australia">Australia</option>
-                          <option value="Bangladesh">Bangladesh</option>
-                          <option value="Belarus">Belarus</option>
-                          <option value="Brazil">Brazil</option>
-                          <option value="Canada">Canada</option>
-                          <option value="China">China</option>
-                          <option value="France">France</option>
-                          <option value="Germany">Germany</option>
-                          <option value="India">India</option>
-                          <option value="Indonesia">Indonesia</option>
-                          <option value="Israel">Israel</option>
-                          <option value="Italy">Italy</option>
-                          <option value="Japan">Japan</option>
-                          <option value="Korea">Korea, Republic of</option>
-                          <option value="Mexico">Mexico</option>
-                          <option value="Philippines">Philippines</option>
-                          <option value="Russia">Russian Federation</option>
-                          <option value="South Africa">South Africa</option>
-                          <option value="Thailand">Thailand</option>
-                          <option value="Turkey">Turkey</option>
-                          <option value="Ukraine">Ukraine</option>
-                          <option value="United Arab Emirates">United Arab Emirates</option>
-                          <option value="United Kingdom">United Kingdom</option>
-                          <option value="United States">United States</option>
-                        </select>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label" for="user-role">User Role</label>
-                        <select id="user-role" class="form-select">
-                          <option value="subscriber">Subscriber</option>
-                          <option value="editor">Editor</option>
-                          <option value="maintainer">Maintainer</option>
-                          <option value="author">Author</option>
-                          <option value="admin">Admin</option>
-                        </select>
-                      </div>
-                      <div class="mb-4">
-                        <label class="form-label" for="user-plan">Select Plan</label>
-                        <select id="user-plan" class="form-select">
-                          <option value="basic">Basic</option>
-                          <option value="enterprise">Enterprise</option>
-                          <option value="company">Company</option>
-                          <option value="team">Team</option>
-                        </select>
-                      </div>
-                      <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
-                      <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-                    </form>
+                  <div id="reportOne"  class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
+                 </div>
+                </div>
+    <div
+                  class="offcanvas offcanvas-end"
+                  tabindex="-1"
+                  id="offcanvasAddUser2"
+                  aria-labelledby="offcanvasAddUserLabel">
+                  <div class="offcanvas-header">
+                    <h5 id="offcanvasAddUserLabel" class="offcanvas-title">Report Detail</h5>
+                    <button
+                      type="button"
+                      class="btn-close text-reset"
+                      data-bs-dismiss="offcanvas"
+                      aria-label="Close"></button>
                   </div>
+                  <div id=""  class="offcanvas-body card-body mx-0 flex-grow-0 pt-0 h-100">
+                        <table id="datatable1reportProductionLine" class="display table dt-responsive nowrap" style="width:100%">
+                                         <thead>
+
+                          <th>Action</th>
+                                         <th>Data</th>
+
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+
+                 </div>
                 </div>
 {% endblock %}
 {% block JsScriptInner %}
     <script>
+
+      horizontalBar = JSON.parse('{{ horizontalBar |escapejs|safe  }}')
      // Function to convert text to title case
   function toTitleCase(text) {
     return text.replace(/\w\S*/g, function(txt) {
@@ -1361,6 +568,137 @@ function getCookie(name) {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
     });
+  function startProduction () {
+
+        // Disable the startProductionBtn and show the loadingBtn
+        document.getElementById('startProductionBtn').style.display = 'none';
+        document.getElementById('loadingBtn').style.display = 'inline-block';
+        const csrftoken = getCookie('csrftoken');
+        // Your AJAX request here
+        fetch('{% url 'start_production' %}', {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                // Any data you want to send
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR);
+
+            // Now you can access properties of data
+            if (dataR && typeof dataR === 'object' && 'Code' in dataR) {
+                document.getElementById('showData').style.display = 'inline-block';
+
+            document.getElementById('loadingBtn').style.display = 'none';
+
+            }
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+    }
+  function startProductionAllNode (data) {
+
+        // Disable the startProductionBtn and show the loadingBtn
+        const csrftoken = getCookie('csrftoken');
+        // Your AJAX request here
+        fetch('{% url 'start_all_node_production' %}', {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                // Any data you want to send
+                'status':data
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(typeof dataR);
+            if (dataR && typeof dataR === 'object' && 'startCode' in dataR) {
+            console.log(">>>>>>>>>>>>>>>>.")
+            document.getElementById('startAllNode').innerHTML = `
+             <button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
+                                          Start Over
+                                        </button>
+            <button type="button" onclick="startProductionAllNode('create')" class="btn btn-sm btn-label-warning mt-md-3 waves-effect">
+                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span> </div> &nbsp;Running   </button>
+                        `;
+
+            }
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+    }
+  function startProductionNode (data) {
+
+        // Disable the startProductionBtn and show the loadingBtn
+        const csrftoken = getCookie('csrftoken');
+        // Your AJAX request here
+        fetch('{% url 'start_one_node_production' %}', {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                // Any data you want to send
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR);
+
+            // Now you can access properties of data
+
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+    }
   const horizontalBarChartEl = document.querySelector('#horizontalBarChart'),
     horizontalBarChartConfig = {
       chart: {
@@ -1422,15 +760,16 @@ function getCookie(name) {
           enabled: false
         }
       },
-      labels: ['UI Design', 'UX Design', 'Music', 'Animation', 'React', 'SEO'],
+      labels:horizontalBar.labels,
+
       series: [
         {
-          data: [35, 20, 14, 12, 10, 9]
+          data:horizontalBar.data
         }
       ],
 
       xaxis: {
-        categories: ['6', '5', '4', '3', '2', '1'],
+        categories:[],
         axisBorder: {
           show: false
         },
@@ -1448,7 +787,7 @@ function getCookie(name) {
         }
       },
       yaxis: {
-        max: 35,
+        max: 100,
         labels: {
           style: {
             colors: [labelColor],
@@ -1476,7 +815,38 @@ function getCookie(name) {
   if (typeof horizontalBarChartEl !== undefined && horizontalBarChartEl !== null) {
     const horizontalBarChart = new ApexCharts(horizontalBarChartEl, horizontalBarChartConfig);
     horizontalBarChart.render();
+    console.log( horizontalBar.data.length)
+    for (var i = 0; i < horizontalBar.data.length; i++) {
+        console.log(horizontalBar.data[i]);  // Output each item in the console
+
+        document.getElementById("NodehorizontalBarChart").innerHTML += ` <div class="d-flex col-6 align-items-baseline">
+                            <span class="text-primary me-2"><i class="ti ti-circle-filled fs-6"></i></span>
+                            <div>
+                              <p class="mb-2">${horizontalBar.labels[i]}</p>
+                              <h5>${horizontalBar.data[i]}%</h5>
+                            </div>
+                          </div>
+       ` // Output each item in the console
+    }
+
   }
+
+    // Chart Colors
+  const chartColors = {
+    donut: {
+      series1: config.colors.success,
+      series2: '#28c76fb3',
+      series3: '#28c76f80',
+      series4: config.colors_label.success
+    },
+    line: {
+      series1: config.colors.danger,
+      series2: '#00000000',
+      series4: config.colors.black,
+      series3: '#7367f029'
+    },
+  };
+
 // Get the host of the current window
 const host = window.location.host;
 const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -1567,6 +937,604 @@ updateTimePassed();
 // Update time passed every second
 setInterval(updateTimePassed, 1000);
 
+function singleNodeDataCall(data) {
+    console.log(data)
 
+        document.getElementById("reportOne").innerHTML = '';
+    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
+        const csrftoken = getCookie('csrftoken');
+     fetch('{% url 'singlereport_production' %}', {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                'id':data,
+                // Any data you want to send
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR);
+             var htmlContent = `<div class="card-body">
+                              <div class="card">
+                                  <!-- Your provided HTML content here -->
+                                  <!-- I'm adding the provided HTML here -->
+                                  <div class="card-header">
+                                      <div class="d-flex align-items-start">
+                                          <div class="d-flex align-items-start">
+                                              <div class="me-2 ms-1">
+                                                  <h5 class="mb-0">
+                                                      <a href="javascript:;" class="stretched-link text-body">${dataR.NodeID.toUpperCase()}</a>
+                                                  </h5>
+                                                  <div class="client-info">
+                                                      <span class="fw-medium">Node Type: </span><span class="text-muted">${dataR.NodeType.toUpperCase()}</span>
+                                                      <br> <span class="fw-medium">Production Line Type: </span><span class="text-muted">${dataR.ProductLine.toUpperCase()}</span>
+                                                      <br> <span class="fw-medium">Label: </span><span class="text-muted">${dataR.Report.label}</span>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="ms-auto"></div>
+                                      </div>
+                                  </div>
+                                  <div class="card-body">
+                                      <div class="d-flex align-items-center flex-wrap">
+                                          <div class="bg-lighter px-3 py-2 rounded me-auto mb-3">
+                                          </div>
+                                      </div>
+                                      <h6 class="mb-0">Report Date: <span style="font-size: 10px" class="text-body fw-normal">${dataR.ReportDate}</span></h6>
+                                      <h6 class="mb-0">System Report Date: <span style="font-size: 10px" class="text-body fw-normal">${dataR.created_at}</span></h6>
+                                  </div>
+                              </div>
+                              <div><br></div>
+                              <ul class="list-unstyled mb-0">
+                                  <li class="d-flex mb-4 pb-1 align-items-center">
+                                      <div class="avatar flex-shrink-0 me-3">
+                                          <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-arrows-move-horizontal ti-md"></i></span>
+                                      </div>
+                                      <div class="row w-100 align-items-center">
+                                          <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                                              <p class="mb-0 fw-medium">Moving</p>
+                                          </div>
+                                          <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                                              <div class="badge bg-label-secondary">${dataR.isMoving}</div>
+                                          </div>
+                                      </div>
+                                  </li>
+<li class="d-flex mb-4 pb-1 align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-info"><i class="ti ti-refresh ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">Ready</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.isReady}</div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex mb-4 pb-1 align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-success"><i class="ti ti-home ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">Dock</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.isDock}</div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex mb-4 pb-1 align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-warning"><i class="ti ti-dice ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">With Dice</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.withDice}</div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-danger"><i class="ti ti-home-plus ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">At Base 1</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.isAtBase1}</div>
+                            </div>
+                          </div>
+                        </li>
+                          <br>
+
+                          <li class="d-flex align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-success"><i class="ti ti-home-plus ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">At Base 2</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.isAtBase2}</div>
+                            </div>
+                          </div>
+                        </li>
+
+                          <br>
+
+                          <li class="d-flex align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-danger"><i class="ti ti-home-plus ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">At Base 2</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.isAtBase3}</div>
+                            </div>
+                          </div>
+                        </li>
+                              </ul>
+                          </div>`;
+
+        document.getElementById("reportOne").innerHTML = htmlContent;
+
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+}
+function singleNodeDataLabelAction(data) {
+    console.log(data)
+    var dataTable = $('#datatable1reportProductionLine').DataTable();
+if (dataTable !== 'undefined') {
+    dataTable.destroy();
+}
+
+        {#document.getElementById("reportProductionLine").innerHTML = '';#}
+    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
+        const csrftoken = getCookie('csrftoken');
+     fetch('{% url 'singlereport_production_label_action' 1 %}', {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                'label':data,
+                // Any data you want to send
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR);
+            var table = $('#datatable1reportProductionLine').DataTable({
+            data: dataR.data, // Provide the fetched data to the DataTable
+            columns: [
+                { data: 'Report.action',
+                render: function(data, type, row) {
+                // If the render is for display, convert the label to uppercase
+                if (type === 'display') {
+                    return data.toUpperCase();
+                }
+                // Otherwise, return the original data
+                return data;
+            }},
+                 {
+            data: 'id',
+            render: function(data, type, row) {
+                // Render 'action' as a button with the provided attributes and onclick function
+                return `<button id="singleNodeData"
+                            onclick="singleNodeDataCall('${data}')"
+                            class="btn btn-secondary add-new btn-primary waves-effect waves-light"
+                            tabindex="0"
+                            aria-controls="DataTables_Table_0"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasAddUser">
+                            <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">View More Data</span></span>
+                        </button>`;
+            }
+        }
+            ],
+
+            pageLength: 50
+        });
+                   {#for (var i = 0; i < dataR.data.length; i++) {#}
+                   {##}
+                   {#    var htmlContent =#}
+                   {#        `#}
+                   {#       <tr >#}
+                   {#   <td >${dataR.data[i].Report.action.toUpperCase()}</td>#}
+                   {#   <td ><button id = "singleNodeData" onclick="singleNodeDataCall('${dataR.data[i].id}')"  class="btn btn-secondary add-new btn-primary waves-effect waves-light"#}
+                   {#                tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser">#}
+                   {#       <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">View More Data</span></span></button></td>#}
+                   {#   </tr>`;#}
+                   {##}
+                   {#    document.getElementById("reportProductionLine").innerHTML += htmlContent;#}
+
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+}
+function singleNodeDatalabelCall(data,id) {
+
+        document.getElementById("singleNodeDatalabelheader").innerHTML = '';
+        document.getElementById("singleNodeDatalabelbody").innerHTML='';
+        document.getElementById("singleNodeDatalabelsub").innerHTML='';
+    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
+        const csrftoken = getCookie('csrftoken');
+     fetch('/BrokerManager/single-report/label/'+data, {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                'nodeID ':"data",
+                // Any data you want to send
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR);
+            for (var i = 0; i < dataR.action.length; i++) {
+
+                           var htmlContent =
+                 `
+                        <div class="vehicles-progress-label on-the-way-text" style="width: ${dataR.action[i].total}%">${dataR.action[i].action}</div>`;
+
+        document.getElementById("singleNodeDatalabelheader").innerHTML += htmlContent;
+        var htmlContentbody =
+                 `<div
+                          class="progress-bar fw-medium text-start bg-body text-dark px-3 rounded-0"
+                          role="progressbar"
+                          style="width: ${dataR.action[i].total}%"
+                          aria-valuenow="${dataR.action[i].total}"
+                          aria-valuemin="0"
+                          aria-valuemax="100">
+                        ${dataR.action[i].total}%
+                        </div>`;
+
+        document.getElementById("singleNodeDatalabelbody").innerHTML += htmlContentbody;
+
+            }
+             for (var i = 0; i < dataR.label.length; i++) {
+
+                           var htmlContentsub =
+                 ` <tr>
+                              <td class="w-50 ps-0">
+                                <div class="d-flex justify-content-start align-items-center">
+                                  <div class="me-2">
+                                    <i class="ti ti-truck mt-n1"></i>
+                                  </div>
+                                  <h6 class="mb-0 fw-normal">${dataR.label[i]}</h6>
+                                </div>
+                              </td>
+                              <td class="text-end pe-0">
+                                <span class="fw-medium">
+                                  <button id = "" onclick="singleNodeDataLabelAction('${dataR.label[i]}')"  class="btn btn-secondary add-new btn-primary waves-effect waves-light"
+                                   tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
+                          <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">View All Action</span></span></button>
+
+                                </span>
+                              </td>
+                            </tr>`;
+
+        document.getElementById("singleNodeDatalabelsub").innerHTML += htmlContentsub;
+
+            }
+
+
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+}
+function getNodeView(nodeid) {
+        console.log(nodeid)
+        {#document.getElementById("reportProductionLine").innerHTML = '';#}
+
+    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
+        const csrftoken = getCookie('csrftoken');
+     fetch('/BrokerManager/single-report/'+nodeid, {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                'nodeID ':"data",
+                // Any data you want to send
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR)
+
+                 document.getElementById("tablecollectionStart").innerHTML =''
+             document.getElementById("collectionStartlabels").innerHTML =''
+            dataR.collectionStart.collectionStart.forEach(function(element) {
+                 document.getElementById("tablecollectionStart").innerHTML +=    `
+                            <tr>
+                              <td class="w-50 ps-0">
+                                <div class="d-flex justify-content-start align-items-center">
+                                  <div class="me-2">
+                                    <i class="ti ti-truck mt-n1"></i>
+                                  </div>
+                                  <h6 class="mb-0 fw-normal">${ element.id_str} </h6>
+                                </div>
+                              </td>
+                              <td class="text-end pe-0 text-nowrap">
+                                <h6 class="mb-0">${element.duration_str }</h6>
+                              </td>
+                              <td class="text-end pe-0">
+                                <span class="fw-medium">  <button
+                            data-bs-target="#addRoleModal"
+                            data-bs-toggle="modal" onclick="singleNodeDatalabelCall('${nodeid}','${element.id}')"
+                            class="btn btn-primary mb-2 text-nowrap add-new-role">
+                           Open Logs
+                          </button></span>
+                              </td>
+                            </tr>`
+                });
+            var newSeriesData = []
+            dataR.reportPerDay.forEach(function(element) {
+                var typeDataGraph = element.action==='all' ? "column" : "line";
+                newSeriesData.push({
+                    name: element.action,
+                    type: typeDataGraph,
+                    data: element.data
+                  })
+               });
+            dataR.dataaction.forEach(function(element) {
+                 document.getElementById("collectionStartlabels").innerHTML +=    `
+                        <div class="vehicles-progress-label on-the-way-text" style="width: ${element.total}%">${element.action}</div>
+                            `
+         document.getElementById("collectionStartprogress").innerHTML +=    `<div
+                          class="progress-bar fw-medium text-start bg-body text-dark px-3 rounded-0"
+                          role="progressbar"
+                          style="width: ${element.total}%"
+                          aria-valuenow="${element.total}"
+                          aria-valuemin="0"
+                          aria-valuemax="100">
+                        ${element.total}%
+                        </div>
+                            `
+                });
+
+// Define new x-axis categories
+    const shipmentEl = document.querySelector('#shipmentStatisticsChart'),
+    shipmentConfig = {
+      series: newSeriesData,
+      chart: {
+        height: 270,
+        type: 'line',
+        stacked: false,
+        parentHeightOffset: 0,
+        toolbar: {
+          show: false
+        },
+        zoom: {
+          enabled: false
+        }
+      },
+      markers: {
+        size: 4,
+        colors: [config.colors.white],
+        strokeColors: chartColors.line.series2,
+        hover: {
+          size: 6
+        },
+        borderRadius: 4
+      },
+      stroke: {
+        curve: 'smooth',
+        width: [0, 3],
+        lineCap: 'round'
+      },
+      legend: {
+        show: true,
+        position: 'bottom',
+        markers: {
+          width: 8,
+          height: 8,
+          offsetX: -3
+        },
+        height: 40,
+        offsetY: 10,
+        itemMargin: {
+          horizontal: 10,
+          vertical: 0
+        },
+        fontSize: '15px',
+        fontFamily: 'Public Sans',
+        fontWeight: 400,
+        labels: {
+          colors: headingColor,
+          useSeriesColors: false
+        },
+        offsetY: 10
+      },
+      grid: {
+        strokeDashArray: 8
+      },
+      fill: {
+        opacity: [1, 1]
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: '30%',
+          startingShape: 'rounded',
+          endingShape: 'rounded',
+          borderRadius: 4
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        tickAmount: 10,
+        categories:dataR.date,
+        labels: {
+          style: {
+            colors: labelColor,
+            fontSize: '13px',
+            fontFamily: 'Public Sans',
+            fontWeight: 400
+          }
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        }
+      },
+      yaxis: {
+        tickAmount: 4,
+        labels: {
+          style: {
+            colors: labelColor,
+            fontSize: '13px',
+            fontFamily: 'Public Sans',
+            fontWeight: 400
+          },
+          formatter: function (val) {
+            return val ;
+          }
+        }
+      },
+      responsive: [
+        {
+          breakpoint: 1400,
+          options: {
+            chart: {
+              height: 270
+            },
+            xaxis: {
+              labels: {
+                style: {
+                  fontSize: '10px'
+                }
+              }
+            },
+            legend: {
+              itemMargin: {
+                vertical: 0,
+                horizontal: 10
+              },
+              fontSize: '13px',
+              offsetY: 12
+            }
+          }
+        },
+        {
+          breakpoint: 1399,
+          options: {
+            chart: {
+              height: 415
+            },
+            plotOptions: {
+              bar: {
+                columnWidth: '50%'
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 982,
+          options: {
+            plotOptions: {
+              bar: {
+                columnWidth: '30%'
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              height: 250
+            },
+            legend: {
+              offsetY: 7
+            }
+          }
+        }
+      ]
+    };
+  if (typeof shipmentEl !== undefined && shipmentEl !== null) {
+    const shipment = new ApexCharts(shipmentEl, shipmentConfig);
+    shipment.render();
+  }
+
+
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+}
     </script>
     {% endblock %}
