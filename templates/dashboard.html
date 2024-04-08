@@ -149,7 +149,7 @@
                 <div class="col-12 col-xl-12">
                   <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">Topic you are interested in</h5>
+                      <h5 class="card-title m-0 me-2">All Node Statistics Overview</h5>
                       <div class="dropdown">
                         <button
                           class="btn p-0"
@@ -186,26 +186,36 @@
                   </div>
                 </div>
 <div><br></div>
-                <div class="col-lg-12 col-xl-6">
+                <div  class="col-lg-6 col-xl-6">
+
       <div id="connectionsList" class="card card-action mb-4">
         <div class="card-header align-items-center">
           <h5 class="card-action-title mb-0">Connections</h5>
+
           <div class="card-action-element">
-            <div class="dropdown">
-              <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="ti ti-dots-vertical text-muted"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="javascript:void(0);">Share connections</a></li>
-                <li><a class="dropdown-item" href="javascript:void(0);">Suggest edits</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
-              </ul>
-            </div>
+          <div id="startAllNode">
+              {% if startallNode %}
+            <button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
+                                          Start Over
+                                        </button>
+            <button type="button" onclick="startProductionAllNode('create')" class="btn btn-sm btn-label-warning mt-md-3 waves-effect">
+                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span> </div> &nbsp;Running   </button>
+                  <button onclick="startProductionAllNode('stop')"  type="button" class="btn btn-sm btn-label-danger mt-md-3 waves-effect">
+                                          Stop All Node
+                                        </button>
+            {% else %}
+            <button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
+                                          Start All Node
+                                        </button>
+
+            {% endif %}
+                            </div>
           </div>
         </div>
         <div class="card-body">
-          <ul id="nodeList" class="list-unstyled mb-0">
+
+          <ul id="nodeList"  style="height: 365px; overflow-y: auto;" class="list-unstyled mb-0">
 
                 {% for foo in node %}
 <li class="mb-3">
@@ -233,25 +243,40 @@
                      {% endfor %}
 
             <!-- WebSocket data will be dynamically added here -->
-          </ul>  <div id="startAllNode">
-              {% if startallNode %}
-            <button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
-                                          Start Over
-                                        </button>
-            <button type="button" onclick="startProductionAllNode('create')" class="btn btn-sm btn-label-warning mt-md-3 waves-effect">
-                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
-                        <span class="visually-hidden">Loading...</span> </div> &nbsp;Running   </button>
-            {% else %}
-            <button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
-                                          Start All Node
-                                        </button>
-            {% endif %}
-                            </div>
+          </ul>
 
         </div>
       </div>
     </div>
-                  <div class="col-12 col-xl-6 mb-4">
+              <div  class="col-lg-6 col-xxl-6" >
+                  <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between mb-2">
+                      <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">Production Log For Current Run</h5>
+                        <small class="text-muted">12% increase in this month</small>
+                      </div>
+                      <div class="dropdown">
+                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" onclick="getcurrentLog('all')" name="btnradio" id="btnradio1" checked="">
+                            <label class="btn btn-outline-primary waves-effect" for="btnradio1">All</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" onclick="getcurrentLog('moscow')" id="btnradio2">
+                            <label class="btn btn-outline-primary waves-effect" for="btnradio2">Moscow</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" onclick="getcurrentLog('cda')" id="btnradio3">
+                            <label class="btn btn-outline-primary waves-effect" for="btnradio3">CDA</label>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <ul class="p-0 m-0"  style="height: 365px; overflow-y: auto;"  id="logAllnode">
+                     </ul>
+                    </div>
+                  </div>
+                </div>
+
+              <div><br></div>
+                  <div class="col-12 col-xl-12 mb-4">
                   <div class="card">
                     <div class="card-header d-flex justify-content-between">
                       <div class="card-title mb-0">
@@ -317,18 +342,26 @@
 {#                    </div>#}
 {#                  </div>#}
 {#                </div>#}
+                  <br>
+                <div></div>    </div>
+<div><br></div>
 
-              </div>
-
-                    <br>
               <!--/ Card Border Shadow -->
               <div class="row">
+
                 <!-- Vehicles overview -->
                 <div class="col-xxl-6 mb-4 order-5 order-xxl-0" >
                   <div class="card">
                     <div class="card-header">
                       <div class="card-title mb-0">
-                        <h5 class="m-0">Vehicles overview</h5>
+                        <h5 class="m-0">Overview</h5> <div id="load-1" style="display:none;" >
+                      <div class="sk-wave sk-primary">
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div></div>
+                      </div>
                       </div>
                     </div>
                     <div class="card-body">
@@ -388,6 +421,7 @@
                       </div>
                     </div>
                        <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true">
+
                 <div class="modal-dialog modal-lg modal-dialog-centered modal-add-new-role">
                   <div class="modal-content p-3 p-md-5">
                     <button
@@ -396,6 +430,18 @@
                       data-bs-dismiss="modal"
                       aria-label="Close"></button>
                     <div class="modal-body">
+                        <div class="card-header">
+                      <div class="card-title mb-0">
+                        <h5 class="m-0">Overview <div id="load-3" >
+                        <div class="sk-wave sk-primary">
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                      </div></h5>
+                      </div>
+                    </div>
 
                     <div class="card-body">
                       <div class="d-none d-lg-flex vehicles-progress-labels mb-4" id="singleNodeDatalabelheader">
@@ -405,7 +451,7 @@
                       </div>
                       <div class="table-responsive">
                         <table class="table card-table">
-                          <tbody class="table-border-bottom-0" id="singleNodeDatalabelsub" >
+                          <tbody class="table-border-bottom-0" id="singleNodeDatalabelsub" style=" overflow-y: auto;" >
 
                           </tbody>
                         </table>
@@ -424,22 +470,27 @@
                   <div class="card">
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <div class="card-title mb-0">
-                        <h5 class="m-0 me-2">Shipment statistics</h5>
-                        <small class="text-muted">Total number of deliveries 23.8k</small>
+                        <h5 class="m-0 me-2">Node statistics<div id="load-2" style="display: none" >
+                       <div class="sk-wave sk-primary">
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                       </div>
+                      </div></h5>
+                        <small class="text-muted">Total number of report sent to the broker based on actions </small>
                       </div>
-
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="height: 365px; overflow-y: auto;" >
                       <div id="shipmentStatisticsChart"></div>
                     </div>
                   </div>
                 </div>
-                <!--/ Shipment statistics -->
-                <!-- Delivery Performance -->
-                <!--/ On route vehicles Table -->
               </div>
                 </div>
             </div>
+
       <div
                   class="offcanvas offcanvas-end"
                   tabindex="-1"
@@ -487,7 +538,8 @@
 {% endblock %}
 {% block JsScriptInner %}
     <script>
-
+    var selectedNode = 'gatesroomba12'
+    var selectstartCode = ''
       horizontalBar = JSON.parse('{{ horizontalBar |escapejs|safe  }}')
      // Function to convert text to title case
   function toTitleCase(text) {
@@ -649,9 +701,21 @@ function getCookie(name) {
             <button type="button" onclick="startProductionAllNode('create')" class="btn btn-sm btn-label-warning mt-md-3 waves-effect">
                                     <div class="spinner-border spinner-border-sm text-secondary" role="status">
                         <span class="visually-hidden">Loading...</span> </div> &nbsp;Running   </button>
+            <button onclick="startProductionAllNode('stop')"  type="button" class="btn btn-sm btn-label-danger mt-md-3 waves-effect">
+                                          Stop All Node
+                                        </button>
                         `;
 
             }
+            else {
+                 console.log(">>>>>>>>>>>>>>>>.")
+            document.getElementById('startAllNode').innerHTML = `<button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
+                                          Start All Node
+                                        </button>
+                        `;
+            }
+
+getNodeView(selectedNode)
         })
         .catch(error => {
             // Handle errors
@@ -699,127 +763,131 @@ function getCookie(name) {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
     }
-  const horizontalBarChartEl = document.querySelector('#horizontalBarChart'),
-    horizontalBarChartConfig = {
-      chart: {
-        height: 270,
-        type: 'bar',
-        toolbar: {
-          show: false
-        }
-      },
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          barHeight: '70%',
-          distributed: true,
-          startingShape: 'rounded',
-          borderRadius: 7
-        }
-      },
-      grid: {
-        strokeDashArray: 10,
-        borderColor: borderColor,
-        xaxis: {
-          lines: {
-            show: true
-          }
-        },
-        yaxis: {
-          lines: {
-            show: false
-          }
-        },
-        padding: {
-          top: -35,
-          bottom: -12
-        }
-      },
 
-      colors: [
-        config.colors.primary,
-        config.colors.info,
-        config.colors.success,
-        config.colors.secondary,
-        config.colors.danger,
-        config.colors.warning
-      ],
-      dataLabels: {
-        enabled: true,
-        style: {
-          colors: ['#fff'],
-          fontWeight: 200,
-          fontSize: '13px',
-          fontFamily: 'Public Sans'
-        },
-        formatter: function (val, opts) {
-          return horizontalBarChartConfig.labels[opts.dataPointIndex];
-        },
-        offsetX: 0,
-        dropShadow: {
-          enabled: false
-        }
-      },
-      labels:horizontalBar.labels,
+    function horizontalBarChart(horizontalBar) {
 
-      series: [
-        {
-          data:horizontalBar.data
-        }
-      ],
+        const horizontalBarChartEl = document.querySelector('#horizontalBarChart'),
+            horizontalBarChartConfig = {
+                chart: {
+                    height: 270,
+                    type: 'bar',
+                    toolbar: {
+                        show: false
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: true,
+                        barHeight: '70%',
+                        distributed: true,
+                        startingShape: 'rounded',
+                        borderRadius: 7
+                    }
+                },
+                grid: {
+                    strokeDashArray: 10,
+                    borderColor: borderColor,
+                    xaxis: {
+                        lines: {
+                            show: true
+                        }
+                    },
+                    yaxis: {
+                        lines: {
+                            show: false
+                        }
+                    },
+                    padding: {
+                        top: -35,
+                        bottom: -12
+                    }
+                },
 
-      xaxis: {
-        categories:[],
-        axisBorder: {
-          show: false
-        },
-        axisTicks: {
-          show: false
-        },
-        labels: {
-          style: {
-            colors: labelColor,
-            fontSize: '13px'
-          },
-          formatter: function (val) {
-            return `${val}%`;
-          }
-        }
-      },
-      yaxis: {
-        max: 100,
-        labels: {
-          style: {
-            colors: [labelColor],
-            fontFamily: 'Public Sans',
-            fontSize: '13px'
-          }
-        }
-      },
-      tooltip: {
-        enabled: true,
-        style: {
-          fontSize: '12px'
-        },
-        onDatasetHover: {
-          highlightDataSeries: false
-        },
-        custom: function ({ series, seriesIndex, dataPointIndex, w }) {
-          return '<div class="px-3 py-2">' + '<span>' + series[seriesIndex][dataPointIndex] + '%</span>' + '</div>';
-        }
-      },
-      legend: {
-        show: false
-      }
-    };
-  if (typeof horizontalBarChartEl !== undefined && horizontalBarChartEl !== null) {
-    const horizontalBarChart = new ApexCharts(horizontalBarChartEl, horizontalBarChartConfig);
-    horizontalBarChart.render();
-    console.log( horizontalBar.data.length)
-    for (var i = 0; i < horizontalBar.data.length; i++) {
-        console.log(horizontalBar.data[i]);  // Output each item in the console
+                colors: [
+                    config.colors.primary,
+                    config.colors.info,
+                    config.colors.success,
+                    config.colors.secondary,
+                    config.colors.danger,
+                    config.colors.warning
+                ],
+                dataLabels: {
+                    enabled: true,
+                    style: {
+                        colors: ['#fff'],
+                        fontWeight: 200,
+                        fontSize: '13px',
+                        fontFamily: 'Public Sans'
+                    },
+                    formatter: function (val, opts) {
+                        return horizontalBarChartConfig.labels[opts.dataPointIndex];
+                    },
+                    offsetX: 0,
+                    dropShadow: {
+                        enabled: false
+                    }
+                },
+                labels: horizontalBar.labels,
 
-        document.getElementById("NodehorizontalBarChart").innerHTML += ` <div class="d-flex col-6 align-items-baseline">
+                series: [
+                    {
+                        data: horizontalBar.data
+                    }
+                ],
+
+                xaxis: {
+                    categories: [],
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    labels: {
+                        style: {
+                            colors: labelColor,
+                            fontSize: '13px'
+                        },
+                        formatter: function (val) {
+                            return `${val}%`;
+                        }
+                    }
+                },
+                yaxis: {
+                    max: 100,
+                    labels: {
+                        style: {
+                            colors: [labelColor],
+                            fontFamily: 'Public Sans',
+                            fontSize: '13px'
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                    style: {
+                        fontSize: '12px'
+                    },
+                    onDatasetHover: {
+                        highlightDataSeries: false
+                    },
+                    custom: function ({series, seriesIndex, dataPointIndex, w}) {
+                        return '<div class="px-3 py-2">' + '<span>' + series[seriesIndex][dataPointIndex] + '%</span>' + '</div>';
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            };
+        if (typeof horizontalBarChartEl !== undefined && horizontalBarChartEl !== null) {
+            const horizontalBarChart = new ApexCharts(horizontalBarChartEl, horizontalBarChartConfig);
+            horizontalBarChart.render();
+            document.getElementById("NodehorizontalBarChart").innerHTML =''
+            console.log(horizontalBar.data.length)
+            for (var i = 0; i < horizontalBar.data.length; i++) {
+                console.log(horizontalBar.data[i]);  // Output each item in the console
+
+                document.getElementById("NodehorizontalBarChart").innerHTML += ` <div class="d-flex col-6 align-items-baseline">
                             <span class="text-primary me-2"><i class="ti ti-circle-filled fs-6"></i></span>
                             <div>
                               <p class="mb-2">${horizontalBar.labels[i]}</p>
@@ -827,10 +895,12 @@ function getCookie(name) {
                             </div>
                           </div>
        ` // Output each item in the console
+            }
+
+        }
     }
 
-  }
-
+    horizontalBarChart(horizontalBar)
     // Chart Colors
   const chartColors = {
     donut: {
@@ -852,12 +922,12 @@ const host = window.location.host;
 const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
 
 // WebSocket connection
-const socket = new WebSocket(`${protocol}//${host}/ws/node`);
+const socket = new WebSocket(`${protocol}//${host}/ws/node/all`);
 
   // Function to handle incoming messages
   socket.onmessage = function(event) {
     const data = JSON.parse(event.data);
-    console.log(data['data']);
+    console.log(data);
     const nodeList = document.getElementById('nodeList');
     const nodeList2 = document.getElementById('nodeList2');
 
@@ -867,11 +937,11 @@ const socket = new WebSocket(`${protocol}//${host}/ws/node`);
      document.getElementById('countNode').innerHTML = data['count']
 
     // Loop through data and create list items
-    data['data'].forEach(node => {
+  data['data'].forEach(node => {
 
       const li = document.createElement('li');
       const li2 = document.createElement('li');
-
+        clicked = node.NodeID===selectedNode ? 'active':''
       li.classList.add('mb-3');
       li2.classList.add('mb-3');
       li.innerHTML = `
@@ -895,7 +965,7 @@ const socket = new WebSocket(`${protocol}//${host}/ws/node`);
       nodeList.appendChild(li);
 
      li2.innerHTML = ` <li class="nav-item" role="presentation">
-                          <a href="javascript:void(0);" class="nav-link btn active d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-orders-id" aria-controls="navs-orders-id" aria-selected="true">
+                          <a href="javascript:void(0);" class="nav-link btn s d-flex flex-column align-items-center justify-content-center ${clicked}" role="tab" data-bs-toggle="tab" data-bs-target="#navs-orders-id" aria-controls="navs-orders-id" aria-selected="true">
                             <div class="badge bg-label-secondary rounded p-2">
                               <i class="fas fa-robot ti-sm"></i>
                             </div>
@@ -905,6 +975,11 @@ const socket = new WebSocket(`${protocol}//${host}/ws/node`);
       nodeList2.appendChild(li2);
     });
 
+    horizontalBarChart(data.horizontalBarChart)
+
+getcurrentLog(selectedLine)
+    getNodeView(selectedNode)
+    singleNodeDatalabelCall(selectedNode,selectstartCode)
   };
 
   function updateTimePassed() {
@@ -1194,10 +1269,10 @@ if (dataTable !== 'undefined') {
         });
 }
 function singleNodeDatalabelCall(data,id) {
+        selectedNode=data
+        selectstartCode=id
 
-        document.getElementById("singleNodeDatalabelheader").innerHTML = '';
-        document.getElementById("singleNodeDatalabelbody").innerHTML='';
-        document.getElementById("singleNodeDatalabelsub").innerHTML='';
+                document.getElementById('load-3').style.display = 'block';
     {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
         const csrftoken = getCookie('csrftoken');
      fetch('/BrokerManager/single-report/label/'+data, {
@@ -1208,7 +1283,7 @@ function singleNodeDatalabelCall(data,id) {
                 'X-CSRFToken': csrftoken,// Include CSRF token in request headers
             },
             body: JSON.stringify({
-                'nodeID ':"data",
+                'startCode': id,
                 // Any data you want to send
             }),
         })
@@ -1219,18 +1294,24 @@ function singleNodeDatalabelCall(data,id) {
             return response.json();
         })
         .then(data => {
+
+
+                document.getElementById('load-3').style.display = 'none';
+        document.getElementById("singleNodeDatalabelheader").innerHTML = '';
+        document.getElementById("singleNodeDatalabelbody").innerHTML='';
+        document.getElementById("singleNodeDatalabelsub").innerHTML='';
             // Handle the success response from the server
              dataR = JSON.parse(data);
             console.log(dataR);
             for (var i = 0; i < dataR.action.length; i++) {
-
-                           var htmlContent =
-                 `
+    if (dataR.action[i].total > 0) {
+        var htmlContent =
+            `
                         <div class="vehicles-progress-label on-the-way-text" style="width: ${dataR.action[i].total}%">${dataR.action[i].action}</div>`;
 
         document.getElementById("singleNodeDatalabelheader").innerHTML += htmlContent;
         var htmlContentbody =
-                 `<div
+            `<div
                           class="progress-bar fw-medium text-start bg-body text-dark px-3 rounded-0"
                           role="progressbar"
                           style="width: ${dataR.action[i].total}%"
@@ -1239,8 +1320,9 @@ function singleNodeDatalabelCall(data,id) {
                           aria-valuemax="100">
                         ${dataR.action[i].total}%
                         </div>`;
-
         document.getElementById("singleNodeDatalabelbody").innerHTML += htmlContentbody;
+    }
+
 
             }
              for (var i = 0; i < dataR.label.length; i++) {
@@ -1279,10 +1361,14 @@ function singleNodeDatalabelCall(data,id) {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
 }
+getNodeView(selectedNode)
 function getNodeView(nodeid) {
         console.log(nodeid)
+    selectedNode = nodeid
         {#document.getElementById("reportProductionLine").innerHTML = '';#}
-
+                document.getElementById('load-1').style.display = 'block';
+                document.getElementById('load-2').style.display = 'block';
+        {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
     {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
         const csrftoken = getCookie('csrftoken');
      fetch('/BrokerManager/single-report/'+nodeid, {
@@ -1308,10 +1394,17 @@ function getNodeView(nodeid) {
              dataR = JSON.parse(data);
             console.log(dataR)
 
+                document.getElementById('load-1').style.display = 'none';
+                document.getElementById('load-2').style.display = 'none';
+
+                 document.getElementById("collectionStartprogress").innerHTML =''
                  document.getElementById("tablecollectionStart").innerHTML =''
                  document.getElementById("shipmentStatisticsChart").innerHTML =''
              document.getElementById("collectionStartlabels").innerHTML =''
             dataR.collectionStart.collectionStart.forEach(function(element) {
+                var status =  element.duration_str ==='RUNNING'? `<div class="spinner-border text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>`:element.duration_str
                  document.getElementById("tablecollectionStart").innerHTML +=    `
                             <tr>
                               <td class="w-50 ps-0">
@@ -1323,7 +1416,7 @@ function getNodeView(nodeid) {
                                 </div>
                               </td>
                               <td class="text-end pe-0 text-nowrap">
-                                <h6 class="mb-0">${element.duration_str }</h6>
+                                <h6 class="mb-0">${ status} </h6>
                               </td>
                               <td class="text-end pe-0">
                                 <span class="fw-medium">  <button
@@ -1345,9 +1438,11 @@ function getNodeView(nodeid) {
                   })
                });
             dataR.dataaction.forEach(function(element) {
-                 document.getElementById("collectionStartlabels").innerHTML +=    `
+              if (element.total > 0) {
+                  document.getElementById("collectionStartlabels").innerHTML +=    `
                         <div class="vehicles-progress-label on-the-way-text" style="width: ${element.total}%">${element.action}</div>
                             `
+
          document.getElementById("collectionStartprogress").innerHTML +=    `<div
                           class="progress-bar fw-medium text-start bg-body text-dark px-3 rounded-0"
                           role="progressbar"
@@ -1358,6 +1453,7 @@ function getNodeView(nodeid) {
                         ${element.total}%
                         </div>
                             `
+              }
                 });
 
 // Define new x-axis categories
@@ -1522,7 +1618,7 @@ function getNodeView(nodeid) {
         }
       ]
     };
-  if (typeof shipmentEl !== undefined && shipmentEl !== null) {
+            if (typeof shipmentEl !== undefined && shipmentEl !== null) {
     const shipment = new ApexCharts(shipmentEl, shipmentConfig);
     shipment.render();
   }
@@ -1537,5 +1633,74 @@ function getNodeView(nodeid) {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
 }
+getcurrentLog('all')
+var selectedLine ="all"
+ function getcurrentLog  (line) {
+        const csrftoken = getCookie('csrftoken');
+        selectedLine=line
+        // Your AJAX request here
+        fetch('{% url 'fullreport_production' %}', {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                "selectedLine" : line
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR);
+
+        document.getElementById("logAllnode").innerHTML=''
+              dataR.data.forEach(log => {
+
+        document.getElementById("logAllnode").innerHTML += `          <li class="d-flex mb-4 pb-1">
+                          <div class="avatar flex-shrink-0 me-3">
+<button id="singleNodeData" onclick="singleNodeDataCall('${log.id}')" class="btn btn-secondary add-new btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser">
+
+                            <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-arrows-move"></i></span>
+                        </button>
+                          </div>
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0 fw-normal">${log.Report.label}</h6>
+                              <small class="text-success fw-normal d-block">
+                                <i class="ti ti-chevron-up mb-1"></i>
+                               ${log.NodeType} at (${log.NodeID})
+                              </small>
+                            </div>
+                            <div class="user-progress">
+                              <h6 class="mb-0">${log.Report.action?log.Report.action.toUpperCase():log.Report.action}</h6>
+                            </div>
+                          </div>
+                        </li>
+
+        `;
+
+              })
+
+
+
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+    }
+
+
     </script>
     {% endblock %}

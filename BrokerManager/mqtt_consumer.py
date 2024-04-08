@@ -39,6 +39,7 @@ def on_message(client, userdata, message):
         collection_node = dbname["NodeModel"]
         collection = dbname["Brokerlogs"]
         collection_report = dbname["BrokerReport"]
+        collectionStartLog = dbname["NodeStartsLogs"]
         thirty_minutes_ago =datetime.datetime.now() - timedelta(hours=timeToNewProduction)
 
         if "messageType" in payload:
@@ -72,8 +73,8 @@ def on_message(client, userdata, message):
                     return
                 if payload["messageType"] == 'Report':
                     print('creat Report>><MQQT')
-                    reportingOfNode(payload, collection_node, recent_documents, collection_report)
-
+                    reportingOfNode(payload, collection_node, recent_documents, collection_report,collectionStartLog)
+                    getAllOnlineNode()
                     return
 
 
@@ -92,7 +93,7 @@ def registrationOfNode(payload,collection_node,recent_documents):
     serializer = RegNodeSerializer(data=payload)
     if not serializer.is_valid():
         message = {
-            "isBroker":True,
+            "brokerManager":True,
             "msg": "Enter valid Payload",
             "msg.code": "in.valid.Payload",
             "format":RegNodeSerializermessage,
@@ -116,19 +117,19 @@ def registrationOfNode(payload,collection_node,recent_documents):
     print('created registration>><MQQT')
     message = {
             "status": "Ok",
-            "isBroker":True,
+            "brokerManager":True,
            "message":"Welcome "+ str(payload['nodeId']).lower(),
            "nodeId":str(payload['nodeId']).lower()
             }
     client.publish(TOPIC, json.dumps(message))
 
-def reportingOfNode(payload,collection_node,recent_documents,collection_report):
+def reportingOfNode(payload,collection_node,recent_documents,collection_report,collectionStartLog):
     nodeIDDB = collection_node.find_one(
         {"NodeID": str(payload['nodeId']).lower(), "Code": recent_documents['Code']})
     if not nodeIDDB:
         message = {
             "msg": "Enter valid nodeId",
-            "isBroker":True,
+            "brokerManager":True,
             "msg.code": "in.valid.nodeId",
             "format": RegNodeSerializermessage,
             "status": "error",
@@ -141,7 +142,7 @@ def reportingOfNode(payload,collection_node,recent_documents,collection_report):
         message = {
             "msg": "Enter valid Payload",
             "msg.code": "in.valid.Payload",
-            "isBroker": True,
+            "brokerManager": True,
             "format": RegNodeSerializermessage,
             "nodeId": str(payload['nodeId']).lower(),
             "status": "error"
@@ -155,7 +156,7 @@ def reportingOfNode(payload,collection_node,recent_documents,collection_report):
                 "msg": "Enter valid Payload",
                 "msg.code": "in.valid.Payload",
 
-                "isBroker":True,
+                "brokerManager":True,
                 "format": roombadata,
                 "nodeId": str(payload['nodeId']).lower(),
                 "status": "error"
@@ -171,29 +172,35 @@ def reportingOfNode(payload,collection_node,recent_documents,collection_report):
                 "msg.code": "in.valid.Payload",
                 "format": CRX10report,
 
-                "isBroker":True,
+                "brokerManager":True,
                 "nodeId": str(payload['nodeId']).lower(),
                 "status": "error"
             }
 
             client.publish(TOPIC, json.dumps(message))
             return
+
+
     dataToDbreport = {
         "Code": nodeIDDB["Code"],
         "NodeID": nodeIDDB['NodeID'],
         "ProductLine": nodeIDDB['ProductLine'],
         "NodeType": nodeIDDB['NodeType'],
-        "Report": payload["roombareport"],
+        "Report": payload[payload['node']+"report"],
         "ReportDate":payload["date"],
         "created_at": datetime.datetime.now(),
 
     }
+    last_document = collectionStartLog.find_one(sort=[('_id', pymongo.DESCENDING)])
+    if last_document and last_document['ended_at']==None:
+        dataToDbreport['startCode'] = last_document['startCode']
+
     collection_report.insert_one(dataToDbreport)
     message = {
         "status": "Ok",
         "message": "report saved",
 
-        "isBroker": True,
+        "brokerManager": True,
         "nodeId": str(payload['nodeId']).lower()
     }
     print('created Report>><MQQT')

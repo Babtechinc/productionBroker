@@ -24,7 +24,8 @@ def getAllOnlineNode():
 
     message = {
         "type": "node.updated",
-        "data": list(recent_node)
+        "data": list(recent_node),
+       "horizontalBarChart" :getReportNodehorizontalBarChart()
 
     }
     channel_layer = get_channel_layer()
@@ -40,7 +41,7 @@ def getReportAllNodeOne(NodeID):
     thirty_minutes_ago = datetime.datetime.now() - datetime.timedelta(hours=timeToNewProduction)
 
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
-    listDays = [7,6,5,4,3,2,1]
+    listDays = [6,5,4,3,2,1,0]
     listDate = []
     reportPerDayFull = []
     collection_node = dbname["NodeModel"]
@@ -100,8 +101,9 @@ def getReportAllNodeOne(NodeID):
             })
     labellist = []
     for foo in allresult:
-        if foo["Report"]['label'] not in labellist:
-            labellist.append(foo["Report"]['label'])
+        if 'Report' in foo and 'label' in foo['Report']:
+            if foo["Report"]['label'] not in labellist:
+                labellist.append(foo["Report"]['label'])
 
 
     return {
@@ -112,7 +114,8 @@ def getReportAllNodeOne(NodeID):
         "date":listDate
     }
 
-def getReportAllLabel(NodeID,startId):
+def getReportAllLabel(NodeID,startCode):
+    print(startCode)
     dbname = my_client['Django']
     # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection)
     collection = dbname["Brokerlogs"]
@@ -120,6 +123,7 @@ def getReportAllLabel(NodeID,startId):
     thirty_minutes_ago = datetime.datetime.now() - datetime.timedelta(hours=timeToNewProduction)
 
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
+    print("recent_documents")
     collection_node = dbname["NodeModel"]
     nodeIDDB = collection_node.find_one(
         {"NodeID": NodeID, "Code": recent_documents['Code']})
@@ -131,24 +135,27 @@ def getReportAllLabel(NodeID,startId):
     if nodeIDDB['NodeType'] == 'crx10':
         action = ['all', 'cartMove', 'jointMove', 'gripperMove', 'convMove']
     dataaction=[]
-    allresult = collection_report.find({"Code": recent_documents['Code'], "NodeID": NodeID}, {"_id": 0})
+    allresult = collection_report.find({"Code": recent_documents['Code'],"startCode": startCode, "NodeID": NodeID}, {"_id": 0})
+
     allresult_count = allresult.count()
+    print(allresult_count)
     for foo in action:
         if foo == 'all':
             continue
-        result = collection_report.find({"Code": recent_documents['Code'], "NodeID": NodeID, "$or": [
+        result = collection_report.find({"Code": recent_documents['Code'],"startCode": startCode, "NodeID": NodeID, "$or": [
             {"Report.action": foo + "_done"},
             {"Report.action": foo + "_start"}], }, {"_id": 0}).count()
-        dataaction.append({
-            'action': str(foo).title(),
-            'total': round((result / allresult_count) * 100, 2)
-        })
+        if allresult_count > 0:
+            dataaction.append({
+                'action': str(foo).title(),
+                'total': round((result / allresult_count) * 100, 2)
+            })
     labellist = []
 
     for foo in allresult:
-        if foo["Report"]['label'] not in labellist:
-            labellist.append(foo["Report"]['label'])
-
+        if 'Report' in foo and 'label' in foo['Report']:
+            if foo["Report"]['label'] not in labellist:
+                labellist.append(foo["Report"]['label'])
 
     return {
         "labellist":labellist,
@@ -203,7 +210,6 @@ def collectionStartPush(numberOfDays=10):
                 time_components.append(f"{seconds} secs")
 
             duration_str = ', '.join(time_components)
-            print(duration_str)
             collectionStart.append({
                 "duration":duration,
                 "duration_str":duration_str,
@@ -219,7 +225,6 @@ def collectionStartPush(numberOfDays=10):
             })
 
         idcount = idcount + 1
-    print(collectionStart)
     return {
         "last_document":last_document,
         "collectionStart":collectionStart,
@@ -268,9 +273,7 @@ def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
         horizontalBarChart['labels'].append(str(foo['NodeID']).title())
         horizontalBarChart['data'].append(round((count/countALL)*100,2))
         number=number+1
-    print(horizontalBarChart)
 
-    # print("recent_created_at")
     # # message = {
     # #     "type": "node.updated",
     #     "data": list(recent_node)
@@ -284,4 +287,14 @@ def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
 
     return horizontalBarChart
 
+    # message = {
+    #     "type": "node.updated",
+    #     "data": list(recent_node)
+    #
+    # }
+    # channel_layer = get_channel_layer()
+    # async_to_sync(channel_layer.group_send)(
+    #     f"node",
+    #   message
+    # )
 

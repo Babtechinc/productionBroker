@@ -13,7 +13,7 @@ import pymongo
 from django.conf import settings
 from rest_framework.decorators import api_view
 
-from BrokerManager.Serializer import ReportSerializer
+from BrokerManager.Serializer import ReportSerializer, DateTimeEncoder
 from BrokerManager.mqtt_consumer import client, TOPIC
 from BrokerManager.signals import getReportNodehorizontalBarChart, getReportAllNodeOne, collectionStartPush, \
     getReportAllLabel
@@ -29,7 +29,6 @@ def dashboard(request):
     start = False
     horizontalBar = getReportNodehorizontalBarChart()
     thirty_minutes_ago = datetime.datetime.now() - timedelta(hours=timeToNewProduction)
-
     # Filter ProductionLineModel objects created within the last 30 minutes
 
     # First define the database name
@@ -139,6 +138,40 @@ def singlereport_production(request):
 
 @csrf_exempt
 @api_view(['POST'])
+def fullreport_production(request):
+    # Your production start logic goes here
+    # For example, you can return a JSON response
+    recent_report = {'data':[]}
+    print(request.method)
+    if request.method == 'POST':
+
+        dbname = my_client['Django']
+        collection = dbname["Brokerlogs"]
+        collection_report = dbname["BrokerReport"]
+
+        collectionStartLog = dbname["NodeStartsLogs"]
+        last_document = collectionStartLog.find_one(sort=[('_id', pymongo.DESCENDING)])
+
+        if not (last_document):
+
+            return JsonResponse([],safe=False)
+        thirty_minutes_ago = datetime.datetime.now() - timedelta(hours=timeToNewProduction)
+
+        recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
+        query={"Code": recent_documents['Code'], 'startCode': last_document['startCode']}
+
+        print(request.data)
+        if 'selectedLine' in request.data and request.data['selectedLine'] !='all' :
+            query['ProductLine']=request.data['selectedLine']
+            print("><<>>")
+        print(query)
+        recent_report_full= list(collection_report.find(query
+            ,sort=[('_id', pymongo.DESCENDING)]),)
+        recent_report['data']=ReportSerializer(recent_report_full, many=True).data
+    return JsonResponse(json.dumps(recent_report, default=str,cls=DateTimeEncoder), safe=False)
+
+@csrf_exempt
+@api_view(['POST'])
 def singlereport_production_node(request,node):
     # Your production start logic goes here
     # For example, you can return a JSON response
@@ -156,12 +189,14 @@ def singlereport_production_label(request, nodeid):
     # Your production start logic goes here
     # For example, you can return a JSON response
     recent_report = {"error": ""}
-    print(request.method)
     if request.method == 'POST':
-        # if not ('id'  in request.data):
-        #    return JsonResponse({})
+        print(request.data)
+        print("request.data")
         print(nodeid)
-        datalist = getReportAllLabel(nodeid,'')
+        if not ('startCode'  in request.data):
+           return JsonResponse(recent_report)
+        print("nodeid")
+        datalist = getReportAllLabel(nodeid,request.data['startCode'])
         recent_report = {
             "label": datalist['labellist'] ,
             "action":datalist['dataaction']
@@ -261,19 +296,28 @@ def start_all_node_production(request):
         if last_document and last_document['ended_at']==None:
             new_values = {'$set': {'ended_at':  datetime.datetime.now()}}
             collectionStartLog.update_one({'_id': last_document['_id']}, new_values)
-        recent_report = {"startCode": str(uuid.uuid4()).replace("-", ""),
-                         "productionCode": recent_documents['Code'],
-                         "started_at": datetime.datetime.now(),
-                         "ended_at": None,
-                         "updated_at": datetime.datetime.now(), }
-        collectionStartLog.insert_one(recent_report)
-        message = {
-            "status": "Ok",
-            "message": "start_all",
-            "isBroker": True,
-        }
-        print(recent_report)
-        client.publish(TOPIC, json.dumps(message))
+        if request.data['status'] == 'create':
+            recent_report = {"startCode": str(uuid.uuid4()).replace("-", ""),
+                             "productionCode": recent_documents['Code'],
+                             "started_at": datetime.datetime.now(),
+                             "ended_at": None,
+                             "updated_at": datetime.datetime.now(), }
+            collectionStartLog.insert_one(recent_report)
+            recent_report['status']=request.data['status']
+            message = {
+                "status": "start.all.node",
+                "message": "start_all",
+                "brokerManager": True,
+            }
+            client.publish(TOPIC, json.dumps(message))
+        if request.data['status'] == 'stop':
+            recent_report = {"status": request.data['status']}
+            message = {
+                "status": "stop.all.node",
+                "message": "stop_all",
+                "brokerManager": True,
+            }
+            client.publish(TOPIC, json.dumps(message))
     return JsonResponse(json.dumps(recent_report,default=str,),safe=False)
 
 

@@ -22,6 +22,7 @@ from BrokerManager import views
 urlpatterns = [
     path('start-production/', views.start_production, name='start_production'),
     path('single-report/', views.singlereport_production, name='singlereport_production'),
+    path('report/full', views.fullreport_production, name='fullreport_production'),
     path('single-report/<str:node>', views.singlereport_production_node, name='singlereport_production_node'),
     path('single-report/label/<str:nodeid>', views.singlereport_production_label, name='singlereport_production_label'),
     path('single-report/label/<str:nodeid>/action', views.singlereport_production_label_action, name='singlereport_production_label_action'),
