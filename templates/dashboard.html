@@ -201,7 +201,7 @@
         </div>
         <div class="card-body">
 
-          <ul id="nodeList"  style="height: 365px; overflow-y: auto;" class="list-unstyled mb-0">
+          <ul id="nodeList"  style="height: 400px; overflow-y: auto;" class="list-unstyled mb-0">
 
                 {% for foo in node %}
 <li class="mb-3">
@@ -258,7 +258,7 @@
                       </div>
                     </div>
                     <div class="card-body">
-                      <ul class="p-0 m-0"  style="height: 365px; overflow-y: auto;"  id="logAllnode">
+                      <ul class="p-0 m-0"  style="height: 355px; overflow-y: auto;"  id="logAllnode">
                      </ul>
                     </div>
                   </div>
@@ -1103,7 +1103,7 @@ function singleNodeDataCall(data) {
                                           <div class="bg-lighter px-3 py-2 rounded me-auto mb-3">
                                           </div>
                                       </div>
-                                      <h6 class="mb-0">Report Date: <span style="font-size: 10px" class="text-body fw-normal">${dataR.ReportDate}</span></h6>
+                                      <h6 class="mb-0">Report Date: ${humanizeDate(new Date(dataR.ReportDate))}</h6>
                                       <h6 class="mb-0">System Report Date: <span style="font-size: 10px" class="text-body fw-normal">${dataR.created_at}</span></h6>
                                   </div>
                                   </div>`
@@ -2033,6 +2033,36 @@ function getNodeView(nodeid) {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
 }
+function humanizeDate(date) {
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days === 0) {
+        if (hours === 0) {
+            if (minutes === 0) {
+                return "Just now";
+            } else {
+                return minutes === 1 ? "1 minute ago" : `${minutes} minutes ago`;
+            }
+        } else {
+            return hours === 1 ? "1 hour ago" : `${hours} hours ago`;
+        }
+    } else if (days === 1) {
+        return "Yesterday";
+    } else {
+        // For older dates, return a standard date format
+        return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+}
+
+// Example usage:
+const date = new Date('2024-04-07T12:00:00');
+console.log(humanizeDate(date)); // Output: "2 days ago"
+
 getcurrentLog('all')
 var selectedLine ="all"
  function getcurrentLog  (line) {
@@ -2074,13 +2104,17 @@ var selectedLine ="all"
                           <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                             <div class="me-2">
                               <h6 class="mb-0 fw-normal">${log.Report.label}</h6>
-                              <small class="text-success fw-normal d-block">
+                              <small class="text fw-normal d-block">
                                 <i class="ti timeline-point mb-1"></i>
                                ${log.NodeType.toUpperCase()} at (${log.NodeID.toUpperCase()})
                               </small>
+                            <small class="text-primary fw-normal d-block">
+                                <i class="ti timeline-point mb-1"></i>
+                               ${humanizeDate(new Date(log.ReportDate))}
+                              </small>
                             </div>
                             <div class="user-progress">
-                              <h6 class="mb-0">${log.Report.action?log.Report.action.toUpperCase():log.Report.action}</h6>
+                              <h6 class="mb-0 text-primary">${log.Report.action?log.Report.action.toUpperCase():log.Report.action}</h6>
                             </div>
                           </div>
                         </li>
