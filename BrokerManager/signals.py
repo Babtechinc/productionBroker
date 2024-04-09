@@ -5,6 +5,7 @@ import pymongo
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
+from BrokerManager.Serializer import ReportSerializer
 from productionBroker import settings
 from productionBroker.settings import timeToNewProduction
 
@@ -21,11 +22,17 @@ def getAllOnlineNode():
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
 
     recent_node = collection_node.find({"Code":recent_documents['Code']}, {"_id": 0})  # Projection to exclude _id field
+    query = {
+        "Code": recent_documents['Code'],
+        "Report.Fault": {'$nin': [None, {}, [],'']}  # '$nin' is "not in" operator for arrays
+    }
 
+    Faultresult = collection_report.find(query, {"_id": 0}).count()
     message = {
         "type": "node.updated",
         "data": list(recent_node),
-       "horizontalBarChart" :getReportNodehorizontalBarChart()
+       "horizontalBarChart" :getReportNodehorizontalBarChart(),
+        "Faultcount":Faultresult
 
     }
     channel_layer = get_channel_layer()
@@ -68,6 +75,7 @@ def getReportAllNodeOne(NodeID):
             last_datetime = datetime.datetime(recent_created_date.year, recent_created_date.month, recent_created_date.day, 23,
                                               59, 59)
 
+
             query = {"created_at": {'$gte': first_datetime, '$lt': last_datetime},"Code": recent_documents['Code'],"NodeID":NodeID}
             if foo =='all':
                 # # Executing the query
@@ -80,38 +88,49 @@ def getReportAllNodeOne(NodeID):
             else:
 
                 allresult = collection_report.find({**query, "$or": [
+                        {"Report.action": foo },
                         {"Report.action": foo + "_done"},
                         {"Report.action": foo + "_start"},]}, {"_id": 0})
                 reportPerDay["data"].append(allresult.count())
         reportPerDayFull.append(reportPerDay)
     dataaction = []
 
-    allresult = collection_report.find({"Code": recent_documents['Code'] ,"NodeID":NodeID }, {"_id": 0})
-    allresult_count = allresult.count()
+    allresult = collection_report.find({"Code": recent_documents['Code'] ,"NodeID":NodeID },sort=[('_id', pymongo.DESCENDING)])
+    data_allresult = ReportSerializer(allresult, many=True).data
+    data_allresult_count = len(data_allresult)
     for foo in action:
         if foo == 'all':
             continue
         result = collection_report.find({"Code": recent_documents['Code'],"NodeID":NodeID, "$or": [
+
+                                                            {"Report.action": foo},
                                                             {"Report.action": foo+ "_done"},
-                                                            {"Report.action": foo+"_start"}], }, {"_id": 0}).count()
-        if allresult_count > 0:
+                                                            {"Report.action": foo+"_start"}], },).count()
+        if data_allresult_count > 0:
             dataaction.append({
                 'action':str(foo).title(),
-                'total':round((result/allresult_count)*100,2)
+                'total':round((result/data_allresult_count)*100,2)
             })
     labellist = []
     for foo in allresult:
         if 'Report' in foo and 'label' in foo['Report']:
             if foo["Report"]['label'] not in labellist:
                 labellist.append(foo["Report"]['label'])
+    query = {
+        "Code": recent_documents['Code'],"NodeID":NodeID,
+        "Report.Fault": {'$nin': [None, {}, [],'']}  # '$nin' is "not in" operator for arrays
+    }
 
+    Faultresult = collection_report.find(query, {"_id": 0}).count()
 
     return {
         "labellist":labellist,
         "dataaction":dataaction,
         "collectionStart" :collectionStartPush(),
         "reportPerDay":reportPerDayFull ,
-        "date":listDate
+        "date":listDate,
+        "data":data_allresult,
+        "Faultcount":Faultresult
     }
 
 def getReportAllLabel(NodeID,startCode):
@@ -143,6 +162,7 @@ def getReportAllLabel(NodeID,startCode):
         if foo == 'all':
             continue
         result = collection_report.find({"Code": recent_documents['Code'],"startCode": startCode, "NodeID": NodeID, "$or": [
+            {"Report.action": foo },
             {"Report.action": foo + "_done"},
             {"Report.action": foo + "_start"}], }, {"_id": 0}).count()
         if allresult_count > 0:

@@ -73,7 +73,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="col-sm-4 col-lg-4 mb-4">
                   <div class="card card-border-shadow-primary">
                     <div class="card-body">
                       <div class="d-flex align-items-center mb-2 pb-1">
@@ -90,52 +90,36 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-6 col-lg-3 mb-4">
-                  <div class="card card-border-shadow-warning">
+                <div class="col-sm-4 col-lg-4 mb-4">
+                   <button
+                                tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2"
+                                onclick="singleNodeDataFaultActionAll()"
+                            class="btn btn-outline-warning   btn-warning mb-2 text-nowrap add-new-role"> <div class="card card-border-shadow-warning">
                     <div class="card-body">
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-warning"
-                            ><i class="ti ti-alert-triangle ti-md"></i
-                          ></span>
-                        </div>
-                        <h4 class="ms-1 mb-0">8</h4>
-                      </div>
-                      <p class="mb-1">Errors In The Production</p>
-                      <p class="mb-0">
-                        <span class="fw-medium me-1">-8.7%</span>
-                        <small class="text-muted">than last week</small>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-3 mb-4">
-                  <div class="card card-border-shadow-danger">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center mb-2 pb-1">
-                        <div class="avatar me-2">
-                          <span class="avatar-initial rounded bg-label-danger"
                             ><i class="ti ti-git-fork ti-md"></i
                           ></span>
                         </div>
-                        <h4 class="ms-1 mb-0">27</h4>
+                        <h4 id="Faultresult" class="ms-1 mb-0">{{ Faultresult }}</h4>
                       </div>
-                      <p class="mb-1">Fault In The Production</p>
+                      <p class="mb-1">Fault In Production (Click To View)
+                          </p>
                       <p class="mb-0">
-                        <span class="fw-medium me-1">+4.3%</span>
-                        <small class="text-muted">than last week</small>
+                        <small class="text-muted"></small>
                       </p>
                     </div>
-                  </div>
+                  </div></button>
                 </div>
-                <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="col-sm-4 col-lg-4 mb-4">
                   <div class="card card-border-shadow-info">
                     <div class="card-body">
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-info"><i class="ti ti-clock ti-md"></i></span>
                         </div>
-                        <h4 class="ms-1 mb-0">{{ horizontalBarlength }}</h4>
+                        <h4 id="collectionCount" class="ms-1 mb-0">{{ collectionCount }}</h4>
                       </div>
                       <p class="mb-1">Number Report To Broker</p>
                       <p class="mb-0">
@@ -266,6 +250,9 @@
                             <input type="radio" class="btn-check" name="btnradio" onclick="getcurrentLog('cda')" id="btnradio3">
                             <label class="btn btn-outline-primary waves-effect" for="btnradio3">CDA</label>
                           </div>
+                          <button id="" onclick="singleNodeDataFaultActionCurrentRun()" class="btn btn-warning float-end  btn-label-warning mt-md-3 waves-effect" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
+                          <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block"> Fault</span></span></button>
+
                       </div>
                     </div>
                     <div class="card-body">
@@ -298,7 +285,11 @@
                      {% for foo in node %}
 
                         <li class="nav-item" role="presentation">
-                          <a href="javascript:void(0);" onclick="getNodeView('{{ foo.NodeID }}')" class="nav-link btn  d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-orders-id" aria-controls="navs-orders-id" aria-selected="true">
+                          <a href="javascript:void(0);" onclick="getNodeView('{{ foo.NodeID }}')" class="nav-link btn {% if foo.NodeID == 'gatesroomba12' %}
+                           active
+                          {% endif %}
+
+                            d-flex flex-column align-items-center justify-content-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-orders-id" aria-controls="navs-orders-id" aria-selected="true">
                             <div class="badge bg-label-secondary rounded p-2">
                               <i class="fas fa-robot ti-sm"></i>
                             </div>
@@ -363,6 +354,7 @@
                         <div class="sk-wave-rect"></div></div>
                       </div>
                       </div>
+
                     </div>
                     <div class="card-body">
                       <div class="d-none d-lg-flex vehicles-progress-labels mb-4"  id="collectionStartlabels">
@@ -389,6 +381,7 @@
 
                       </div>
                       <div class="table-responsive" style="height: 365px; overflow-y: auto;">
+
                         <table class="table card-table">
                           <tbody class="table-border-bottom-0 "  id="tablecollectionStart">
 {#                          {% for foo in collectionStart.collectionStart %}#}
@@ -466,7 +459,7 @@
 
                 <!--/ Vehicles overview -->
                 <!-- Shipment statistics-->
-                <div class="col-lg-6 col-xxl-6 mb-4 order-3 order-xxl-1">
+                <div class="col-xxl-6 mb-4 order-5 order-xxl-0">
                   <div class="card">
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <div class="card-title mb-0">
@@ -484,6 +477,45 @@
                     </div>
                     <div class="card-body" style="height: 365px; overflow-y: auto;" >
                       <div id="shipmentStatisticsChart"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 mb-4 order-3 order-xxl-1">
+                  <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">Node Full Node<div id="load-all" style="display: none" >
+                       <div class="sk-wave sk-primary">
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                        <div class="sk-wave-rect"></div>
+                       </div>
+                      </div></h5>
+                        <small class="text-muted">Total number of report sent to the broker based on actions </small>
+                      </div>
+                           <div class="dropdown">
+
+                               <button id="" onclick="singleNodeDataFaultAction(null)" class="btn btn-warning  btn-label-warning mt-md-3 waves-effect" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
+                          <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Open Fault</span></span></button>
+                      </div>
+                    </div>
+                    <div class="card-body" style="height: 365px; overflow-y: auto;" >
+                        <table id="datatable1fullreportProductionLine" class="display table dt-responsive nowrap" style="width:100%">
+                                         <thead>
+
+                          <th>Action</th>
+                          <th>Label</th>
+                                         <th>Data</th>
+
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+
                     </div>
                   </div>
                 </div>
@@ -535,6 +567,7 @@
 
                  </div>
                 </div>
+
 {% endblock %}
 {% block JsScriptInner %}
     <script>
@@ -999,9 +1032,9 @@ getcurrentLog(selectedLine)
 
     // Display the time passed
     var timePassedString = days + " days, " + hours % 24 + " hours, " + minutes % 60 + " minutes, " + seconds % 60 + " seconds";
-    document.getElementById("timePassed").innerHTML =hours % 24+'<span class="text-muted">h</span> '+minutes % 60+'<span class="text-muted">m</span> '+seconds % 60+'<span class="text-muted">s</span>';
+    document.getElementById("timePassed").innerHTML =days +'<span class="text-muted">d</span> ' +hours % 24+'<span class="text-muted">h</span> '+minutes % 60+'<span class="text-muted">m</span> '+seconds % 60+'<span class="text-muted">s</span>';
 
-    document.getElementById("SvgjsText1824").innerHTML =hours % 24+'h';
+    document.getElementById("SvgjsText1824").innerHTML =days+'d '+hours % 24+'h';
 
 
 }
@@ -1011,6 +1044,14 @@ updateTimePassed();
 
 // Update time passed every second
 setInterval(updateTimePassed, 1000);
+
+function isEmptyObject(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+}
+
+function isArrayEmpty(arr) {
+    return Array.isArray(arr) && arr.length === 0;
+}
 
 function singleNodeDataCall(data) {
     console.log(data)
@@ -1040,11 +1081,7 @@ function singleNodeDataCall(data) {
             // Handle the success response from the server
              dataR = JSON.parse(data);
             console.log(dataR);
-             var htmlContent = `<div class="card-body">
-                              <div class="card">
-                                  <!-- Your provided HTML content here -->
-                                  <!-- I'm adding the provided HTML here -->
-                                  <div class="card-header">
+              var htmlContentheader=` <div class="card-header">
                                       <div class="d-flex align-items-start">
                                           <div class="d-flex align-items-start">
                                               <div class="me-2 ms-1">
@@ -1060,17 +1097,163 @@ function singleNodeDataCall(data) {
                                           </div>
                                           <div class="ms-auto"></div>
                                       </div>
-                                  </div>
-                                  <div class="card-body">
-                                      <div class="d-flex align-items-center flex-wrap">
+                                        <div class="d-flex align-items-center flex-wrap">
                                           <div class="bg-lighter px-3 py-2 rounded me-auto mb-3">
                                           </div>
                                       </div>
                                       <h6 class="mb-0">Report Date: <span style="font-size: 10px" class="text-body fw-normal">${dataR.ReportDate}</span></h6>
                                       <h6 class="mb-0">System Report Date: <span style="font-size: 10px" class="text-body fw-normal">${dataR.created_at}</span></h6>
                                   </div>
+                                  </div>`
+              var htmlContent=''
+              var Fault=''
+                  if (typeof dataR.Report !== 'undefined' && dataR.Report.Fault !== null && !isEmptyObject(dataR.Report.Fault) && !isArrayEmpty(dataR.Report.Fault)) {
+
+                      Fault=`<div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <span class="alert-icon text-danger me-2">
+                          <i class="ti ti-ban ti-xs"></i>
+                        </span>
+                        ${dataR.Report.Fault}
+                      </div>`
+}
+
+            if(dataR.NodeType==='crx10') {
+                htmlContent = `<div class="card-body">
+                              <div class="card">
+                                  <!-- Your provided HTML content here -->
+                                  <!-- I'm adding the provided HTML here -->
+                                 ${htmlContentheader}
+                                  <div class="card-body">
+
                               </div>
                               <div><br></div>
+
+                                 ${Fault}
+                              <ul class="list-unstyled mb-0">
+                                  <li class="d-flex mb-4 pb-1 align-items-center">
+                                      <div class="avatar flex-shrink-0 me-3">
+                                          <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-arrows-move-horizontal ti-md"></i></span>
+                                      </div>
+                                      <div class="row w-100 align-items-center">
+                                          <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                                              <p class="mb-0 fw-medium">Moving</p>
+                                          </div>
+                                          <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                                              <div class="badge bg-label-secondary">${dataR.Report.isMoving}</div>
+                                          </div>
+                                      </div>
+                                  </li>
+                                  <li class="d-flex mb-4 pb-1 align-items-center">
+                                      <div class="avatar flex-shrink-0 me-3">
+                                          <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-arrows-move-horizontal ti-md"></i></span>
+                                      </div>
+                                      <div class="row w-100 align-items-center">
+                                          <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                                              <p class="mb-0 fw-medium">Is Conveyor Belt  Moving</p>
+                                          </div>
+                                          <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                                              <div class="badge bg-label-secondary">${dataR.Report.isBeltmoving}</div>
+                                          </div>
+                                      </div>
+                                  </li>
+<li class="d-flex mb-4 pb-1 align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-info"><i class="ti ti-refresh ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">CRX10 Ready</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.CRX10Ready}</div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex mb-4 pb-1 align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-success"><i class="ti ti-home ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">Conveyor Belt Ready</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.convReady}</div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex mb-4 pb-1 align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-warning"><i class="ti ti-dice ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">With Dice</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.withDice}</div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-danger"><i class="ti ti-home-plus ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">Is Home</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.isHome}</div>
+                            </div>
+                          </div>
+                        </li>
+                          <br>
+
+                          <li class="d-flex align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-success"><i class="ti ti-home-plus ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">Line Sensor Back Belt</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.lineSensorBackBelt}</div>
+                            </div>
+                          </div>
+                        </li>
+
+                          <br>
+
+                          <li class="d-flex align-items-center">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-danger"><i class="ti ti-home-plus ti-md"></i></span>
+                          </div>
+                          <div class="row w-100 align-items-center">
+                            <div class="col-sm-8 col-lg-12 col-xxl-8 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">
+                              <p class="mb-0 fw-medium">line Sensor Front Belt</p>
+                            </div>
+                            <div class="col-sm-4 col-lg-12 col-xxl-4 d-flex justify-content-xxl-end">
+                              <div class="badge bg-label-secondary">${dataR.Report.lineSensorFrontBelt}</div>
+                            </div>
+                          </div>
+                        </li>
+                              </ul>
+                          </div>`;
+            }
+            else if(dataR.NodeType==='roomba'){
+                      htmlContent = `<div class="card-body">
+                              <div class="card">
+                                  <!-- Your provided HTML content here -->
+                                  <!-- I'm adding the provided HTML here -->
+                                 ${htmlContentheader}
+                                  <div class="card-body">
+
+                              </div>
+                              <div><br></div>
+
+                                 ${Fault}
                               <ul class="list-unstyled mb-0">
                                   <li class="d-flex mb-4 pb-1 align-items-center">
                                       <div class="avatar flex-shrink-0 me-3">
@@ -1170,6 +1353,7 @@ function singleNodeDataCall(data) {
                         </li>
                               </ul>
                           </div>`;
+            }
 
         document.getElementById("reportOne").innerHTML = htmlContent;
 
@@ -1182,7 +1366,7 @@ function singleNodeDataCall(data) {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
 }
-function singleNodeDataLabelAction(data) {
+function singleNodeDataLabelAction(data,id) {
     console.log(data)
     var dataTable = $('#datatable1reportProductionLine').DataTable();
 if (dataTable !== 'undefined') {
@@ -1192,7 +1376,7 @@ if (dataTable !== 'undefined') {
         {#document.getElementById("reportProductionLine").innerHTML = '';#}
     {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
         const csrftoken = getCookie('csrftoken');
-     fetch('{% url 'singlereport_production_label_action' 1 %}', {
+     fetch('/BrokerManager/single-report/label/'+selectedNode+'/action', {
             method: 'POST', // HTTP method
             headers: {
                 'Content-Type': 'application/json', // Specify content type
@@ -1201,6 +1385,8 @@ if (dataTable !== 'undefined') {
             },
             body: JSON.stringify({
                 'label':data,
+
+                'startCode': id,
                 // Any data you want to send
             }),
         })
@@ -1244,20 +1430,10 @@ if (dataTable !== 'undefined') {
         }
             ],
 
-            pageLength: 50
+            pageLength: 50,
+
+    order: [] // Disable s
         });
-                   {#for (var i = 0; i < dataR.data.length; i++) {#}
-                   {##}
-                   {#    var htmlContent =#}
-                   {#        `#}
-                   {#       <tr >#}
-                   {#   <td >${dataR.data[i].Report.action.toUpperCase()}</td>#}
-                   {#   <td ><button id = "singleNodeData" onclick="singleNodeDataCall('${dataR.data[i].id}')"  class="btn btn-secondary add-new btn-primary waves-effect waves-light"#}
-                   {#                tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser">#}
-                   {#       <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">View More Data</span></span></button></td>#}
-                   {#   </tr>`;#}
-                   {##}
-                   {#    document.getElementById("reportProductionLine").innerHTML += htmlContent;#}
 
         })
         .catch(error => {
@@ -1267,6 +1443,169 @@ if (dataTable !== 'undefined') {
         .finally(() => {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
+}
+function singleNodeDataFaultAction(id) {
+    var dataTable = $('#datatable1reportProductionLine').DataTable();
+if (dataTable !== 'undefined') {
+    dataTable.destroy();
+}
+
+        {#document.getElementById("reportProductionLine").innerHTML = '';#}
+    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
+        const csrftoken = getCookie('csrftoken');
+     fetch('/BrokerManager/single-report/fault/'+selectedNode, {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                'startCode': id,
+                // Any data you want to send
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR);
+
+   createtable ("datatable1reportProductionLine",dataR.data)
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+}
+function singleNodeDataFaultActionAll() {
+    var dataTable = $('#datatable1reportProductionLine').DataTable();
+if (dataTable !== 'undefined') {
+    dataTable.destroy();
+}
+
+        {#document.getElementById("reportProductionLine").innerHTML = '';#}
+    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
+        const csrftoken = getCookie('csrftoken');
+     fetch('{% url 'fullreport_Fault' %}', {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+                // Any data you want to send
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR);
+
+   createtable ("datatable1reportProductionLine",dataR.data)
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+}
+function singleNodeDataFaultActionCurrentRun() {
+    var dataTable = $('#datatable1reportProductionLine').DataTable();
+if (dataTable !== 'undefined') {
+    dataTable.destroy();
+}
+
+        {#document.getElementById("reportProductionLine").innerHTML = '';#}
+    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
+        const csrftoken = getCookie('csrftoken');
+     fetch('{% url 'fullreport_production_Fault' %}', {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type
+
+                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
+            },
+            body: JSON.stringify({
+
+                "selectedLine" : selectedLine
+                // Any data you want to send
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the success response from the server
+             dataR = JSON.parse(data);
+            console.log(dataR);
+
+   createtable ("datatable1reportProductionLine",dataR.data)
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        })
+        .finally(() => {
+            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+        });
+}
+function createtable(getIdBy,dataR) {
+
+            var table = $('#'+getIdBy).DataTable({
+            data: dataR, // Provide the fetched data to the DataTable
+            columns: [
+                { data: 'Report.action',
+                render: function(data, type, row) {
+                // If the render is for display, convert the label to uppercase
+                if (type === 'display') {
+                    return data.toUpperCase();
+                }
+                // Otherwise, return the original data
+                return data;
+            }},
+                 {
+            data: 'id',
+            render: function(data, type, row) {
+                // Render 'action' as a button with the provided attributes and onclick function
+                return `<button id="singleNodeData"
+                            onclick="singleNodeDataCall('${data}')"
+                            class="btn btn-secondary add-new btn-primary waves-effect waves-light"
+                            tabindex="0"
+                            aria-controls="DataTables_Table_0"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasAddUser">
+                            <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">View More Data</span></span>
+                        </button>`;
+            }
+        }
+            ],
+
+            pageLength: 50,
+            order: [] // Disable s
+        });
+
 }
 function singleNodeDatalabelCall(data,id) {
         selectedNode=data
@@ -1339,7 +1678,7 @@ function singleNodeDatalabelCall(data,id) {
                               </td>
                               <td class="text-end pe-0">
                                 <span class="fw-medium">
-                                  <button id = "" onclick="singleNodeDataLabelAction('${dataR.label[i]}')"  class="btn btn-secondary add-new btn-primary waves-effect waves-light"
+                                  <button id = "" onclick="singleNodeDataLabelAction('${dataR.label[i]}','${id}')"  class="btn btn-secondary add-new btn-primary waves-effect waves-light"
                                    tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
                           <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">View All Action</span></span></button>
 
@@ -1366,7 +1705,12 @@ function getNodeView(nodeid) {
         console.log(nodeid)
     selectedNode = nodeid
         {#document.getElementById("reportProductionLine").innerHTML = '';#}
+      var dataTable2 = $('#datatable1fullreportProductionLine').DataTable();
+    if (dataTable2 !== 'undefined') {
+        dataTable2.destroy();
+    }
                 document.getElementById('load-1').style.display = 'block';
+                document.getElementById('load-all').style.display = 'block';
                 document.getElementById('load-2').style.display = 'block';
         {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
     {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
@@ -1391,11 +1735,15 @@ function getNodeView(nodeid) {
         })
         .then(data => {
             // Handle the success response from the server
+               dataTable2 = $('#datatable1fullreportProductionLine').DataTable();
+    if (dataTable2 !== 'undefined') {
+        dataTable2.destroy();
+    }
              dataR = JSON.parse(data);
             console.log(dataR)
-
                 document.getElementById('load-1').style.display = 'none';
                 document.getElementById('load-2').style.display = 'none';
+                document.getElementById('load-all').style.display = 'none';
 
                  document.getElementById("collectionStartprogress").innerHTML =''
                  document.getElementById("tablecollectionStart").innerHTML =''
@@ -1426,6 +1774,14 @@ function getNodeView(nodeid) {
                            Open Logs
                           </button></span>
                               </td>
+                    <td class="text-end pe-0">
+                                <span class="fw-medium">  <button
+                                tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2"
+                                onclick="singleNodeDataFaultAction('${element.id}')"
+                            class="btn btn-warning mb-2 text-nowrap add-new-role">
+                           Open Fault
+                          </button></span>
+                              </td>
                             </tr>`
                 });
             var newSeriesData = []
@@ -1454,7 +1810,49 @@ function getNodeView(nodeid) {
                         </div>
                             `
               }
-                });
+  });
+
+            var table = $('#datatable1fullreportProductionLine').DataTable({
+            data: dataR.data, // Provide the fetched data to the DataTable
+            columns: [
+                { data: 'Report.action',
+                render: function(data, type, row) {
+                // If the render is for display, convert the label to uppercase
+                if (type === 'display') {
+                    return data.toUpperCase();
+                }
+                // Otherwise, return the original data
+                return data;
+            }},{ data: 'Report.label',
+                render: function(data, type, row) {
+                // If the render is for display, convert the label to uppercase
+                if (type === 'display') {
+                    return data.toUpperCase();
+                }
+                // Otherwise, return the original data
+                return data;
+            }},
+                 {
+            data: 'id',
+            render: function(data, type, row) {
+                // Render 'action' as a button with the provided attributes and onclick function
+                return `<button id="singleNodeData"
+                            onclick="singleNodeDataCall('${data}')"
+                            class="btn btn-secondary add-new btn-primary waves-effect waves-light"
+                            tabindex="0"
+                            aria-controls="DataTables_Table_0"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasAddUser">
+                            <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">View More Data</span></span>
+                        </button>`;
+            }
+        }
+            ],
+
+    order: [] ,// Disable s
+            pageLength: 50
+        });
 
 // Define new x-axis categories
     const shipmentEl = document.querySelector('#shipmentStatisticsChart'),
@@ -1668,15 +2066,15 @@ var selectedLine ="all"
                           <div class="avatar flex-shrink-0 me-3">
 <button id="singleNodeData" onclick="singleNodeDataCall('${log.id}')" class="btn btn-secondary add-new btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser">
 
-                            <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-arrows-move"></i></span>
+                            <span class="avatar-initial rounded bg-label-primary"><i class="ti ti-refresh"></i></span>
                         </button>
                           </div>
                           <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                             <div class="me-2">
                               <h6 class="mb-0 fw-normal">${log.Report.label}</h6>
                               <small class="text-success fw-normal d-block">
-                                <i class="ti ti-chevron-up mb-1"></i>
-                               ${log.NodeType} at (${log.NodeID})
+                                <i class="ti timeline-point mb-1"></i>
+                               ${log.NodeType.toUpperCase()} at (${log.NodeID.toUpperCase()})
                               </small>
                             </div>
                             <div class="user-progress">
