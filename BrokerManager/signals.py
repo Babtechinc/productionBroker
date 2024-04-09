@@ -284,7 +284,7 @@ def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
 
     number = 1
     # Constructing the query
-    countALL = collection_report.find({"Code":recent_documents['Code'],'startCode': last_document['startCode']}).count()
+    countALL = collection_report.find({"Code":recent_documents['Code'],}).count()
     horizontalBarChart = {
 
         "length": countALL,
@@ -293,15 +293,10 @@ def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
         "data": [],
     }
     for foo in recent_node:
-        count = collection_report.find({"Code":recent_documents['Code'],"NodeID":foo['NodeID'],'startCode': last_document['startCode']}).count()
+        count = collection_report.find({"Code":recent_documents['Code'],"NodeID":foo['NodeID'],}).count()
         horizontalBarChart['categories'].append(str(number))
         horizontalBarChart['labels'].append(str(foo['NodeID']).title())
-        if countALL:
-            horizontalBarChart['data'].append(round((count/countALL)*100,2))
-
-        else:
-            horizontalBarChart['data'].append(0)
-
+        horizontalBarChart['data'].append(round((count/countALL)*100,2))
         number=number+1
 
     # # message = {

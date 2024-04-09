@@ -193,16 +193,22 @@ def reportingOfNode(payload,collection_node,recent_documents,collection_report,c
 
     }
     last_document = collectionStartLog.find_one(sort=[('_id', pymongo.DESCENDING)])
+    message = {
+        "msg": "Production has not started",
+        "msg.code": "start.production.on.web",
+        "status": "error"
+    }
     if last_document and last_document['ended_at']==None:
         dataToDbreport['startCode'] = last_document['startCode']
 
-    collection_report.insert_one(dataToDbreport)
-    message = {
-        "status": "Ok",
-        "message": "report saved",
+        collection_report.insert_one(dataToDbreport)
+        message = {
+            "status": "Ok",
+            "message": "report saved",
 
-        "brokerManager": True,
-        "nodeId": str(payload['nodeId']).lower()
-    }
+            "brokerManager": True,
+            "nodeId": str(payload['nodeId']).lower()
+        }
+
     print('created Report>><MQQT')
     client.publish(TOPIC, json.dumps(message))
