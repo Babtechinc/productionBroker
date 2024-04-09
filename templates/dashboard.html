@@ -90,11 +90,12 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-4 col-lg-4 mb-4">
-                   <button
-                                tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2"
-                                onclick="singleNodeDataFaultActionAll()"
-                            class="btn btn-outline-warning   btn-warning mb-2 text-nowrap add-new-role"> <div class="card card-border-shadow-warning">
+                <div class="col-sm-4 col-lg-4 mb-4" style="margin: 0;padding: 0;    ">
+{#                   <button#}
+{#                                tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2"#}
+{#                                onclick="singleNodeDataFaultActionAll()"#}
+{#                        class="btn btn-outline-warning btn-block  btn-warning"> #}
+                    <div class="card card-border-shadow-warning">
                     <div class="card-body">
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
@@ -104,13 +105,14 @@
                         </div>
                         <h4 id="Faultresult" class="ms-1 mb-0">{{ Faultresult }}</h4>
                       </div>
-                      <p class="mb-1">Fault In Production (Click To View)
+                      <p class="mb-1">Fault In Production (For Current Run)
                           </p>
                       <p class="mb-0">
-                        <small class="text-muted"></small>
+                        <small class="text-muted"> Click To Open</small>
                       </p>
                     </div>
-                  </div></button>
+                  </div>
+{#                    </button>#}
                 </div>
                 <div class="col-sm-4 col-lg-4 mb-4">
                   <div class="card card-border-shadow-info">
@@ -121,10 +123,10 @@
                         </div>
                         <h4 id="collectionCount" class="ms-1 mb-0">{{ collectionCount }}</h4>
                       </div>
-                      <p class="mb-1">Number Report To Broker</p>
+                      <p class="mb-1">Number Report To Broker (For Current Run)</p>
                       <p class="mb-0">
-                        <span class="fw-medium me-1">-2.5%</span>
-                        <small class="text-muted">than last week</small>
+{#                        <span class="fw-medium me-1">-2.5%</span>#}
+{#                        <small class="text-muted">than last week</small>#}
                       </p>
                     </div>
                   </div>
@@ -133,7 +135,7 @@
                 <div class="col-12 col-xl-12">
                   <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">All Node Statistics Overview</h5>
+                      <h5 class="card-title m-0 me-2"> Statistics Overview For Last Run</h5>
                       <div class="dropdown">
                         <button
                           class="btn p-0"
@@ -212,12 +214,12 @@
           </div>
           <div class="ms-auto">
               {% if startallNode %}
-               <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
-              <i class="fa-solid fa-play"></i>
-            </button>
-            <button class="btn btn-label-primary btn-icon btn-sm waves-effect">
-              <i class="fa-solid fa-stop"></i>
-            </button>
+{#               <button class="btn btn-label-primary btn-icon btn-sm waves-effect">#}
+{#              <i class="fa-solid fa-play"></i>#}
+{#            </button>#}
+{#            <button class="btn btn-label-primary btn-icon btn-sm waves-effect">#}
+{#              <i class="fa-solid fa-stop"></i>#}
+{#            </button>#}
               {% endif %}
 
           </div>
@@ -240,7 +242,7 @@
                         <small class="text-muted">12% increase in this month</small>
                       </div>
                       <div class="dropdown">
-                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                          <div class="btn-group  float-end" role="group" aria-label="Basic radio toggle button group">
                             <input type="radio" class="btn-check" onclick="getcurrentLog('all')" name="btnradio" id="btnradio1" checked="">
                             <label class="btn btn-outline-primary waves-effect" for="btnradio1">All</label>
 
@@ -250,8 +252,8 @@
                             <input type="radio" class="btn-check" name="btnradio" onclick="getcurrentLog('cda')" id="btnradio3">
                             <label class="btn btn-outline-primary waves-effect" for="btnradio3">CDA</label>
                           </div>
-                          <button id="" onclick="singleNodeDataFaultActionCurrentRun()" class="btn btn-warning float-end  btn-label-warning mt-md-3 waves-effect" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
-                          <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block"> Fault</span></span></button>
+                          <button id="" onclick="singleNodeDataFaultActionCurrentRun()" class="btn btn-warning float-end   btn-label-warning mt-md-3 waves-effect" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
+                          <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Open Fault</span></span></button>
 
                       </div>
                     </div>

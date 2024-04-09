@@ -265,6 +265,7 @@ def collectionStartPush(numberOfDays=10):
 
 
 def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
+
     dbname = my_client['Django']
 
     # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection)
@@ -273,13 +274,17 @@ def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
     collection_report = dbname["BrokerReport"]
     thirty_minutes_ago = datetime.datetime.now() - datetime.timedelta(hours=timeToNewProduction)
 
+    collectionStartLog = dbname["NodeStartsLogs"]
+    last_document = collectionStartLog.find_one(sort=[('_id', pymongo.DESCENDING)])
+
+
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
     #
     recent_node = collection_node.find({"Code":recent_documents['Code']}, {"_id": 0})  # Projection to exclude _id field
 
     number = 1
     # Constructing the query
-    countALL = collection_report.find({"Code":recent_documents['Code'],}).count()
+    countALL = collection_report.find({"Code":recent_documents['Code'],'startCode': last_document['startCode']}).count()
     horizontalBarChart = {
 
         "length": countALL,
@@ -288,7 +293,7 @@ def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
         "data": [],
     }
     for foo in recent_node:
-        count = collection_report.find({"Code":recent_documents['Code'],"NodeID":foo['NodeID']}).count()
+        count = collection_report.find({"Code":recent_documents['Code'],"NodeID":foo['NodeID'],'startCode': last_document['startCode']}).count()
         horizontalBarChart['categories'].append(str(number))
         horizontalBarChart['labels'].append(str(foo['NodeID']).title())
         horizontalBarChart['data'].append(round((count/countALL)*100,2))

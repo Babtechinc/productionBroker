@@ -90,6 +90,7 @@ client.on_message = on_message
 client.connect("mqtt.eclipseprojects.io", 1883, 60)
 
 def registrationOfNode(payload,collection_node,recent_documents):
+    print(payload)
     serializer = RegNodeSerializer(data=payload)
     if not serializer.is_valid():
         message = {
