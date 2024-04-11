@@ -801,6 +801,7 @@ getNodeView(selectedNode)
 
     function horizontalBarChart(horizontalBar) {
 
+            document.getElementById("NodehorizontalBarChart").innerHTML =''
         const horizontalBarChartEl = document.querySelector('#horizontalBarChart'),
             horizontalBarChartConfig = {
                 chart: {
@@ -916,8 +917,8 @@ getNodeView(selectedNode)
             };
         if (typeof horizontalBarChartEl !== undefined && horizontalBarChartEl !== null) {
             const horizontalBarChart = new ApexCharts(horizontalBarChartEl, horizontalBarChartConfig);
+
             horizontalBarChart.render();
-            document.getElementById("NodehorizontalBarChart").innerHTML =''
             console.log(horizontalBar.data.length)
             for (var i = 0; i < horizontalBar.data.length; i++) {
                 console.log(horizontalBar.data[i]);  // Output each item in the console
@@ -2076,7 +2077,7 @@ function humanizeDate(date) {
             if (minutes === 0) {
                 return seconds <= 1 ? "Just now" : `${seconds} seconds ago`;
             } else {
-                return minutes === 1 ? "1 minute ago" : `${minutes} minutes, ${seconds/60} seconds ago`;
+                return minutes === 1 ? "1 minute ago" : `${minutes} minutes ago`;
             }
         } else {
             return hours === 1 ? "1 hour ago" : `${hours} hours ago`;
