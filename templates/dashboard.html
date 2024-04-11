@@ -2074,9 +2074,9 @@ function humanizeDate(date) {
     if (days === 0) {
         if (hours === 0) {
             if (minutes === 0) {
-                return "Just now";
+                return seconds <= 1 ? "Just now" : `${seconds} seconds ago`;
             } else {
-                return minutes === 1 ? "1 minute ago" : `${minutes} minutes ago`;
+                return minutes === 1 ? "1 minute ago" : `${minutes} minutes, ${seconds} seconds ago`;
             }
         } else {
             return hours === 1 ? "1 hour ago" : `${hours} hours ago`;
@@ -2088,6 +2088,7 @@ function humanizeDate(date) {
         return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
 }
+
 
 // Example usage:
 const date = new Date('2024-04-07T12:00:00');

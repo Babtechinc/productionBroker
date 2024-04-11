@@ -102,6 +102,7 @@ def getReportAllNodeOne(NodeID):
     allresult = collection_report.find({"Code": recent_documents['Code'] ,"NodeID":NodeID },sort=[('_id', pymongo.DESCENDING)])
     data_allresult = ReportSerializer(allresult, many=True).data
     data_allresult_count = len(data_allresult)
+    listtotal = 0
     for foo in action:
         if foo == 'all':
             continue
@@ -111,10 +112,18 @@ def getReportAllNodeOne(NodeID):
                                                             {"Report.action": foo+ "_done"},
                                                             {"Report.action": foo+"_start"}], },).count()
         if data_allresult_count > 0:
+            listtotal =listtotal + round((result/data_allresult_count)*100,2)
             dataaction.append({
                 'action':str(foo).title(),
                 'total':round((result/data_allresult_count)*100,2)
             })
+    print(round(listtotal,2))
+    if not(round(listtotal) == 100):
+        dataaction.append({
+            'action':'Others'.title(),
+            'total': 100-round(listtotal,2)
+        })
+
     labellist = []
     for foo in allresult:
         if 'Report' in foo and 'label' in foo['Report']:
