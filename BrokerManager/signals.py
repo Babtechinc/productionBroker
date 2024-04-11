@@ -17,6 +17,8 @@ def getAllOnlineNode():
     collection_node = dbname["NodeModel"]
     collection = dbname["Brokerlogs"]
     collection_report = dbname["BrokerReport"]
+
+    collectionStartLog = dbname["NodeStartsLogs"]
     thirty_minutes_ago = datetime.datetime.now() - datetime.timedelta(hours=timeToNewProduction)
 
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
@@ -26,15 +28,17 @@ def getAllOnlineNode():
         "Code": recent_documents['Code'],
         "Report.Fault": {'$nin': [None, {}, [],'']}  # '$nin' is "not in" operator for arrays
     }
-
+    last_document = collectionStartLog.find_one(sort=[('_id', pymongo.DESCENDING)])
+    isStart = False
+    if last_document and last_document['ended_at'] == None:
+        isStart=True
     Faultresult = collection_report.find(query, {"_id": 0}).count()
     message = {
         "type": "node.updated",
         "data": list(recent_node),
        "horizontalBarChart" :getReportNodehorizontalBarChart(),
-        "Faultcount":Faultresult
-
-    }
+        "Faultcount":Faultresult,
+        "isStart":isStart,}
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         f"node",
@@ -206,8 +210,17 @@ def collectionStartPush(numberOfDays=10):
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
 
     collectionStartLog = dbname["NodeStartsLogs"]
-
+    if not recent_documents:
+        return {
+            "last_document": {},
+            "collectionStart": [],
+        }
     last_document = collectionStartLog.find_one(sort=[('_id', pymongo.DESCENDING)])
+    if not last_document:
+        return {
+            "last_document": {},
+            "collectionStart": [],
+        }
     collectionStartNodeLog=collectionStartLog.find({"productionCode": recent_documents['Code']}, {"_id": 0},sort=[('_id', pymongo.DESCENDING)])
     collectionStart = []
     idcount = 0
@@ -267,7 +280,13 @@ def collectionStartPush(numberOfDays=10):
 def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
 
     dbname = my_client['Django']
+    horizontalBarChart = {
 
+        "length": 0,
+        "categories": [],
+        "labels": [],
+        "data": [],
+    }
     # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection)
     collection_node = dbname["NodeModel"]
     collection = dbname["Brokerlogs"]
@@ -279,12 +298,16 @@ def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
 
 
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
+    if not recent_documents:
+        return horizontalBarChart
     #
     recent_node = collection_node.find({"Code":recent_documents['Code']}, {"_id": 0})  # Projection to exclude _id field
 
     number = 1
     # Constructing the query
     countALL = collection_report.find({"Code":recent_documents['Code'],}).count()
+    if countALL <0:
+        return horizontalBarChart
     horizontalBarChart = {
 
         "length": countALL,
@@ -292,6 +315,7 @@ def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
         "labels": [],
         "data": [],
     }
+
     for foo in recent_node:
         count = collection_report.find({"Code":recent_documents['Code'],"NodeID":foo['NodeID'],}).count()
         horizontalBarChart['categories'].append(str(number))

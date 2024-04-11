@@ -77,6 +77,14 @@ def on_message(client, userdata, message):
                     getAllOnlineNode()
                     return
 
+                if payload["messageType"] == 'stop':
+                    last_document = collectionStartLog.find_one(sort=[('_id', pymongo.DESCENDING)])
+                    if last_document and last_document['ended_at'] == None:
+                        new_values = {'$set': {'ended_at': datetime.datetime.now()}}
+                        collectionStartLog.update_one({'_id': last_document['_id']}, new_values)
+                    getAllOnlineNode()
+                    return
+
 
     except json.JSONDecodeError:
         # The message is not valid JSON

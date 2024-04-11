@@ -16,8 +16,8 @@ from rest_framework.decorators import api_view
 from BrokerManager.Serializer import ReportSerializer, DateTimeEncoder
 from BrokerManager.mqtt_consumer import client, TOPIC
 from BrokerManager.signals import getReportNodehorizontalBarChart, getReportAllNodeOne, collectionStartPush, \
-    getReportAllLabel
-from productionBroker.settings import timeToNewProduction
+    getReportAllLabel, getAllOnlineNode
+from productionBroker.settings import timeToNewProduction,page_size
 
 my_client = pymongo.MongoClient(settings.DB_NAME)
 
@@ -56,7 +56,7 @@ def dashboard(request):
     Faultresult=0
     if recent_documents:
         recent_node = collection_node.find({"Code": recent_documents['Code']},
-                                           {"_id": 0})  # Projection to exclude _id field
+                                           {"_id": 0}).limit(page_size)  # Projection to exclude _id field
         # collectionStart = collectionStartLog.find({"productionCode": recent_documents['Code']}, {"_id":0})
         recent_report = collection_report.find({"Code": recent_documents['Code']}, ).sort("created_at",
                                                                                           pymongo.DESCENDING)  # Projection to exclude _id field
@@ -173,7 +173,7 @@ def fullreport_production(request):
             print("><<>>")
         print(query)
         recent_report_full= list(collection_report.find(query
-            ,sort=[('_id', pymongo.DESCENDING)]),)
+            ,sort=[('_id', pymongo.DESCENDING)]).limit(page_size))
         recent_report['data']=ReportSerializer(recent_report_full, many=True).data
     return JsonResponse(json.dumps(recent_report, default=str,cls=DateTimeEncoder), safe=False)
 @csrf_exempt
@@ -198,7 +198,7 @@ def fullreport_Fault(request):
         }
 
         recent_report_full= list(collection_report.find(query
-            ,sort=[('_id', pymongo.DESCENDING)]),)
+            ,sort=[('_id', pymongo.DESCENDING)]).limit(page_size),)
         recent_report['data']=ReportSerializer(recent_report_full, many=True).data
     return JsonResponse(json.dumps(recent_report, default=str,cls=DateTimeEncoder), safe=False)
 
@@ -233,7 +233,7 @@ def fullreport_production_Fault(request):
             print("><<>>")
         print(query)
         recent_report_full= list(collection_report.find(query
-            ,sort=[('_id', pymongo.DESCENDING)]),)
+            ,sort=[('_id', pymongo.DESCENDING)]).limit(page_size),)
         recent_report['data']=ReportSerializer(recent_report_full, many=True).data
     return JsonResponse(json.dumps(recent_report, default=str,cls=DateTimeEncoder), safe=False)
 
@@ -296,7 +296,7 @@ def  singlereport_production_Fault(request, nodeid):
                 "Report.Fault": {'$nin': [None, {}, [], '']}}
         else:
             lookup = {"Code": recent_documents['Code'], "NodeID": nodeid,"Report.Fault": {'$nin': [None, {}, [], '']}}
-        recent_report_full= list(collection_report.find(lookup,sort=[('_id', pymongo.DESCENDING)]),)
+        recent_report_full= list(collection_report.find(lookup,sort=[('_id', pymongo.DESCENDING)]).limit(page_size),)
         recent_report['data']=ReportSerializer(recent_report_full, many=True).data
     # print(recent_report)
     return JsonResponse(json.dumps(recent_report, ), safe=False)
@@ -325,7 +325,7 @@ def singlereport_production_label_action(request, nodeid):
         if not ('label' in request.data and 'startCode' in request.data):
             return JsonResponse({})
         recent_report = collection_report.find(
-            {"Code": recent_documents['Code'], "NodeID": nodeid,"Report.label": request.data['label'],'startCode': request.data['startCode']}, )
+            {"Code": recent_documents['Code'], "NodeID": nodeid,"Report.label": request.data['label'],'startCode': request.data['startCode']}, ).limit(page_size)
         report = ReportSerializer(recent_report, many=True).data
         recent_report = {
             "type": "node.updated",
@@ -365,6 +365,7 @@ def start_one_node_production(request):
         }
         print('created Report>><MQQT')
         client.publish(TOPIC, json.dumps(message))
+        getAllOnlineNode()
     return JsonResponse(json.dumps(recent_report, default=str), safe=False)
 
 
@@ -415,6 +416,7 @@ def start_all_node_production(request):
                 "brokerManager": True,
             }
             client.publish(TOPIC, json.dumps(message))
+        getAllOnlineNode()
     return JsonResponse(json.dumps(recent_report,default=str,),safe=False)
 
 

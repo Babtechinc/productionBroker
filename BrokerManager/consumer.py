@@ -41,6 +41,8 @@ class AllNodeConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'event': 'node.updated',
             'data':event['data'],
+            'isStart':event['isStart'],
+            'Faultcount':event['Faultcount'],
             'horizontalBarChart':event['horizontalBarChart'],
             'count':len(event['data'])
         },cls=DateTimeEncoder))

@@ -958,9 +958,17 @@ const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
 
 // WebSocket connection
 const socket = new WebSocket(`${protocol}//${host}/ws/node/all`);
+// Event listener for when the WebSocket connection is established
+socket.addEventListener('open', function (event) {
+    console.log('WebSocket connection established');
+
+});
 
   // Function to handle incoming messages
   socket.onmessage = function(event) {
+
+
+    console.log('WebSocket Message from server:', event.data);
     const data = JSON.parse(event.data);
     console.log(data);
     const nodeList = document.getElementById('nodeList');
@@ -1011,12 +1019,34 @@ const socket = new WebSocket(`${protocol}//${host}/ws/node/all`);
     });
 
     horizontalBarChart(data.horizontalBarChart)
+      if(data.isStart){
+          document.getElementById('startAllNode').innerHTML = `
+             <button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
+                                          Start Over
+                                        </button>
+            <button type="button" onclick="startProductionAllNode('create')" class="btn btn-sm btn-label-warning mt-md-3 waves-effect">
+                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span> </div> &nbsp;Running   </button>
+            <button onclick="startProductionAllNode('stop')"  type="button" class="btn btn-sm btn-label-danger mt-md-3 waves-effect">
+                                          Stop All Node
+                                        </button>
+                        `;
+
+            }
+            else {
+                 console.log(">>>>>>>>>>>>>>>>.")
+            document.getElementById('startAllNode').innerHTML = `<button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
+                                          Start All Node
+                                        </button>
+                        `;
+            }
 
 getcurrentLog(selectedLine)
     getNodeView(selectedNode)
     singleNodeDatalabelCall(selectedNode,selectstartCode)
   };
 
+// Sending a message to the server
   function updateTimePassed() {
     // Date and time of the past event
      var pastDate = new Date("{{ log.created_at|date:'Y-m-d H:i:s' }}")
@@ -1109,7 +1139,7 @@ function singleNodeDataCall(data) {
                                   </div>`
               var htmlContent=''
               var Fault=''
-                  if (typeof dataR.Report !== 'undefined' && dataR.Report.Fault !== null && !isEmptyObject(dataR.Report.Fault) && !isArrayEmpty(dataR.Report.Fault)) {
+                  if (typeof dataR.Report !== 'undefined' && typeof dataR.Report.Fault !== 'undefined' && dataR.Report.Fault !== null && !isEmptyObject(dataR.Report.Fault) && !isArrayEmpty(dataR.Report.Fault)) {
 
                       Fault=`<div class="alert alert-danger d-flex align-items-center" role="alert">
                         <span class="alert-icon text-danger me-2">
