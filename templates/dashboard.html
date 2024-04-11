@@ -2076,7 +2076,7 @@ function humanizeDate(date) {
             if (minutes === 0) {
                 return seconds <= 1 ? "Just now" : `${seconds} seconds ago`;
             } else {
-                return minutes === 1 ? "1 minute ago" : `${minutes} minutes, ${seconds} seconds ago`;
+                return minutes === 1 ? "1 minute ago" : `${minutes} minutes, ${seconds/60} seconds ago`;
             }
         } else {
             return hours === 1 ? "1 hour ago" : `${hours} hours ago`;
