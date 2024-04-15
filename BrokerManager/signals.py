@@ -1,5 +1,4 @@
 import datetime
-import json
 
 import pymongo
 from asgiref.sync import async_to_sync
@@ -22,7 +21,7 @@ def getAllOnlineNode():
     thirty_minutes_ago = datetime.datetime.now() - datetime.timedelta(hours=timeToNewProduction)
 
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
-
+    # Get Node from the database
     recent_node = collection_node.find({"Code":recent_documents['Code']}, {"_id": 0})  # Projection to exclude _id field
     query = {
         "Code": recent_documents['Code'],
@@ -32,14 +31,21 @@ def getAllOnlineNode():
     isStart = False
     if last_document and last_document['ended_at'] == None:
         isStart=True
+
+    # Get fault collection
     Faultresult = collection_report.find(query, {"_id": 0}).count()
+
     message = {
         "type": "node.updated",
         "data": list(recent_node),
-       "horizontalBarChart" :getReportNodehorizontalBarChart(),
+        "horizontalBarChart" :getReportNodehorizontalBarChart(),
         "Faultcount":Faultresult,
         "isStart":isStart,}
+
     channel_layer = get_channel_layer()
+
+
+    # Sending to  web application Using websocket
     async_to_sync(channel_layer.group_send)(
         f"node",
       message
@@ -52,10 +58,13 @@ def getReportAllNodeOne(NodeID):
     thirty_minutes_ago = datetime.datetime.now() - datetime.timedelta(hours=timeToNewProduction)
 
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
+    # Get report based on the past 7 days
     listDays = [6,5,4,3,2,1,0]
     listDate = []
     reportPerDayFull = []
     collection_node = dbname["NodeModel"]
+
+    # Get Node from the database
     nodeIDDB = collection_node.find_one(
         {"NodeID": NodeID, "Code": recent_documents['Code']})
     if not nodeIDDB:
@@ -65,6 +74,8 @@ def getReportAllNodeOne(NodeID):
         action = ['all', 'undock', 'rotate', 'drive', 'dock']
     if nodeIDDB['NodeType']=='crx10':
         action = ['all', 'cartMove', 'jointMove', 'gripperMove', 'convMove']
+
+    # Get report based on the past 7 days using action
     for foo in action:
         reportPerDay= {
             "action":foo,
@@ -103,6 +114,8 @@ def getReportAllNodeOne(NodeID):
     data_allresult = ReportSerializer(allresult, many=True).data
     data_allresult_count = len(data_allresult)
     listtotal = 0
+
+    # Get report based on the action of that node
     for foo in action:
         if foo == 'all':
             continue
@@ -117,13 +130,14 @@ def getReportAllNodeOne(NodeID):
                 'action':str(foo).title(),
                 'total':round((result/data_allresult_count)*100,2)
             })
-    print(round(listtotal,2))
+
     if not(round(listtotal) == 100):
         dataaction.append({
             'action':'Others'.title(),
             'total': 100-round(listtotal,2)
         })
 
+    # Get report based action for that node
     labellist = []
     for foo in allresult:
         if 'Report' in foo and 'label' in foo['Report']:
@@ -133,7 +147,7 @@ def getReportAllNodeOne(NodeID):
         "Code": recent_documents['Code'],"NodeID":NodeID,
         "Report.Fault": {'$nin': [None, {}, [],'']}  # '$nin' is "not in" operator for arrays
     }
-
+    # Get fault report count
     Faultresult = collection_report.find(query, {"_id": 0}).count()
 
     return {
@@ -147,7 +161,7 @@ def getReportAllNodeOne(NodeID):
     }
 
 def getReportAllLabel(NodeID,startCode):
-    print(startCode)
+
     dbname = my_client['Django']
     # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection)
     collection = dbname["Brokerlogs"]
@@ -155,13 +169,16 @@ def getReportAllLabel(NodeID,startCode):
     thirty_minutes_ago = datetime.datetime.now() - datetime.timedelta(hours=timeToNewProduction)
 
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
-    print("recent_documents")
+
+
     collection_node = dbname["NodeModel"]
+    # Get The Node from the database
     nodeIDDB = collection_node.find_one(
         {"NodeID": NodeID, "Code": recent_documents['Code']})
     if not nodeIDDB:
         return
     action = []
+    # Get The Report Based The Action In That Run
     if nodeIDDB['NodeType'] == 'roomba':
         action = ['all', 'undock', 'rotate', 'drive', 'dock']
     if nodeIDDB['NodeType'] == 'crx10':
@@ -170,7 +187,9 @@ def getReportAllLabel(NodeID,startCode):
     allresult = collection_report.find({"Code": recent_documents['Code'],"startCode": startCode, "NodeID": NodeID}, {"_id": 0})
 
     allresult_count = allresult.count()
-    print(allresult_count)
+
+
+    # Get The Report Based The Action In That Run
     for foo in action:
         if foo == 'all':
             continue
@@ -185,6 +204,7 @@ def getReportAllLabel(NodeID,startCode):
             })
     labellist = []
 
+    # Get all label from that runs
     for foo in allresult:
         if 'Report' in foo and 'label' in foo['Report']:
             if foo["Report"]['label'] not in labellist:
@@ -195,18 +215,6 @@ def getReportAllLabel(NodeID,startCode):
         "dataaction":dataaction
 
     }
-
-    # message = {
-    #     "type": "node.updated",
-    #     "data": list(recent_node)
-    #
-    # }
-    # channel_layer = get_channel_layer()
-    # async_to_sync(channel_layer.group_send)(
-    #     f"node",
-    #   message
-    # )
-
 
 def collectionStartPush(numberOfDays=10):
 
@@ -233,6 +241,7 @@ def collectionStartPush(numberOfDays=10):
     collectionStartNodeLog=collectionStartLog.find({"productionCode": recent_documents['Code']}, {"_id": 0},sort=[('_id', pymongo.DESCENDING)])
     collectionStart = []
     idcount = 0
+    # Get all Runs and time spent
     for foo in collectionStartNodeLog:
         if foo['ended_at']:
             duration = foo['ended_at']-  foo['started_at']
@@ -271,19 +280,6 @@ def collectionStartPush(numberOfDays=10):
         "last_document":last_document,
         "collectionStart":collectionStart,
     }
-
-
-    # message = {
-    #     "type": "node.updated",
-    #     "data": list(recent_node)
-    #
-    # }
-    # channel_layer = get_channel_layer()
-    # async_to_sync(channel_layer.group_send)(
-    #     f"node",
-    #   message
-    # )
-
 
 
 def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
@@ -325,6 +321,8 @@ def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
         "data": [],
     }
 
+    # Get all Node Based on Report: Number of report sent to the broker to use to the chart
+
     for foo in recent_node:
         count = collection_report.find({"Code":recent_documents['Code'],"NodeID":foo['NodeID'],}).count()
         horizontalBarChart['categories'].append(str(number))
@@ -332,27 +330,6 @@ def getReportNodehorizontalBarChart(numberOfDays=10,websocket=False):
         horizontalBarChart['data'].append(round((count/countALL)*100,2))
         number=number+1
 
-    # # message = {
-    # #     "type": "node.updated",
-    #     "data": list(recent_node)
-    #
-    # }
-    # channel_layer = get_channel_layer()
-    # async_to_sync(channel_layer.group_send)(
-    #     f"node",
-    #   message
-    # )
 
     return horizontalBarChart
-
-    # message = {
-    #     "type": "node.updated",
-    #     "data": list(recent_node)
-    #
-    # }
-    # channel_layer = get_channel_layer()
-    # async_to_sync(channel_layer.group_send)(
-    #     f"node",
-    #   message
-    # )
 

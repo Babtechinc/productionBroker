@@ -93,7 +93,7 @@
                 <div class="col-sm-4 col-lg-4 mb-4" style="margin: 0;padding: 0;    ">
 {#                   <button#}
 {#                                tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2"#}
-{#                                onclick="singleNodeDataFaultActionAll()"#}
+{#                                onclick="faultActionAll()"#}
 {#                        class="btn btn-outline-warning btn-block  btn-warning"> #}
                     <div class="card card-border-shadow-warning">
                     <div class="card-body">
@@ -252,7 +252,7 @@
                             <input type="radio" class="btn-check" name="btnradio" onclick="getcurrentLog('cda')" id="btnradio3">
                             <label class="btn btn-outline-primary waves-effect" for="btnradio3">CDA</label>
                           </div>
-                          <button id="" onclick="singleNodeDataFaultActionCurrentRun()" class="btn btn-warning float-end   btn-label-warning mt-md-3 waves-effect" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
+                          <button id="" onclick="faultCurrentRun()" class="btn btn-warning float-end   btn-label-warning mt-md-3 waves-effect" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
                           <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Open Fault</span></span></button>
 
                       </div>
@@ -403,7 +403,7 @@
 {#                              <td class="text-end pe-0">#}
 {#                                <span class="fw-medium">  <button#}
 {#                            data-bs-target="#addRoleModal"#}
-{#                            data-bs-toggle="modal" onclick="singleNodeDatalabelCall('{{ foo.id_str}}')"#}
+{#                            data-bs-toggle="modal" onclick="singleProductionLabelCall('{{ foo.id_str}}')"#}
 {#                            class="btn btn-primary mb-2 text-nowrap add-new-role">#}
 {#                           Open Logs#}
 {#                          </button></span>#}
@@ -500,7 +500,7 @@
                       </div>
                            <div class="dropdown">
 
-                               <button id="" onclick="singleNodeDataFaultAction(null)" class="btn btn-warning  btn-label-warning mt-md-3 waves-effect" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
+                               <button id="" onclick="singleNodeFaultPerProduction(null)" class="btn btn-warning  btn-label-warning mt-md-3 waves-effect" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
                           <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Open Fault</span></span></button>
                       </div>
                     </div>
@@ -637,7 +637,6 @@ function getCookie(name) {
         .then(data => {
             // Handle the success response from the server
              dataR = JSON.parse(data);
-            console.log(dataR);
 
             // Now you can access properties of data
             if (dataR && typeof dataR === 'object' && 'Code' in dataR) {
@@ -655,151 +654,136 @@ function getCookie(name) {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
     });
-  function startProduction () {
+// Function to start production for a single node
+function startProduction() {
+    // Disable the startProductionBtn and show the loadingBtn
+    document.getElementById('startProductionBtn').style.display = 'none';
+    document.getElementById('loadingBtn').style.display = 'inline-block';
 
-        // Disable the startProductionBtn and show the loadingBtn
-        document.getElementById('startProductionBtn').style.display = 'none';
-        document.getElementById('loadingBtn').style.display = 'inline-block';
-        const csrftoken = getCookie('csrftoken');
-        // Your AJAX request here
-        fetch('{% url 'start_production' %}', {
-            method: 'POST', // HTTP method
-            headers: {
-                'Content-Type': 'application/json', // Specify content type
+    // Get CSRF token from cookies
+    const csrftoken = getCookie('csrftoken');
 
-                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
-            },
-            body: JSON.stringify({
-                // Any data you want to send
-            }),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Handle the success response from the server
-             dataR = JSON.parse(data);
-            console.log(dataR);
-
-            // Now you can access properties of data
-            if (dataR && typeof dataR === 'object' && 'Code' in dataR) {
-                document.getElementById('showData').style.display = 'inline-block';
-
+    // Send AJAX request to start production
+    fetch('{% url 'start_production' %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({}),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Handle success response from the server
+        dataR = JSON.parse(data);
+        if (dataR && typeof dataR === 'object' && 'Code' in dataR) {
+            document.getElementById('showData').style.display = 'inline-block';
             document.getElementById('loadingBtn').style.display = 'none';
+        }
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Fetch error:', error);
+    })
+    .finally(() => {
+        // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+    });
+}
 
-            }
-        })
-        .catch(error => {
-            // Handle errors
-            console.error('Fetch error:', error);
-        })
-        .finally(() => {
-            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
-        });
-    }
-  function startProductionAllNode (data) {
-
-        // Disable the startProductionBtn and show the loadingBtn
-        const csrftoken = getCookie('csrftoken');
-        // Your AJAX request here
-        fetch('{% url 'start_all_node_production' %}', {
-            method: 'POST', // HTTP method
-            headers: {
-                'Content-Type': 'application/json', // Specify content type
-
-                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
-            },
-            body: JSON.stringify({
-                // Any data you want to send
-                'status':data
-            }),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Handle the success response from the server
-             dataR = JSON.parse(data);
-            console.log(typeof dataR);
-            if (dataR && typeof dataR === 'object' && 'startCode' in dataR) {
-            console.log(">>>>>>>>>>>>>>>>.")
+// Function to start production for all nodes
+function startProductionAllNode(data) {
+    // Disable the startProductionBtn and show the loadingBtn
+    const csrftoken = getCookie('csrftoken');
+    fetch('{% url 'start_all_node_production' %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({
+            'status': data
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Handle success response from the server
+        dataR = JSON.parse(data);
+        if (dataR && typeof dataR === 'object' && 'startCode' in dataR) {
+            // Update UI based on server response
             document.getElementById('startAllNode').innerHTML = `
-             <button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
-                                          Start Over
-                                        </button>
-            <button type="button" onclick="startProductionAllNode('create')" class="btn btn-sm btn-label-warning mt-md-3 waves-effect">
-                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
-                        <span class="visually-hidden">Loading...</span> </div> &nbsp;Running   </button>
-            <button onclick="startProductionAllNode('stop')"  type="button" class="btn btn-sm btn-label-danger mt-md-3 waves-effect">
-                                          Stop All Node
-                                        </button>
-                        `;
+                <button onclick="startProductionAllNode('create')" type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
+                    Start Over
+                </button>
+                <button type="button" onclick="startProductionAllNode('create')" class="btn btn-sm btn-label-warning mt-md-3 waves-effect">
+                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div> &nbsp;Running
+                </button>
+                <button onclick="startProductionAllNode('stop')" type="button" class="btn btn-sm btn-label-danger mt-md-3 waves-effect">
+                    Stop All Node
+                </button>`;
+        } else {
+            // Update UI based on server response
+            document.getElementById('startAllNode').innerHTML = `<button onclick="startProductionAllNode('create')" type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
+                Start All Node
+            </button>`;
+        }
+        // Additional logic if needed
+        getNodeView(selectedNode);
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Fetch error:', error);
+    })
+    .finally(() => {
+        // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+    });
+}
 
-            }
-            else {
-                 console.log(">>>>>>>>>>>>>>>>.")
-            document.getElementById('startAllNode').innerHTML = `<button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
-                                          Start All Node
-                                        </button>
-                        `;
-            }
+// Function to start production for a specific node
+function startProductionNode(data) {
+    // Disable the startProductionBtn and show the loadingBtn
+    const csrftoken = getCookie('csrftoken');
+    fetch('{% url 'start_one_node_production' %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({}),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Handle success response from the server
+        dataR = JSON.parse(data);
+        // Additional logic if needed
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Fetch error:', error);
+    })
+    .finally(() => {
+        // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+    });
+}
 
-getNodeView(selectedNode)
-        })
-        .catch(error => {
-            // Handle errors
-            console.error('Fetch error:', error);
-        })
-        .finally(() => {
-            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
-        });
-    }
-  function startProductionNode (data) {
 
-        // Disable the startProductionBtn and show the loadingBtn
-        const csrftoken = getCookie('csrftoken');
-        // Your AJAX request here
-        fetch('{% url 'start_one_node_production' %}', {
-            method: 'POST', // HTTP method
-            headers: {
-                'Content-Type': 'application/json', // Specify content type
-
-                'X-CSRFToken': csrftoken,// Include CSRF token in request headers
-            },
-            body: JSON.stringify({
-                // Any data you want to send
-            }),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Handle the success response from the server
-             dataR = JSON.parse(data);
-            console.log(dataR);
-
-            // Now you can access properties of data
-
-        })
-        .catch(error => {
-            // Handle errors
-            console.error('Fetch error:', error);
-        })
-        .finally(() => {
-            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
-        });
-    }
-
-    function horizontalBarChart(horizontalBar) {
+function horizontalBarChart(horizontalBar) {
 
             document.getElementById("NodehorizontalBarChart").innerHTML =''
         const horizontalBarChartEl = document.querySelector('#horizontalBarChart'),
@@ -918,9 +902,7 @@ getNodeView(selectedNode)
         if (typeof horizontalBarChartEl !== undefined && horizontalBarChartEl !== null) {
             const horizontalBarChart = new ApexCharts(horizontalBarChartEl, horizontalBarChartConfig);
             horizontalBarChart.render();
-            console.log(horizontalBar.data.length)
             for (var i = 0; i < horizontalBar.data.length; i++) {
-                console.log(horizontalBar.data[i]);  // Output each item in the console
 
                 document.getElementById("NodehorizontalBarChart").innerHTML += ` <div class="d-flex col-6 align-items-baseline">
                             <span class="text-primary me-2"><i class="ti ti-circle-filled fs-6"></i></span>
@@ -965,12 +947,10 @@ socket.addEventListener('open', function (event) {
 });
 
   // Function to handle incoming messages
-  socket.onmessage = function(event) {
+socket.onmessage = function(event) {
 
 
-    console.log('WebSocket Message from server:', event.data);
     const data = JSON.parse(event.data);
-    console.log(data);
     const nodeList = document.getElementById('nodeList');
     const nodeList2 = document.getElementById('nodeList2');
 
@@ -1034,7 +1014,6 @@ socket.addEventListener('open', function (event) {
 
             }
             else {
-                 console.log(">>>>>>>>>>>>>>>>.")
             document.getElementById('startAllNode').innerHTML = `<button onclick="startProductionAllNode('create')"  type="button" class="btn btn-sm btn-label-primary mt-md-3 waves-effect">
                                           Start All Node
                                         </button>
@@ -1043,11 +1022,11 @@ socket.addEventListener('open', function (event) {
 
 getcurrentLog(selectedLine)
     getNodeView(selectedNode)
-    singleNodeDatalabelCall(selectedNode,selectstartCode)
+    singleProductionLabelCall(selectedNode,selectstartCode)
   };
 
 // Sending a message to the server
-  function updateTimePassed() {
+function updateTimePassed() {
     // Date and time of the past event
      var pastDate = new Date("{{ log.created_at|date:'Y-m-d H:i:s' }}")
     // Current date and time
@@ -1084,12 +1063,10 @@ function isEmptyObject(obj) {
 function isArrayEmpty(arr) {
     return Array.isArray(arr) && arr.length === 0;
 }
-
+// Update Individual Node Call
 function singleNodeDataCall(data) {
-    console.log(data)
 
         document.getElementById("reportOne").innerHTML = '';
-    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
         const csrftoken = getCookie('csrftoken');
      fetch('{% url 'singlereport_production' %}', {
             method: 'POST', // HTTP method
@@ -1112,7 +1089,7 @@ function singleNodeDataCall(data) {
         .then(data => {
             // Handle the success response from the server
              dataR = JSON.parse(data);
-            console.log(dataR);
+             // Update Individual Node Call UI
               var htmlContentheader=` <div class="card-header">
                                       <div class="d-flex align-items-start">
                                           <div class="d-flex align-items-start">
@@ -1138,8 +1115,10 @@ function singleNodeDataCall(data) {
                                   </div>
                                   </div>`
               var htmlContent=''
+              //  Update Individual Node Call Fault UI
               var Fault=''
-                  if (typeof dataR.Report !== 'undefined' && typeof dataR.Report.Fault !== 'undefined' && dataR.Report.Fault !== null && !isEmptyObject(dataR.Report.Fault) && !isArrayEmpty(dataR.Report.Fault)) {
+              // Update Individual Node Call: Check If Fault and Report Exist
+              if (typeof dataR.Report !== 'undefined' && typeof dataR.Report.Fault !== 'undefined' && dataR.Report.Fault !== null && !isEmptyObject(dataR.Report.Fault) && !isArrayEmpty(dataR.Report.Fault)) {
 
                       Fault=`<div class="alert alert-danger d-flex align-items-center" role="alert">
                         <span class="alert-icon text-danger me-2">
@@ -1149,6 +1128,7 @@ function singleNodeDataCall(data) {
                       </div>`
 }
 
+          // Update Individual Node Call: Check If Node Or CRX10
             if(dataR.NodeType==='crx10') {
                 htmlContent = `<div class="card-body">
                               <div class="card">
@@ -1387,6 +1367,7 @@ function singleNodeDataCall(data) {
                           </div>`;
             }
 
+         // Update Individual Node Call UI innerHTML
         document.getElementById("reportOne").innerHTML = htmlContent;
 
         })
@@ -1398,16 +1379,18 @@ function singleNodeDataCall(data) {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
 }
-function singleNodeDataLabelAction(data,id) {
-    console.log(data)
-    var dataTable = $('#datatable1reportProductionLine').DataTable();
-if (dataTable !== 'undefined') {
-    dataTable.destroy();
-}
 
-        {#document.getElementById("reportProductionLine").innerHTML = '';#}
-    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
-        const csrftoken = getCookie('csrftoken');
+// Single Production Populate Table for One Label
+function singleProductionLabelTable(data,id) {
+    // Destroy Table
+    var dataTable = $('#datatable1reportProductionLine').DataTable();
+
+    if (dataTable !== 'undefined') {
+        dataTable.destroy();
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
      fetch('/BrokerManager/single-report/label/'+selectedNode+'/action', {
             method: 'POST', // HTTP method
             headers: {
@@ -1430,8 +1413,8 @@ if (dataTable !== 'undefined') {
         })
         .then(data => {
             // Handle the success response from the server
-             dataR = JSON.parse(data);
-            console.log(dataR);
+            dataR = JSON.parse(data);
+            // Single Production Populate Table for One Label : Config Datatable
             var table = $('#datatable1reportProductionLine').DataTable({
             data: dataR.data, // Provide the fetched data to the DataTable
             columns: [
@@ -1458,15 +1441,11 @@ if (dataTable !== 'undefined') {
                             data-bs-target="#offcanvasAddUser">
                             <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">View More Data</span></span>
                         </button>`;
-            }
-        }
+            }}
             ],
-
             pageLength: 50,
-
-    order: [] // Disable s
-        });
-
+            order: [] // Disable s
+            });
         })
         .catch(error => {
             // Handle errors
@@ -1476,7 +1455,9 @@ if (dataTable !== 'undefined') {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
 }
-function singleNodeDataFaultAction(id) {
+
+// Single Production Populate Table for Fault
+function singleNodeFaultPerProduction(id) {
     var dataTable = $('#datatable1reportProductionLine').DataTable();
 if (dataTable !== 'undefined') {
     dataTable.destroy();
@@ -1506,7 +1487,6 @@ if (dataTable !== 'undefined') {
         .then(data => {
             // Handle the success response from the server
              dataR = JSON.parse(data);
-            console.log(dataR);
 
    createtable ("datatable1reportProductionLine",dataR.data)
         })
@@ -1518,16 +1498,19 @@ if (dataTable !== 'undefined') {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
 }
-function singleNodeDataFaultActionAll() {
-    var dataTable = $('#datatable1reportProductionLine').DataTable();
+
+
+//   Populate Table for All Fault
+function faultActionAll() {
+
+// Destroy Table for All Fault
+var dataTable = $('#datatable1reportProductionLine').DataTable();
 if (dataTable !== 'undefined') {
     dataTable.destroy();
 }
 
-        {#document.getElementById("reportProductionLine").innerHTML = '';#}
-    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
-        const csrftoken = getCookie('csrftoken');
-     fetch('{% url 'fullreport_Fault' %}', {
+const csrftoken = getCookie('csrftoken');
+fetch('{% url 'fullreport_Fault' %}', {
             method: 'POST', // HTTP method
             headers: {
                 'Content-Type': 'application/json', // Specify content type
@@ -1546,10 +1529,10 @@ if (dataTable !== 'undefined') {
         })
         .then(data => {
             // Handle the success response from the server
-             dataR = JSON.parse(data);
-            console.log(dataR);
+            dataR = JSON.parse(data);
+            // Populate Table for All Fault
+            createtable ("datatable1reportProductionLine",dataR.data)
 
-   createtable ("datatable1reportProductionLine",dataR.data)
         })
         .catch(error => {
             // Handle errors
@@ -1559,16 +1542,18 @@ if (dataTable !== 'undefined') {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
 }
-function singleNodeDataFaultActionCurrentRun() {
-    var dataTable = $('#datatable1reportProductionLine').DataTable();
+
+//   Populate Table for All Fault For Current Run
+function faultCurrentRun() {
+
+//   Destroy Table for All Fault For Current Run
+var dataTable = $('#datatable1reportProductionLine').DataTable();
 if (dataTable !== 'undefined') {
     dataTable.destroy();
 }
 
-        {#document.getElementById("reportProductionLine").innerHTML = '';#}
-    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
-        const csrftoken = getCookie('csrftoken');
-     fetch('{% url 'fullreport_production_Fault' %}', {
+const csrftoken = getCookie('csrftoken');
+fetch('{% url 'fullreport_production_Fault' %}', {
             method: 'POST', // HTTP method
             headers: {
                 'Content-Type': 'application/json', // Specify content type
@@ -1589,10 +1574,8 @@ if (dataTable !== 'undefined') {
         })
         .then(data => {
             // Handle the success response from the server
-             dataR = JSON.parse(data);
-            console.log(dataR);
-
-   createtable ("datatable1reportProductionLine",dataR.data)
+            dataR = JSON.parse(data);
+            createtable ("datatable1reportProductionLine",dataR.data)
         })
         .catch(error => {
             // Handle errors
@@ -1639,14 +1622,15 @@ function createtable(getIdBy,dataR) {
         });
 
 }
-function singleNodeDatalabelCall(data,id) {
+
+//Populate: Single Production Label
+function singleProductionLabelCall(data,id) {
         selectedNode=data
         selectstartCode=id
 
-                document.getElementById('load-3').style.display = 'block';
-    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
+        document.getElementById('load-3').style.display = 'block';
         const csrftoken = getCookie('csrftoken');
-     fetch('/BrokerManager/single-report/label/'+data, {
+fetch('/BrokerManager/single-report/label/'+data, {
             method: 'POST', // HTTP method
             headers: {
                 'Content-Type': 'application/json', // Specify content type
@@ -1666,37 +1650,41 @@ function singleNodeDatalabelCall(data,id) {
         })
         .then(data => {
 
-
-                document.getElementById('load-3').style.display = 'none';
+        // Clear Existing Node
+        document.getElementById('load-3').style.display = 'none';
         document.getElementById("singleNodeDatalabelheader").innerHTML = '';
         document.getElementById("singleNodeDatalabelbody").innerHTML='';
         document.getElementById("singleNodeDatalabelsub").innerHTML='';
-            // Handle the success response from the server
-             dataR = JSON.parse(data);
-            console.log(dataR);
-            for (var i = 0; i < dataR.action.length; i++) {
-    if (dataR.action[i].total > 0) {
-        var htmlContent =
-            `
-                        <div class="vehicles-progress-label on-the-way-text" style="width: ${dataR.action[i].total}%">${dataR.action[i].action}</div>`;
 
-        document.getElementById("singleNodeDatalabelheader").innerHTML += htmlContent;
-        var htmlContentbody =
-            `<div
-                          class="progress-bar fw-medium text-start bg-body text-dark px-3 rounded-0"
-                          role="progressbar"
-                          style="width: ${dataR.action[i].total}%"
-                          aria-valuenow="${dataR.action[i].total}"
-                          aria-valuemin="0"
-                          aria-valuemax="100">
-                        ${dataR.action[i].total}%
-                        </div>`;
-        document.getElementById("singleNodeDatalabelbody").innerHTML += htmlContentbody;
-    }
+        // Handle the success response from the server
+        dataR = JSON.parse(data)
+
+        // Populate: Progress Bar For Action and Label
+        for (var i = 0; i < dataR.action.length; i++) {
+                    if (dataR.action[i].total > 0) {
+                        var htmlContent =
+                            `
+                                        <div class="vehicles-progress-label on-the-way-text" style="width: ${dataR.action[i].total}%">${dataR.action[i].action}</div>`;
+
+                        document.getElementById("singleNodeDatalabelheader").innerHTML += htmlContent;
+                        var htmlContentbody =
+                            `<div
+                                          class="progress-bar fw-medium text-start bg-body text-dark px-3 rounded-0"
+                                          role="progressbar"
+                                          style="width: ${dataR.action[i].total}%"
+                                          aria-valuenow="${dataR.action[i].total}"
+                                          aria-valuemin="0"
+                                          aria-valuemax="100">
+                                        ${dataR.action[i].total}%
+                                        </div>`;
+                        document.getElementById("singleNodeDatalabelbody").innerHTML += htmlContentbody;
+                    }
 
 
             }
-             for (var i = 0; i < dataR.label.length; i++) {
+
+        // Populate: Label Table
+        for (var i = 0; i < dataR.label.length; i++) {
 
                            var htmlContentsub =
                  ` <tr>
@@ -1710,7 +1698,7 @@ function singleNodeDatalabelCall(data,id) {
                               </td>
                               <td class="text-end pe-0">
                                 <span class="fw-medium">
-                                  <button id = "" onclick="singleNodeDataLabelAction('${dataR.label[i]}','${id}')"  class="btn btn-secondary add-new btn-primary waves-effect waves-light"
+                                  <button id = "" onclick="singleProductionLabelTable('${dataR.label[i]}','${id}')"  class="btn btn-secondary add-new btn-primary waves-effect waves-light"
                                    tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2">
                           <span><i class="ti ti-hand-click me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">View All Action</span></span></button>
 
@@ -1722,7 +1710,6 @@ function singleNodeDatalabelCall(data,id) {
 
             }
 
-
         })
         .catch(error => {
             // Handle errors
@@ -1732,21 +1719,28 @@ function singleNodeDatalabelCall(data,id) {
             // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
         });
 }
+
+// Get Node On First Load
 getNodeView(selectedNode)
+
+// Get Node View
 function getNodeView(nodeid) {
-        console.log(nodeid)
     selectedNode = nodeid
-        {#document.getElementById("reportProductionLine").innerHTML = '';#}
+    // Destroy All The Logs Table
       var dataTable2 = $('#datatable1fullreportProductionLine').DataTable();
     if (dataTable2 !== 'undefined') {
         dataTable2.destroy();
     }
-                document.getElementById('load-1').style.display = 'block';
-                document.getElementById('load-all').style.display = 'block';
-                document.getElementById('load-2').style.display = 'block';
-        {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
-    {#document.getElementById('loadingBtn').style.display = 'inline-block';#}
-        const csrftoken = getCookie('csrftoken');
+
+
+    // Clear All Loading
+    document.getElementById('load-1').style.display = 'block';
+    document.getElementById('load-all').style.display = 'block';
+    document.getElementById('load-2').style.display = 'block';
+
+
+    const csrftoken = getCookie('csrftoken');
+
      fetch('/BrokerManager/single-report/'+nodeid, {
             method: 'POST', // HTTP method
             headers: {
@@ -1767,21 +1761,27 @@ function getNodeView(nodeid) {
         })
         .then(data => {
             // Handle the success response from the server
-               dataTable2 = $('#datatable1fullreportProductionLine').DataTable();
-    if (dataTable2 !== 'undefined') {
-        dataTable2.destroy();
-    }
-             dataR = JSON.parse(data);
-            console.log(dataR)
+
+         // Destroy All The Logs Table
+         dataTable2 = $('#datatable1fullreportProductionLine').DataTable();
+            if (dataTable2 !== 'undefined') {
+                dataTable2.destroy();
+            }
+            dataR = JSON.parse(data);
+            // Clear All Loading
                 document.getElementById('load-1').style.display = 'none';
                 document.getElementById('load-2').style.display = 'none';
                 document.getElementById('load-all').style.display = 'none';
 
+            // Clear All Item
                  document.getElementById("collectionStartprogress").innerHTML =''
                  document.getElementById("tablecollectionStart").innerHTML =''
                  document.getElementById("shipmentStatisticsChart").innerHTML =''
              document.getElementById("collectionStartlabels").innerHTML =''
+
+            // Production List
             dataR.collectionStart.collectionStart.forEach(function(element) {
+                // Production List : IF RUNNING
                 var status =  element.duration_str ==='RUNNING'? `<div class="spinner-border text-secondary" role="status">
                         <span class="visually-hidden">Loading...</span>
                       </div>`:element.duration_str
@@ -1801,7 +1801,7 @@ function getNodeView(nodeid) {
                               <td class="text-end pe-0">
                                 <span class="fw-medium">  <button
                             data-bs-target="#addRoleModal"
-                            data-bs-toggle="modal" onclick="singleNodeDatalabelCall('${nodeid}','${element.id}')"
+                            data-bs-toggle="modal" onclick="singleProductionLabelCall('${nodeid}','${element.id}')"
                             class="btn btn-primary mb-2 text-nowrap add-new-role">
                            Open Logs
                           </button></span>
@@ -1809,7 +1809,7 @@ function getNodeView(nodeid) {
                     <td class="text-end pe-0">
                                 <span class="fw-medium">  <button
                                 tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser2"
-                                onclick="singleNodeDataFaultAction('${element.id}')"
+                                onclick="singleNodeFaultPerProduction('${element.id}')"
                             class="btn btn-warning mb-2 text-nowrap add-new-role">
                            Open Fault
                           </button></span>
@@ -1817,6 +1817,8 @@ function getNodeView(nodeid) {
                             </tr>`
                 });
             var newSeriesData = []
+
+            // Production Graph For ALL Action Data
             dataR.reportPerDay.forEach(function(element) {
                 var typeDataGraph = element.action==='all' ? "column" : "line";
                 newSeriesData.push({
@@ -1825,13 +1827,15 @@ function getNodeView(nodeid) {
                     data: element.data
                   })
                });
+
+            // Production Progress Bar: Based On Action
             dataR.dataaction.forEach(function(element) {
               if (element.total > 0) {
                   document.getElementById("collectionStartlabels").innerHTML +=    `
                         <div class="vehicles-progress-label on-the-way-text" style="width: ${element.total}%">${element.action}</div>
                             `
 
-         document.getElementById("collectionStartprogress").innerHTML +=    `<div
+                  document.getElementById("collectionStartprogress").innerHTML +=    `<div
                           class="progress-bar fw-medium text-start bg-body text-dark px-3 rounded-0"
                           role="progressbar"
                           style="width: ${element.total}%"
@@ -1843,8 +1847,8 @@ function getNodeView(nodeid) {
                             `
               }
   });
-
-            var table = $('#datatable1fullreportProductionLine').DataTable({
+     // Production For  ALl Logs To Populate the Table
+     var table = $('#datatable1fullreportProductionLine').DataTable({
             data: dataR.data, // Provide the fetched data to the DataTable
             columns: [
                 { data: 'Report.action',
@@ -1882,11 +1886,11 @@ function getNodeView(nodeid) {
         }
             ],
 
-    order: [] ,// Disable s
+            order: [] ,// Disable s
             pageLength: 50
         });
 
-// Define new x-axis categories
+    // Production Graph  ALL Action Data For the Chart
     const shipmentEl = document.querySelector('#shipmentStatisticsChart'),
     shipmentConfig = {
       series: newSeriesData,
@@ -2048,21 +2052,22 @@ function getNodeView(nodeid) {
         }
       ]
     };
-            if (typeof shipmentEl !== undefined && shipmentEl !== null) {
+
+    if (typeof shipmentEl !== undefined && shipmentEl !== null) {
     const shipment = new ApexCharts(shipmentEl, shipmentConfig);
     shipment.render();
   }
-
-
-        })
-        .catch(error => {
-            // Handle errors
-            console.error('Fetch error:', error);
-        })
-        .finally(() => {
-            // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
-        });
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Fetch error:', error);
+    })
+    .finally(() => {
+        // Re-enable the startProductionBtn and hide the loadingBtn when request is complete
+    });
 }
+
+// humanize Date for the User
 function humanizeDate(date) {
     const now = new Date();
     const diff = now.getTime() - date.getTime();
@@ -2090,13 +2095,12 @@ function humanizeDate(date) {
 }
 
 
-// Example usage:
-const date = new Date('2024-04-07T12:00:00');
-console.log(humanizeDate(date)); // Output: "2 days ago"
-
+// Get Current logs For all when First loads
 getcurrentLog('all')
 var selectedLine ="all"
- function getcurrentLog  (line) {
+
+// Get Current logs For all
+function getcurrentLog  (line) {
         const csrftoken = getCookie('csrftoken');
         selectedLine=line
         // Your AJAX request here
@@ -2108,7 +2112,7 @@ var selectedLine ="all"
                 'X-CSRFToken': csrftoken,// Include CSRF token in request headers
             },
             body: JSON.stringify({
-                "selectedLine" : line
+                "selectedLine" : line // Get For A Selected Line
             }),
         })
         .then(response => {
@@ -2119,11 +2123,12 @@ var selectedLine ="all"
         })
         .then(data => {
             // Handle the success response from the server
-             dataR = JSON.parse(data);
-            console.log(dataR);
+         dataR = JSON.parse(data);
 
+         // Populate The Logs
         document.getElementById("logAllnode").innerHTML=''
-              dataR.data.forEach(log => {
+
+        dataR.data.forEach(log => {
 
         document.getElementById("logAllnode").innerHTML += `          <li class="d-flex mb-4 pb-1">
                           <div class="avatar flex-shrink-0 me-3">

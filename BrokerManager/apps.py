@@ -9,5 +9,5 @@ class BrokermanagerConfig(AppConfig):
         from . import signals  # Import and register signals
 
         from .mqtt_consumer import client
+        # MQTT Consumer : Start Loop
         client.loop_start()
-        print("llll")

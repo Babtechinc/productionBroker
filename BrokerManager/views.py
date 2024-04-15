@@ -1,6 +1,5 @@
 import datetime
 import json
-import os
 import uuid
 from datetime import timedelta
 
@@ -33,7 +32,6 @@ def dashboard(request):
 
     # First define the database name
     dbname = my_client['Django']
-
     # Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection)
 
     collection = dbname["Brokerlogs"]
@@ -45,34 +43,35 @@ def dashboard(request):
         start = True
     startallNode = False
     collectionStart = []
-
     collectionStart = collectionStartPush()
     if collectionStart ['last_document'] and collectionStart ['last_document']['ended_at'] == None:
         startallNode=True
-
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
-    recent_node = None
+    list_node = None
     report = None
     Faultresult=0
     if recent_documents:
-        recent_node = collection_node.find({"Code": recent_documents['Code']},
+        # List All The Node
+        list_node = collection_node.find({"Code": recent_documents['Code']},
                                            {"_id": 0}).limit(page_size)  # Projection to exclude _id field
         # collectionStart = collectionStartLog.find({"productionCode": recent_documents['Code']}, {"_id":0})
         recent_report = collection_report.find({"Code": recent_documents['Code']}, ).sort("created_at",
                                                                                           pymongo.DESCENDING)  # Projection to exclude _id field
         report = ReportSerializer(recent_report, many=True).data
-        recent_node = list(recent_node)
+        list_node = list(list_node)
+        # Check the Fault
         query = {
             "Code": recent_documents['Code'],
             "Report.Fault": {'$nin': [None, {}, [],'']}  # '$nin' is "not in" operator for arrays
         }
 
+        # Check the Fault Count
         Faultresult = collection_report.find(query, {"_id": 0}).count()
     return render(request, 'dashboard.html',
                   context={"start": start, "report": report, "horizontalBar": json.dumps(horizontalBar),
                            "collectionCount": horizontalBar['length'],"Faultresult":Faultresult,
                            "collectionStart": collectionStart,"startallNode": startallNode,
-                           "log": recent_documents, "node": recent_node})
+                           "log": recent_documents, "node": list_node})
 
 
 @csrf_exempt
@@ -100,10 +99,10 @@ def start_production(request):
             'requestMessage': "registration",
             'Status': "Ok"
         }
-
+        # send to all node using MQTT
         client.publish(TOPIC, json.dumps(message))
-        print("sending...........sent")
     else:
+        # send to all node using MQTT
         message = {
             'brokerManager': True,
             'requestMessage': "registration",
@@ -122,25 +121,21 @@ def singlereport_production(request):
     # Your production start logic goes here
     # For example, you can return a JSON response
     recent_report = {}
-    print(request.method)
     if request.method == 'POST':
         if not ('id' in request.data):
             return JsonResponse({})
         dbname = my_client['Django']
         collection = dbname["Brokerlogs"]
-        collection_node = dbname["NodeModel"]
         collection_report = dbname["BrokerReport"]
-
-        print("recent_documents")
         thirty_minutes_ago = datetime.datetime.now() - timedelta(hours=timeToNewProduction)
 
         recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
 
-        print(recent_documents["_id"])
-
+        # Get The collection_report by '_id' based on a report
         recent_report = collection_report.find_one(
             {"Code": recent_documents['Code'], '_id': ObjectId(request.data['id'])})
-        print(recent_report)
+
+
     return JsonResponse(json.dumps(recent_report, default=str), safe=False)
 
 @csrf_exempt
@@ -149,7 +144,7 @@ def fullreport_production(request):
     # Your production start logic goes here
     # For example, you can return a JSON response
     recent_report = {'data':[]}
-    print(request.method)
+
     if request.method == 'POST':
 
         dbname = my_client['Django']
@@ -157,24 +152,28 @@ def fullreport_production(request):
         collection_report = dbname["BrokerReport"]
 
         collectionStartLog = dbname["NodeStartsLogs"]
-        last_document = collectionStartLog.find_one(sort=[('_id', pymongo.DESCENDING)])
 
+        last_document = collectionStartLog.find_one(sort=[('_id', pymongo.DESCENDING)])
         if not (last_document):
 
             return JsonResponse([],safe=False)
-        thirty_minutes_ago = datetime.datetime.now() - timedelta(hours=timeToNewProduction)
 
+        thirty_minutes_ago = datetime.datetime.now() - timedelta(hours=timeToNewProduction)
         recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
         query={"Code": recent_documents['Code'], 'startCode': last_document['startCode']}
 
-        print(request.data)
+
+        # Sort by the 'selectedLine' if is exist and  is not all
         if 'selectedLine' in request.data and request.data['selectedLine'] !='all' :
             query['ProductLine']=request.data['selectedLine']
-            print("><<>>")
-        print(query)
+
+
         recent_report_full= list(collection_report.find(query
             ,sort=[('_id', pymongo.DESCENDING)]).limit(page_size))
+
         recent_report['data']=ReportSerializer(recent_report_full, many=True).data
+
+
     return JsonResponse(json.dumps(recent_report, default=str,cls=DateTimeEncoder), safe=False)
 @csrf_exempt
 @api_view(['POST'])
@@ -183,7 +182,6 @@ def fullreport_Fault(request):
     # For example, you can return a JSON response
     recent_report = {'data':[]}
 
-    print(request.method)
     if request.method == 'POST':
 
         dbname = my_client['Django']
@@ -192,6 +190,7 @@ def fullreport_Fault(request):
         thirty_minutes_ago = datetime.datetime.now() - timedelta(hours=timeToNewProduction)
 
         recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
+        # Get Fault
         query = {
             "Code": recent_documents['Code'],
             "Report.Fault": {'$nin': [None, {}, [], '']}  # '$nin' is "not in" operator for arrays
@@ -208,7 +207,6 @@ def fullreport_production_Fault(request):
     # Your production start logic goes here
     # For example, you can return a JSON response
     recent_report = {'data':[]}
-    print(request.method)
     if request.method == 'POST':
 
         dbname = my_client['Django']
@@ -224,14 +222,14 @@ def fullreport_production_Fault(request):
         thirty_minutes_ago = datetime.datetime.now() - timedelta(hours=timeToNewProduction)
 
         recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
+
+        # Get Fault  for current run
         query={"Code": recent_documents['Code'], 'startCode': last_document['startCode'],
             "Report.Fault": {'$nin': [None, {}, [], '']}}
 
-        print(request.data)
         if 'selectedLine' in request.data and request.data['selectedLine'] !='all' :
             query['ProductLine']=request.data['selectedLine']
-            print("><<>>")
-        print(query)
+
         recent_report_full= list(collection_report.find(query
             ,sort=[('_id', pymongo.DESCENDING)]).limit(page_size),)
         recent_report['data']=ReportSerializer(recent_report_full, many=True).data
@@ -243,7 +241,6 @@ def singlereport_production_node(request,node):
     # Your production start logic goes here
     # For example, you can return a JSON response
     recent_report = {}
-    print(request.method)
     if request.method == 'POST':
         recent_report=getReportAllNodeOne(node)
 
@@ -257,18 +254,17 @@ def singlereport_production_label(request, nodeid):
     # For example, you can return a JSON response
     recent_report = {"error": ""}
     if request.method == 'POST':
-        print(request.data)
-        print("request.data")
-        print(nodeid)
+
         if not ('startCode'  in request.data):
            return JsonResponse(recent_report)
-        print("nodeid")
+
+
         datalist = getReportAllLabel(nodeid,request.data['startCode'])
         recent_report = {
             "label": datalist['labellist'] ,
             "action":datalist['dataaction']
         }
-    print(recent_report)
+
     return JsonResponse(json.dumps(recent_report, ), safe=False)
 
 
@@ -278,11 +274,9 @@ def  singlereport_production_Fault(request, nodeid):
     # Your production start logic goes here
     # For example, you can return a JSON response
     recent_report = {"error": ""}
-    print(request.method)
+
     if request.method == 'POST':
-        print(request.data)
-        print("request.data")
-        print(nodeid)
+
         dbname = my_client['Django']
         collection = dbname["Brokerlogs"]
         collection_report = dbname["BrokerReport"]
@@ -290,7 +284,7 @@ def  singlereport_production_Fault(request, nodeid):
 
         recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
         lookup={}
-        print("lookup")
+
         if 'startCode'  in request.data and not(request.data['startCode'] == None):
             lookup={"Code": recent_documents['Code'], 'startCode': request.data['startCode'],"NodeID": nodeid,
                 "Report.Fault": {'$nin': [None, {}, [], '']}}
@@ -298,7 +292,7 @@ def  singlereport_production_Fault(request, nodeid):
             lookup = {"Code": recent_documents['Code'], "NodeID": nodeid,"Report.Fault": {'$nin': [None, {}, [], '']}}
         recent_report_full= list(collection_report.find(lookup,sort=[('_id', pymongo.DESCENDING)]).limit(page_size),)
         recent_report['data']=ReportSerializer(recent_report_full, many=True).data
-    # print(recent_report)
+
     return JsonResponse(json.dumps(recent_report, ), safe=False)
 
 
@@ -318,7 +312,8 @@ def singlereport_production_label_action(request, nodeid):
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
 
     recent_report = {"error": ""}
-    print(request.method)
+
+
     if request.method == 'POST':
         if not recent_documents:
             return
@@ -340,16 +335,13 @@ def singlereport_production_label_action(request, nodeid):
 def start_one_node_production(request):
     # Your production start logic goes here
     # For example, you can return a JSON response
-    print("recent_documents")
     dbname = my_client['Django']
     collection = dbname["Brokerlogs"]
     collection_node = dbname["NodeModel"]
-    collection_report = dbname["BrokerReport"]
     thirty_minutes_ago = datetime.datetime.now() - timedelta(hours=timeToNewProduction)
 
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
     recent_report = {}
-    print(request.method)
     if request.method == 'POST':
         if not ('nodeId' in request.data):
             return JsonResponse({})
@@ -363,7 +355,7 @@ def start_one_node_production(request):
             "isBroker": True,
             "nodeId": str(request.data['nodeId']).lower()
         }
-        print('created Report>><MQQT')
+        # Send to a single node Using MQTT
         client.publish(TOPIC, json.dumps(message))
         getAllOnlineNode()
     return JsonResponse(json.dumps(recent_report, default=str), safe=False)
@@ -374,7 +366,8 @@ def start_one_node_production(request):
 def start_all_node_production(request):
     # Your production start logic goes here
     # For example, you can return a JSON response
-    print("recent_documents")
+
+
     dbname = my_client['Django']
     collection = dbname["Brokerlogs"]
     collectionStartLog = dbname["NodeStartsLogs"]
@@ -383,12 +376,12 @@ def start_all_node_production(request):
     recent_documents = collection.find_one({"updated_at": {"$gte": thirty_minutes_ago}})
 
     recent_report = {"error": ""}
-    print(request.data)
+
+
     if request.method == 'POST':
 
         if not ('status' in request.data):
             return JsonResponse({})
-        # if request.data['status'] == 'create' :
 
         last_document = collectionStartLog.find_one(sort=[('_id', pymongo.DESCENDING)])
         if last_document and last_document['ended_at']==None:
@@ -407,6 +400,7 @@ def start_all_node_production(request):
                 "message": "start_all",
                 "brokerManager": True,
             }
+            # Send to a start node Using MQTT
             client.publish(TOPIC, json.dumps(message))
         if request.data['status'] == 'stop':
             recent_report = {"status": request.data['status']}
@@ -415,7 +409,10 @@ def start_all_node_production(request):
                 "message": "stop_all",
                 "brokerManager": True,
             }
+            # Send to a stop node Using MQTT
             client.publish(TOPIC, json.dumps(message))
+
+        # Sending to  web application Using websocket
         getAllOnlineNode()
     return JsonResponse(json.dumps(recent_report,default=str,),safe=False)
 
