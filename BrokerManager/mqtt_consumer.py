@@ -78,7 +78,7 @@ def on_message(client, userdata, message):
                 if payload["messageType"] == 'Report':
                     print('creat Report>><MQQT')
                     reportingOfNode(payload, collection_node, recent_documents_Broker, collection_report,collectionStartLog)
-                    getAllOnlineNode()
+
                     return
 
                 # Check if the request is for stop
@@ -235,6 +235,7 @@ def reportingOfNode(payload,collection_node,recent_documents,collection_report,c
             "brokerManager": True,
             "nodeId": str(payload['nodeId']).lower()
         }
+        getAllOnlineNode()
 
     print('created Report>><MQQT')
     client.publish(TOPIC, json.dumps(message))
