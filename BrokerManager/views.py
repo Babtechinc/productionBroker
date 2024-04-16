@@ -21,8 +21,7 @@ from productionBroker.settings import timeToNewProduction,page_size
 my_client = pymongo.MongoClient(settings.DB_NAME)
 
 
-# Create your views here.
-
+# Create your views here. 
 
 def dashboard(request):
     start = False
